@@ -5280,7 +5280,6 @@ function renderCrewPayouts() {
 
   const period = getPayoutPeriod();
 
-  // Build data for all crew
   const allCrew = [
     ...crewRoster.captains.map(c => calcCrewPayout(c.name, 'captain', period)),
     ...crewRoster.stews.map(s    => calcCrewPayout(s.name, 'stew',    period)),
@@ -5289,8 +5288,6 @@ function renderCrewPayouts() {
   const totalCompleted = allCrew.reduce((s, c) => s + c.completedPay, 0);
   const totalUpcoming  = allCrew.reduce((s, c) => s + c.upcomingPay, 0);
   const totalAll       = totalCompleted + totalUpcoming;
-  const totalCharters  = allCrew.reduce((s, c) => s + c.charters.length, 0);
-  // Gratuity is counted in individual payouts already, show the raw total passed through
   const totalGratPassthrough = Object.values(bookings).filter(b => b.status !== 'cancelled' && inPeriod(b, period)).reduce((s,b) => s + (b.gratuity||0), 0);
 
   // ── Summary bar ──
@@ -5316,27 +5313,73 @@ function renderCrewPayouts() {
   if (allCrew.every(c => c.charters.length === 0)) {
     cardsWrap.innerHTML = `<div style="grid-column:1/-1;" class="payout-empty">No charters found for this period.</div>`;
   } else {
-    const initials = name => name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+    const getInitials = name => name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+
     cardsWrap.innerHTML = allCrew.map(crew => {
-      const total = crew.completedPay + crew.upcomingPay;
+      // Reimbursements for this crew member
+      const crewReimb       = pendingExpenses.filter(e => e.submittedBy === crew.name);
+      const reimbPending    = crewReimb.filter(e => !e.reimbursed && !e.denied).reduce((s,e) => s+e.amount, 0);
+      const reimbApproved   = crewReimb.filter(e => e.reimbursed).reduce((s,e) => s+e.amount, 0);
+      const totalWithReimb  = crew.completedPay + crew.upcomingPay + reimbPending + reimbApproved;
+
       const charterRows = crew.charters.length === 0
         ? `<div class="payout-empty">No charters this period</div>`
-        : crew.charters.map(c => `
-            <div class="payout-charter-item">
-              <div>
-                <span class="payout-charter-ref">${c.ref}</span>
-                <span class="payout-charter-detail"> · ${c.vessel} · ${c.date} · ${c.duration}h @ $${c.rate}/hr</span>
-                ${c.grat > 0 ? `<span style="color:#4caf7d;font-size:9px;margin-left:4px;">+$${c.grat} grat</span>` : ''}
+        : crew.charters.map((c, i) => {
+            const uid     = (crew.name + c.ref).replace(/[^a-zA-Z0-9]/g,'_');
+            const b       = Object.values(bookings).find(bk => bk.ref === c.ref);
+            // Per-charter reimbursements
+            const cReimb  = pendingExpenses.filter(e =>
+              e.submittedBy === crew.name && b && e.charterRef === b.ref.replace('#','')
+            );
+            const cReimbTotal = cReimb.reduce((s,e) => s+e.amount, 0);
+            const grandTotal  = c.earn + cReimbTotal;
+
+            return `
+            <div style="border-bottom:1px solid rgba(255,255,255,0.05);">
+              <div onclick="crewPayToggle('${uid}')" style="display:flex;justify-content:space-between;align-items:center;padding:9px 2px;cursor:pointer;">
+                <div>
+                  <span style="font-size:10px;color:var(--gold);font-weight:700;">${c.ref}</span>
+                  <span style="font-size:10px;color:rgba(255,255,255,0.35);"> · ${c.vessel} · ${c.date}</span>
+                  ${c.grat > 0 ? `<span style="color:#4caf7d;font-size:9px;margin-left:4px;">+$${c.grat} tip</span>` : ''}
+                  ${cReimbTotal > 0 ? `<span style="color:#ff9800;font-size:9px;margin-left:4px;">+$${cReimbTotal} reimb</span>` : ''}
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="font-size:13px;font-family:'Cormorant Garamond',serif;color:${c.done?'rgba(255,255,255,0.7)':'#4caf7d'};">$${grandTotal.toLocaleString()}</span>
+                  <span id="cpa-${uid}" style="font-size:9px;color:rgba(255,255,255,0.2);transition:transform 0.2s;display:inline-block;">▼</span>
+                </div>
               </div>
-              <span class="payout-charter-earn ${c.done ? 'done' : 'upcoming'}">
-                $${c.earn.toLocaleString()}${c.done ? '' : ' <span style="font-size:8px;opacity:0.6;">upcoming</span>'}
-              </span>
-            </div>`).join('');
+
+              <div id="cpd-${uid}" style="display:none;padding:0 2px 12px;">
+                <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);padding:12px 14px;font-size:11px;">
+                  <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+                    <span style="color:rgba(255,255,255,0.45);">Charter pay <span style="color:rgba(255,255,255,0.25);font-size:10px;">$${c.rate}/hr × ${c.duration}hrs</span></span>
+                    <span>$${c.baseEarn.toLocaleString()}</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+                    <span style="color:rgba(255,255,255,0.45);">Gratuity <span style="color:rgba(255,255,255,0.25);font-size:10px;">${c.grat>0?'50% share':''}</span></span>
+                    <span style="color:${c.grat>0?'#4caf7d':'rgba(255,255,255,0.25)'};">${c.grat>0?'$'+c.grat.toLocaleString():'—'}</span>
+                  </div>
+                  ${cReimb.length ? cReimb.map(e=>`
+                  <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+                    <span style="color:rgba(255,255,255,0.45);">Reimb: ${e.desc} <span style="color:rgba(255,255,255,0.25);font-size:10px;">${e.reimbursed?'✓ approved':'pending'}</span></span>
+                    <span style="color:${e.reimbursed?'#4caf7d':'#ff9800'};">+$${e.amount.toLocaleString()}</span>
+                  </div>`).join('') : `
+                  <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+                    <span style="color:rgba(255,255,255,0.25);font-style:italic;">No reimbursements</span><span style="color:rgba(255,255,255,0.25);">—</span>
+                  </div>`}
+                  <div style="display:flex;justify-content:space-between;padding:8px 0 2px;margin-top:4px;border-top:1px solid rgba(184,155,94,0.15);">
+                    <span style="font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);">Total</span>
+                    <span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:#4caf7d;">$${grandTotal.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+            </div>`;
+          }).join('');
 
       return `
         <div class="payout-card">
           <div class="payout-card-header">
-            <div class="payout-card-avatar">${initials(crew.name)}</div>
+            <div class="payout-card-avatar">${getInitials(crew.name)}</div>
             <div>
               <div class="payout-card-name">${crew.name}</div>
               <div class="payout-card-role">${crew.role === 'captain' ? 'Captain' : 'Stewardess'}</div>
@@ -5344,7 +5387,7 @@ function renderCrewPayouts() {
           </div>
           <div class="payout-total-row">
             <span class="payout-total-label">Total Payout</span>
-            <span class="payout-total-val">$${total.toLocaleString()}</span>
+            <span class="payout-total-val">$${totalWithReimb.toLocaleString()}</span>
           </div>
           <div class="payout-split">
             <div class="payout-split-box">
@@ -5356,7 +5399,21 @@ function renderCrewPayouts() {
               <div class="payout-split-val upcoming">$${crew.upcomingPay.toLocaleString()}</div>
             </div>
           </div>
-          ${crew.totalGrat > 0 ? `<div style="background:rgba(76,175,125,0.06);border:1px solid rgba(76,175,125,0.15);padding:7px 10px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;"><span style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#4caf7d;">Gratuity Included</span><span style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#4caf7d;">+$${crew.totalGrat.toLocaleString()}</span></div>` : ''}
+          ${crew.totalGrat > 0 ? `
+          <div style="background:rgba(76,175,125,0.06);border:1px solid rgba(76,175,125,0.15);padding:7px 10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#4caf7d;">Gratuity Included</span>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#4caf7d;">+$${crew.totalGrat.toLocaleString()}</span>
+          </div>` : ''}
+          ${reimbPending > 0 ? `
+          <div style="background:rgba(255,152,0,0.06);border:1px solid rgba(255,152,0,0.2);padding:7px 10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#ff9800;">Pending Reimbursements</span>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#ff9800;">+$${reimbPending.toLocaleString()}</span>
+          </div>` : ''}
+          ${reimbApproved > 0 ? `
+          <div style="background:rgba(76,175,125,0.04);border:1px solid rgba(76,175,125,0.12);padding:7px 10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#4caf7d;">Approved Reimbursements</span>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#4caf7d;">+$${reimbApproved.toLocaleString()}</span>
+          </div>` : ''}
           <div style="font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px;">${crew.charters.length} charter${crew.charters.length !== 1 ? 's' : ''} · ${crew.totalHours} hrs total</div>
           <div class="payout-charter-list">${charterRows}</div>
         </div>`;
@@ -5379,8 +5436,6 @@ function renderCrewPayouts() {
         <td style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold);font-weight:600;">$${total.toLocaleString()}</td>
       </tr>`;
     }).join('');
-
-    // Totals row
     tableBody.innerHTML += `<tr style="background:rgba(184,155,94,0.05);border-top:2px solid rgba(184,155,94,0.2);">
       <td colspan="4" style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);">TOTALS</td>
       <td style="color:#4caf7d;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;">$${totalCompleted.toLocaleString()}</td>
@@ -5388,6 +5443,15 @@ function renderCrewPayouts() {
       <td style="color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;">$${totalAll.toLocaleString()}</td>
     </tr>`;
   }
+}
+
+function crewPayToggle(uid) {
+  const detail = document.getElementById('cpd-' + uid);
+  const arrow  = document.getElementById('cpa-' + uid);
+  if (!detail) return;
+  const open = detail.style.display === 'none';
+  detail.style.display = open ? 'block' : 'none';
+  if (arrow) arrow.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
 }
 
 // ══════════════════════════════════════
@@ -6201,7 +6265,13 @@ function approveExpense(id) {
   exp.reimbursed = true;
   updateExpenseBadge();
   document.getElementById('expense-review-list').innerHTML = renderExpenseReviewList();
-  // Refresh badge text
+  // Refresh crew tab cards so reimbursement shows as approved
+  renderCrewPayouts();
+  // If the affected crew member is logged into their portal, refresh their earnings too
+  if (currentRole === 'crew' && currentCrewMember && currentCrewMember.name === exp.submittedBy) {
+    const main = document.getElementById('cp-main');
+    if (main) cpRenderEarnings();
+  }
   const remaining = pendingExpenses.filter(e => !e.reviewed).length;
   if (remaining === 0) {
     setTimeout(() => {
@@ -6224,6 +6294,13 @@ function denyExpense(id) {
   }
   updateExpenseBadge();
   document.getElementById('expense-review-list').innerHTML = renderExpenseReviewList();
+  // Refresh crew tab cards
+  renderCrewPayouts();
+  // If the affected crew member is logged into their portal, refresh their earnings too
+  if (currentRole === 'crew' && currentCrewMember && currentCrewMember.name === exp.submittedBy) {
+    const main = document.getElementById('cp-main');
+    if (main) cpRenderEarnings();
+  }
   const remaining = pendingExpenses.filter(e => !e.reviewed).length;
   if (remaining === 0) {
     setTimeout(() => {
