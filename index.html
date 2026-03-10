@@ -3966,6 +3966,9 @@ function renderFleet() {
         <div class="admin-nav-item" onclick="switchView('payments',this)">
           <span class="admin-nav-icon">💳</span> Payments
         </div>
+        <div class="admin-nav-item nav-item-admin-only" onclick="switchView('invoices',this)">
+          <span class="admin-nav-icon">🧾</span> Invoices
+        </div>
       </div>
       <div class="admin-nav-section">
         <div class="admin-nav-section-label">Communications</div>
@@ -4646,6 +4649,54 @@ function renderFleet() {
         <div class="email-template-card"><div><div class="email-template-name">Booking Declined</div><div class="email-template-trigger">Trigger: Admin declines booking</div></div><label class="email-toggle"><input type="checkbox" checked/><span class="email-toggle-slider"></span></label></div>
       </div>
 
+      <!-- ══ INVOICES VIEW ══ -->
+      <div class="admin-view" id="view-invoices">
+        <div class="admin-page-header">
+          <div>
+            <div class="admin-page-title">Invoice <span>Manager</span></div>
+            <div class="admin-page-sub">Create, track and email invoices for all charter bookings</div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <select id="inv-filter-status" class="fleet-sort" onchange="renderInvoicesView()" style="min-width:140px;">
+              <option value="all">All Statuses</option>
+              <option value="paid">Paid</option>
+              <option value="deposit">Deposit</option>
+              <option value="unpaid">Unpaid</option>
+            </select>
+            <select id="inv-filter-vessel" class="fleet-sort" onchange="renderInvoicesView()" style="min-width:160px;">
+              <option value="all">All Vessels</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Summary cards -->
+        <div class="admin-two-col" style="margin-bottom:28px;grid-template-columns:repeat(4,1fr);" id="inv-summary-cards"></div>
+
+        <!-- Invoice table -->
+        <div style="margin-bottom:8px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);">
+          All Invoices — <span id="inv-table-count">0</span> records
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="bookings-table" style="width:100%;">
+            <thead>
+              <tr>
+                <th>Invoice #</th>
+                <th>Booking Ref</th>
+                <th>Client</th>
+                <th>Vessel</th>
+                <th>Charter Date</th>
+                <th>Charter Total</th>
+                <th>Deposit</th>
+                <th>Balance Due</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inv-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
     </div><!-- end admin-content -->
   </div><!-- end admin-body -->
 
@@ -4666,6 +4717,7 @@ function renderFleet() {
   <div class="bdp-body" id="bdp-body"></div>
   <div class="bdp-footer">
     <button class="admin-action-btn" style="flex:1;">📄 Download Contract</button>
+    <button class="admin-action-btn" style="flex:1;background:rgba(184,155,94,0.12);border-color:rgba(184,155,94,0.4);color:var(--gold);" onclick="openInvoice(activeBdpRef)">🧾 Create Invoice</button>
   </div>
 </div>
 
@@ -5289,6 +5341,14 @@ function renderFleet() {
       <label class="nb-label">Override Charter Total <span style="color:rgba(255,255,255,0.25);font-weight:400;">(leave blank to use calculated rate)</span></label>
       <input class="nb-input" id="nb-revenue-override" type="number" placeholder="e.g. 5500" oninput="nbOverrideRevenue()" />
     </div>
+    <div class="nb-field" style="margin-top:12px;">
+      <label class="nb-label">Crew Gratuity <span style="color:rgba(255,255,255,0.25);font-weight:400;">(included on invoice — collected before charter)</span></label>
+      <input class="nb-input" id="nb-gratuity" type="number" min="0" placeholder="e.g. 500" oninput="nbUpdateInvoiceTotal()" />
+    </div>
+    <div style="padding:12px 18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+      <span style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);">Invoice Total (Charter + Gratuity)</span>
+      <span style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--white);" id="nb-invoice-total">—</span>
+    </div>
 
     <!-- SECTION: Customer Info -->
     <div class="nb-section-title" style="margin-top:28px;" id="nb-customer-title">Customer Information</div>
@@ -5421,10 +5481,25 @@ function renderFleet() {
     <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:3px;" id="deposit-modal-sub">—</div>
   </div>
   <div class="deposit-modal-body">
-    <!-- Charter total -->
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.06);">
-      <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);">Charter Total</span>
-      <span style="font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--white);" id="deposit-charter-total">$0</span>
+
+    <!-- Charter breakdown -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:14px 16px;margin-bottom:18px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:11px;color:rgba(255,255,255,0.4);">Charter Fee</span>
+        <span style="font-size:13px;color:var(--white);" id="dep-charter-fee">$0</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <span style="font-size:11px;color:rgba(255,255,255,0.4);">Crew Gratuity</span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <input id="dep-gratuity" type="number" min="0" placeholder="0"
+            style="width:90px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:var(--white);font-size:13px;padding:5px 8px;text-align:right;font-family:inherit;"
+            oninput="updateDepositTotals()"/>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,0.08);margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;">
+        <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);">Invoice Total</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--white);" id="deposit-charter-total">$0</span>
+      </div>
     </div>
 
     <!-- Payment status toggle -->
@@ -5436,16 +5511,19 @@ function renderFleet() {
       </div>
     </div>
 
-    <!-- Deposit fields (shown when partial) -->
+    <!-- Deposit fields -->
     <div id="deposit-fields">
       <div class="deposit-input-row">
         <div>
           <div class="deposit-input-label">Deposit Amount</div>
-          <input class="admin-login-input" id="dep-amount" type="number" placeholder="$0" style="margin:0;font-size:13px;padding:10px 12px;width:100%;box-sizing:border-box;" oninput="updateDepositBalance()"/>
+          <input class="admin-login-input" id="dep-amount" type="number" placeholder="$0"
+            style="margin:0;font-size:13px;padding:10px 12px;width:100%;box-sizing:border-box;"
+            oninput="updateDepositTotals()"/>
         </div>
         <div>
           <div class="deposit-input-label">Date Received</div>
-          <input class="admin-login-input" id="dep-date" type="date" style="margin:0;font-size:12px;padding:10px 12px;width:100%;box-sizing:border-box;color-scheme:dark;"/>
+          <input class="admin-login-input" id="dep-date" type="date"
+            style="margin:0;font-size:12px;padding:10px 12px;width:100%;box-sizing:border-box;color-scheme:dark;"/>
         </div>
       </div>
       <div style="margin-bottom:16px;">
@@ -5458,17 +5536,16 @@ function renderFleet() {
           <option value="Venmo">Venmo</option>
         </select>
       </div>
-      <!-- Live balance -->
       <div class="deposit-balance-bar">
         <div>
           <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ff9800;">Balance Remaining</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;">Will be flagged on booking until collected</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;">Due 24hrs before charter date</div>
         </div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#ff9800;" id="dep-balance-display">$0</div>
       </div>
     </div>
 
-    <!-- Full payment fields (shown when full) -->
+    <!-- Full payment fields -->
     <div id="fullpay-fields" style="display:none;margin-bottom:16px;">
       <div class="deposit-input-label">Payment Method</div>
       <select class="bdp-select" id="fullpay-method" style="width:100%;">
@@ -5480,8 +5557,14 @@ function renderFleet() {
       </select>
     </div>
 
-    <div style="display:flex;gap:10px;margin-top:20px;">
-      <button class="admin-action-btn" style="flex:1;" onclick="submitConfirmBooking()">✓ Confirm Booking</button>
+    <!-- Invoice auto-send notice -->
+    <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(76,175,125,0.08);border:1px solid rgba(76,175,125,0.2);margin-bottom:16px;">
+      <span style="font-size:14px;">✉</span>
+      <span style="font-size:11px;color:rgba(76,175,125,0.9);">Invoice will be generated and emailed to the client automatically on confirm.</span>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:4px;">
+      <button class="admin-action-btn" style="flex:1;" onclick="submitConfirmBooking()">✓ Confirm & Send Invoice</button>
       <button class="admin-action-btn outline" onclick="closeDepositModal()">Cancel</button>
     </div>
   </div>
@@ -6524,6 +6607,7 @@ function switchView(viewName, el) {
   if (viewName === 'crew')        { renderCrewGrid(); renderCrewAssignments(); renderCrewPayouts(); }
   if (viewName === 'vessels')     { renderAdminVessels(); }
   if (viewName === 'ownerpayout') { renderOwnerPayout(); }
+  if (viewName === 'invoices')    { renderInvoicesView(); }
 }
 
 // ══════════════════════════════════════
@@ -6597,10 +6681,11 @@ function bMargin(b)     { return b.revenue > 0 ? Math.round((bNetProfit(b) / b.r
 // Each crew member gets half the gratuity
 function bGratuityPerCrew(b) { return Math.round((b.gratuity || 0) / 2); }
 // Deposit / balance
-function bDeposit(b)    { return b.deposit || 0; }
-function bBalance(b)    { return Math.max(0, b.revenue - bDeposit(b)); }
-function bHasBalance(b) { return b.status === 'confirmed' && bBalance(b) > 0; }
-function bFullyPaid(b)  { return b.status === 'confirmed' && bBalance(b) <= 0; }
+function bDeposit(b)      { return b.deposit || 0; }
+function bInvoiceTotal(b) { return (b.revenue || 0) + (b.gratuity || 0); }
+function bBalance(b)      { return Math.max(0, bInvoiceTotal(b) - bDeposit(b)); }
+function bHasBalance(b)   { return b.status === 'confirmed' && bBalance(b) > 0; }
+function bFullyPaid(b)    { return b.status === 'confirmed' && bBalance(b) <= 0; }
 
 // ══════════════════════════════════════
 //  BOOKINGS TABLE — 5 SECTIONS
@@ -6759,10 +6844,11 @@ function openDepositModal(refId) {
   depositModalRef = refId;
   document.getElementById('deposit-modal-title').textContent = b.customer.name + ' Charter';
   document.getElementById('deposit-modal-sub').textContent   = b.ref + ' · ' + b.vessel + ' · ' + b.date;
-  document.getElementById('deposit-charter-total').textContent = '$' + b.revenue.toLocaleString();
-  document.getElementById('dep-amount').value  = '';
-  document.getElementById('dep-date').value    = new Date().toISOString().slice(0,10);
-  document.getElementById('dep-balance-display').textContent = '$' + b.revenue.toLocaleString();
+  document.getElementById('dep-charter-fee').textContent     = '$' + b.revenue.toLocaleString();
+  document.getElementById('dep-gratuity').value              = b.gratuity || '';
+  document.getElementById('dep-amount').value                = '';
+  document.getElementById('dep-date').value                  = new Date().toISOString().slice(0,10);
+  updateDepositTotals();
   setDepositMode('partial');
   document.getElementById('deposit-modal-overlay').classList.add('active');
   document.getElementById('deposit-modal').style.display = 'block';
@@ -6781,27 +6867,40 @@ function setDepositMode(mode) {
   document.getElementById('dep-btn-partial').className = 'tbl-btn' + (isPartial ? ' green' : '');
   document.getElementById('dep-btn-full').className    = 'tbl-btn' + (!isPartial ? ' green' : '');
   document.getElementById('deposit-modal').dataset.mode = mode;
-  if (!isPartial) {
-    const b = bookings[depositModalRef];
-    if (b) document.getElementById('dep-balance-display').textContent = '$0';
+  updateDepositTotals();
+}
+
+function updateDepositTotals() {
+  const b = bookings[depositModalRef];
+  if (!b) return;
+  const gratuity   = parseFloat(document.getElementById('dep-gratuity').value) || 0;
+  const invoiceTotal = b.revenue + gratuity;
+  document.getElementById('deposit-charter-total').textContent = '$' + invoiceTotal.toLocaleString();
+  const mode = document.getElementById('deposit-modal').dataset.mode || 'partial';
+  if (mode === 'partial') {
+    const amt = parseFloat(document.getElementById('dep-amount').value) || 0;
+    const bal = Math.max(0, invoiceTotal - amt);
+    document.getElementById('dep-balance-display').textContent = '$' + bal.toLocaleString();
+  } else {
+    document.getElementById('dep-balance-display').textContent = '$0';
   }
 }
 
-function updateDepositBalance() {
-  const b = bookings[depositModalRef];
-  if (!b) return;
-  const amt = parseFloat(document.getElementById('dep-amount').value) || 0;
-  const bal = Math.max(0, b.revenue - amt);
-  document.getElementById('dep-balance-display').textContent = '$' + bal.toLocaleString();
-}
+// Legacy alias
+function updateDepositBalance() { updateDepositTotals(); }
 
 function submitConfirmBooking() {
   const b = bookings[depositModalRef];
   if (!b) return;
-  const mode = document.getElementById('deposit-modal').dataset.mode || 'partial';
+  const mode     = document.getElementById('deposit-modal').dataset.mode || 'partial';
+  const gratuity = parseFloat(document.getElementById('dep-gratuity').value) || 0;
+
+  // Save gratuity onto booking
+  b.gratuity = gratuity;
+  const invoiceTotal = b.revenue + gratuity;
 
   if (mode === 'full') {
-    b.deposit       = b.revenue;
+    b.deposit       = invoiceTotal;
     b.depositDate   = new Date().toISOString().slice(0,10);
     b.depositMethod = document.getElementById('fullpay-method').value;
     b.paymentStatus = 'paid';
@@ -6811,15 +6910,23 @@ function submitConfirmBooking() {
     b.deposit       = amt;
     b.depositDate   = document.getElementById('dep-date').value;
     b.depositMethod = document.getElementById('dep-method').value;
-    b.paymentStatus = amt >= b.revenue ? 'paid' : amt > 0 ? 'deposit' : 'unpaid';
+    b.paymentStatus = amt >= invoiceTotal ? 'paid' : amt > 0 ? 'deposit' : 'unpaid';
     b.paymentMethod = b.depositMethod;
   }
 
   b.status = 'confirmed';
   applyOwnedVesselExpenses(b);
+
+  const ref = depositModalRef;
   closeDepositModal();
   renderBookingsTable();
-  if (document.getElementById('bdp-panel').classList.contains('active')) openBookingDetail(depositModalRef);
+  if (document.getElementById('bdp-panel').classList.contains('active')) openBookingDetail(ref);
+
+  // Auto-open invoice and trigger email
+  setTimeout(() => {
+    openInvoice(ref);
+    setTimeout(() => sendInvoiceEmail(), 500);
+  }, 300);
 }
 
 // Vessels we own — auto-inject Fuel $100 + Ice/Water $20 into P&L on confirm
@@ -6835,7 +6942,7 @@ function applyTheOneExpenses(b) { applyOwnedVesselExpenses(b); }
 function markPaidFull(refId) {
   const b = bookings[refId];
   if (!b) return;
-  b.deposit       = b.revenue;
+  b.deposit       = bInvoiceTotal(b);
   b.paymentStatus = 'paid';
   renderBookingsTable();
   if (activeBdpRef === refId && document.getElementById('bdp-panel').classList.contains('active')) renderBdp();
@@ -7130,7 +7237,29 @@ function renderBdpPnl(b) {
     <div class="bdp-pnl-row">
       <span class="bdp-pnl-key" style="color:#ff9800;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">Balance Still Due</span>
       <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#ff9800;font-weight:600;">$${bal.toLocaleString()}</span>
-    </div>` : dep > 0 ? `<div class="bdp-pnl-row" style="margin-top:10px;"><span class="bdp-pnl-key" style="color:#4caf7d;font-size:9px;font-weight:700;letter-spacing:1px;">✓ PAID IN FULL</span><span style="color:#4caf7d;font-size:12px;">$${dep.toLocaleString()} received</span></div>` : ''}
+    </div>` : dep > 0 ? (() => {
+      const invoiceTotal = bInvoiceTotal(b);
+      const charterPaid  = dep >= b.revenue;
+      const gratAmt      = b.gratuity || 0;
+      const gratCollected = dep >= invoiceTotal;
+      if (gratAmt > 0 && !gratCollected) {
+        // Charter fee covered but gratuity outstanding
+        return `<div class="bdp-pnl-row" style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(76,175,125,0.2);">
+          <span class="bdp-pnl-key" style="color:#4caf7d;font-size:9px;font-weight:700;letter-spacing:1px;">✓ CHARTER FEE COLLECTED</span>
+          <span style="color:#4caf7d;font-size:12px;">$${b.revenue.toLocaleString()} received</span>
+        </div>
+        <div class="bdp-pnl-row" style="background:rgba(255,152,0,0.06);border:1px solid rgba(255,152,0,0.2);padding:8px 10px;margin-top:6px;">
+          <span class="bdp-pnl-key" style="color:#ff9800;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">⚠ Gratuity Not Collected</span>
+          <span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:#ff9800;font-weight:600;">$${gratAmt.toLocaleString()} pending</span>
+        </div>
+        <div style="font-size:10px;color:rgba(255,152,0,0.6);margin-top:4px;padding:0 2px;">Collect gratuity from client before or on charter day</div>`;
+      }
+      return `<div class="bdp-pnl-row" style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(76,175,125,0.2);">
+        <span class="bdp-pnl-key" style="color:#4caf7d;font-size:9px;font-weight:700;letter-spacing:1px;">✓ PAID IN FULL</span>
+        <span style="color:#4caf7d;font-size:12px;">$${dep.toLocaleString()} received</span>
+      </div>
+      ${gratAmt > 0 ? `<div style="font-size:10px;color:rgba(76,175,125,0.6);margin-top:3px;padding:0 2px;">Includes $${gratAmt.toLocaleString()} crew gratuity ✓</div>` : ''}`;
+    })() : ''}
   `;
 }
 
@@ -8071,10 +8200,19 @@ function nbUpdateRevenue() {
   const vessel   = document.getElementById('nb-vessel').value;
   const duration = parseInt(document.getElementById('nb-duration').value) || 4;
   const override = document.getElementById('nb-revenue-override').value;
-  if (!vessel) { document.getElementById('nb-revenue-display').textContent = '—'; document.getElementById('nb-rate-hint').textContent = 'Select vessel and duration'; return; }
+  if (!vessel) { document.getElementById('nb-revenue-display').textContent = '—'; document.getElementById('nb-rate-hint').textContent = 'Select vessel and duration'; nbUpdateInvoiceTotal(); return; }
   const calc = nbPriceForDuration(vessel, duration);
   document.getElementById('nb-rate-hint').textContent = nbRateHint(vessel, duration);
   document.getElementById('nb-revenue-display').textContent = override ? '$' + parseInt(override).toLocaleString() : '$' + calc.toLocaleString();
+  nbUpdateInvoiceTotal();
+}
+
+function nbUpdateInvoiceTotal() {
+  const revenue  = nbGetRevenue();
+  const gratuity = parseFloat(document.getElementById('nb-gratuity')?.value) || 0;
+  const el = document.getElementById('nb-invoice-total');
+  if (!el) return;
+  el.textContent = revenue ? '$' + (revenue + gratuity).toLocaleString() : '—';
 }
 
 function nbOverrideRevenue() {
@@ -8160,10 +8298,11 @@ function submitNewBooking() {
 
   const ref   = nbNextRef();
   const vMeta = VESSEL_RATES[vessel];
+  const gratuity = parseInt(document.getElementById('nb-gratuity').value) || 0;
 
   bookings[ref] = {
     ref:            '#' + ref,
-    status:         'pending',
+    status:         'confirmed',
     date:           dateDisplay,
     dateSort:       date,
     time:           time,
@@ -8173,7 +8312,7 @@ function submitNewBooking() {
     guests:         parseInt(guests),
     addons:         addons.length ? addons : ['—'],
     revenue:        revenue,
-    gratuity:       0,
+    gratuity:       gratuity,
     deposit:        deposit,
     depositDate:    depositDate,
     depositMethod:  depositMethod,
@@ -8205,8 +8344,15 @@ function submitNewBooking() {
     source:   'manual',
   };
 
+  applyOwnedVesselExpenses(bookings[ref]);
   closeNewBookingModal();
   renderBookingsTable();
+
+  // Auto-open invoice and trigger email
+  setTimeout(() => {
+    openInvoice(ref);
+    setTimeout(() => sendInvoiceEmail(), 500);
+  }, 300);
 }
 
 function showNbError(msg) {
@@ -9054,6 +9200,90 @@ function setLedgerFilter(filter, btn) {
   btn.classList.add('active');
   renderLedger();
 }
+
+// ══ INVOICES VIEW ══
+function renderInvoicesView() {
+  const statusFilter = document.getElementById('inv-filter-status')?.value || 'all';
+  const vesselFilter = document.getElementById('inv-filter-vessel')?.value || 'all';
+
+  // Populate vessel dropdown once
+  const vesselSel = document.getElementById('inv-filter-vessel');
+  if (vesselSel && vesselSel.options.length === 1) {
+    const vessels = [...new Set(Object.values(bookings).map(b => b.vessel))].sort();
+    vessels.forEach(v => {
+      const o = document.createElement('option'); o.value = v; o.textContent = v;
+      vesselSel.appendChild(o);
+    });
+  }
+
+  // Filter bookings — only non-cancelled
+  const filtered = Object.values(bookings).filter(b => {
+    if (b.status === 'cancelled') return false;
+    if (statusFilter !== 'all' && b.paymentStatus !== statusFilter) return false;
+    if (vesselFilter !== 'all' && b.vessel !== vesselFilter) return false;
+    return true;
+  }).sort((a, b) => b.dateSort.localeCompare(a.dateSort));
+
+  // Summary cards
+  const all = Object.values(bookings).filter(b => b.status !== 'cancelled');
+  const totalInvoiced = all.reduce((s, b) => s + b.revenue + (b.gratuity || 0), 0);
+  const totalCollected = all.reduce((s, b) => s + (b.deposit || 0), 0);
+  const totalOutstanding = all.reduce((s, b) => s + Math.max(0, b.revenue + (b.gratuity || 0) - (b.deposit || 0)), 0);
+  const paidCount = all.filter(b => b.paymentStatus === 'paid').length;
+
+  document.getElementById('inv-summary-cards').innerHTML = `
+    <div class="admin-info-card">
+      <div class="admin-info-card-title">Total Invoiced</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);margin:8px 0;">$${totalInvoiced.toLocaleString()}</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.3);">${all.length} invoices</div>
+    </div>
+    <div class="admin-info-card">
+      <div class="admin-info-card-title">Collected</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#4caf7d;margin:8px 0;">$${totalCollected.toLocaleString()}</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.3);">${paidCount} paid in full</div>
+    </div>
+    <div class="admin-info-card">
+      <div class="admin-info-card-title">Outstanding</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#e05c5c;margin:8px 0;">$${totalOutstanding.toLocaleString()}</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.3);">${all.filter(b => b.paymentStatus !== 'paid').length} pending</div>
+    </div>
+    <div class="admin-info-card">
+      <div class="admin-info-card-title">Avg Invoice Value</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--white);margin:8px 0;">$${all.length ? Math.round(totalInvoiced / all.length).toLocaleString() : 0}</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.3);">per charter</div>
+    </div>`;
+
+  document.getElementById('inv-table-count').textContent = filtered.length;
+
+  const statusColor = { paid: '#4caf7d', deposit: '#ffc107', unpaid: '#e05c5c', refunded: '#6495ed' };
+  const statusLabel = { paid: 'Paid', deposit: 'Deposit', unpaid: 'Unpaid', refunded: 'Refunded' };
+
+  document.getElementById('inv-table-body').innerHTML = filtered.length === 0
+    ? `<tr><td colspan="10" style="text-align:center;padding:40px;color:rgba(255,255,255,0.25);">No invoices match your filters</td></tr>`
+    : filtered.map(b => {
+        const invNum     = 'INV-' + b.ref.replace('#BND-', '');
+        const total      = b.revenue + (b.gratuity || 0);
+        const balance    = Math.max(0, total - (b.deposit || 0));
+        const ps         = b.paymentStatus;
+        const color      = statusColor[ps] || '#aaa';
+        const label      = statusLabel[ps] || ps;
+        return `<tr>
+          <td style="font-weight:700;color:var(--gold);letter-spacing:0.5px;">${invNum}</td>
+          <td style="font-size:11px;color:rgba(255,255,255,0.5);">${b.ref}</td>
+          <td>${b.customer.name}</td>
+          <td style="font-size:12px;">${b.vesselShort || b.vessel}</td>
+          <td style="font-size:12px;">${b.date}</td>
+          <td style="font-family:'Cormorant Garamond',serif;font-size:18px;">$${total.toLocaleString()}</td>
+          <td style="color:#4caf7d;">$${(b.deposit||0).toLocaleString()}</td>
+          <td style="color:${balance > 0 ? '#e05c5c' : '#4caf7d'};font-weight:600;">$${balance.toLocaleString()}</td>
+          <td><span class="status-pill" style="background:${color}22;color:${color};border:1px solid ${color}55;">${label}</span></td>
+          <td style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="tbl-btn" onclick="openInvoice('${b.ref.replace('#','')}')">View</button>
+            <button class="tbl-btn" style="color:#4caf7d;" onclick="openInvoice('${b.ref.replace('#','')}'); setTimeout(sendInvoiceEmail, 400);">✉ Email</button>
+          </td>
+        </tr>`;
+      }).join('');
+}
 </script>
 
 <!-- ══ LIGHTBOX ══ -->
@@ -9145,6 +9375,362 @@ document.addEventListener('keydown', e => {
 // Click backdrop to close
 document.getElementById('lightbox-overlay').addEventListener('click', function(e) {
   if (e.target === this) closeLightbox();
+});
+</script>
+<!-- ══ INVOICE MODAL ══ -->
+<style>
+  .inv-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    z-index: 1100; display: flex; align-items: flex-start; justify-content: center;
+    padding: 24px 16px; overflow-y: auto;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s;
+  }
+  .inv-overlay.active { opacity: 1; pointer-events: all; }
+
+  .inv-modal {
+    background: #fff; width: 100%; max-width: 780px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+    flex-shrink: 0; margin: auto;
+  }
+
+  /* Toolbar (outside printable area) */
+  .inv-toolbar {
+    background: #0a1628; display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px; gap: 10px;
+  }
+  .inv-toolbar-title { color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .inv-toolbar-actions { display: flex; gap: 8px; }
+  .inv-btn {
+    padding: 9px 18px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; border: 1px solid; cursor: pointer;
+    font-family: inherit; transition: all 0.2s;
+  }
+  .inv-btn-ghost { background: transparent; border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.6); }
+  .inv-btn-ghost:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+  .inv-btn-gold { background: rgba(184,155,94,0.15); border-color: rgba(184,155,94,0.5); color: #b89b5e; }
+  .inv-btn-gold:hover { background: rgba(184,155,94,0.25); color: #d4b87a; }
+  .inv-btn-email { background: rgba(76,175,125,0.15); border-color: rgba(76,175,125,0.4); color: #4caf7d; }
+  .inv-btn-email:hover { background: rgba(76,175,125,0.25); }
+
+  /* Invoice document */
+  #inv-doc {
+    padding: 56px 60px 64px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #1a1a2e; font-size: 13px; line-height: 1.6;
+  }
+
+  .inv-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; }
+  .inv-brand-name { font-size: 26px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: #0a1628; }
+  .inv-brand-sub { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: #b89b5e; margin-top: 3px; }
+  .inv-brand-contact { font-size: 11px; color: #666; margin-top: 10px; line-height: 1.8; }
+
+  .inv-meta { text-align: right; }
+  .inv-meta-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #999; }
+  .inv-meta-num { font-size: 22px; font-weight: 700; color: #0a1628; letter-spacing: 1px; }
+  .inv-meta-date { font-size: 12px; color: #666; margin-top: 4px; }
+  .inv-status-pill {
+    display: inline-block; margin-top: 8px;
+    padding: 4px 12px; font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  }
+  .inv-status-paid     { background: #e8f5ee; color: #2e7d52; border: 1px solid #a8d5ba; }
+  .inv-status-deposit  { background: #fff8e6; color: #8a6200; border: 1px solid #f0d070; }
+  .inv-status-unpaid   { background: #fff0f0; color: #c0392b; border: 1px solid #f5b7b1; }
+
+  .inv-divider { border: none; border-top: 2px solid #0a1628; margin: 0 0 32px; }
+  .inv-divider-thin { border: none; border-top: 1px solid #e8e8e8; margin: 16px 0; }
+
+  .inv-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 40px; }
+  .inv-party-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #b89b5e; margin-bottom: 8px; }
+  .inv-party-name { font-size: 15px; font-weight: 700; color: #0a1628; }
+  .inv-party-detail { font-size: 12px; color: #555; line-height: 1.8; }
+
+  .inv-charter-banner {
+    background: #f7f4ee; border-left: 4px solid #b89b5e;
+    padding: 16px 20px; margin-bottom: 36px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  }
+  .inv-charter-item-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 4px; }
+  .inv-charter-item-val { font-size: 13px; font-weight: 700; color: #0a1628; }
+
+  .inv-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+  .inv-table th {
+    font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: #999; padding: 8px 12px; text-align: left; border-bottom: 2px solid #0a1628;
+  }
+  .inv-table th:last-child, .inv-table td:last-child { text-align: right; }
+  .inv-table td { padding: 12px 12px; font-size: 13px; color: #333; border-bottom: 1px solid #f0f0f0; }
+  .inv-table tr:last-child td { border-bottom: none; }
+  .inv-table .inv-row-desc { color: #0a1628; font-weight: 600; }
+  .inv-table .inv-row-sub { font-size: 11px; color: #888; margin-top: 2px; }
+
+  .inv-totals { display: flex; justify-content: flex-end; margin-bottom: 40px; }
+  .inv-totals-box { width: 280px; }
+  .inv-total-row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 13px; color: #444; }
+  .inv-total-row.subtotal { border-top: 1px solid #e0e0e0; padding-top: 12px; }
+  .inv-total-row.grand { border-top: 2px solid #0a1628; padding-top: 12px; font-size: 16px; font-weight: 800; color: #0a1628; }
+  .inv-total-row.balance-due { color: #b89b5e; font-weight: 700; font-size: 14px; }
+  .inv-total-row span:last-child { font-weight: 600; }
+
+  .inv-notes-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+  .inv-notes-box { background: #fafafa; border: 1px solid #e8e8e8; padding: 14px 16px; font-size: 12px; color: #555; line-height: 1.8; }
+
+  .inv-footer-bar {
+    margin-top: 48px; padding-top: 20px; border-top: 1px solid #e8e8e8;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .inv-footer-legal { font-size: 10px; color: #aaa; line-height: 1.6; max-width: 420px; }
+  .inv-footer-brand { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #ccc; text-transform: uppercase; }
+
+  @media print {
+    body > *:not(.inv-overlay) { display: none !important; }
+    .inv-overlay { position: static; padding: 0; background: none; opacity: 1; pointer-events: all; }
+    .inv-toolbar { display: none !important; }
+    .inv-modal { box-shadow: none; max-width: 100%; }
+    #inv-doc { padding: 20px 24px; }
+  }
+</style>
+
+<div class="inv-overlay" id="inv-overlay">
+  <div class="inv-modal">
+    <div class="inv-toolbar">
+      <div class="inv-toolbar-title">Invoice Preview</div>
+      <div class="inv-toolbar-actions">
+        <button class="inv-btn inv-btn-ghost" onclick="closeInvoice()">✕ Close</button>
+        <button class="inv-btn inv-btn-email" id="inv-email-btn" onclick="sendInvoiceEmail()">✉ Email Client</button>
+        <button class="inv-btn inv-btn-gold" onclick="window.print()">🖨 Print / Save PDF</button>
+      </div>
+    </div>
+    <div id="inv-doc"><!-- populated by openInvoice() --></div>
+  </div>
+</div>
+
+<script>
+// ── INVOICE SYSTEM ──
+let invoiceRef = null;
+
+function openInvoice(refId) {
+  if (!refId) return;
+  const b = bookings[refId];
+  if (!b) return;
+  invoiceRef = refId;
+
+  const invNum  = 'INV-' + refId.replace('BND-', '');
+  const today   = new Date().toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  const dueDate = new Date(Date.now() + 7*86400000).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+
+  const payStatus = b.paymentStatus === 'paid' ? 'paid' : b.paymentStatus === 'deposit' ? 'deposit' : 'unpaid';
+  const payLabel  = payStatus === 'paid' ? 'PAID IN FULL' : payStatus === 'deposit' ? 'DEPOSIT RECEIVED' : 'BALANCE DUE';
+
+  const addons = b.addons?.filter(a => a && a !== '—') || [];
+  const balanceDue = Math.max(0, b.revenue + (b.gratuity || 0) - (b.deposit || 0));
+
+  // Build line items
+  let lineItems = `
+    <tr>
+      <td><div class="inv-row-desc">Charter Fee — ${b.vessel}</div>
+          <div class="inv-row-sub">${b.duration} hrs · ${b.date} · Departure ${b.time} · ${b.guests} guests</div></td>
+      <td>1</td>
+      <td>$${b.revenue.toLocaleString()}</td>
+      <td>$${b.revenue.toLocaleString()}</td>
+    </tr>`;
+
+  if (b.gratuity > 0) {
+    lineItems += `
+    <tr>
+      <td><div class="inv-row-desc">Crew Gratuity</div>
+          <div class="inv-row-sub">Discretionary · shared among captain and crew</div></td>
+      <td>1</td>
+      <td>$${b.gratuity.toLocaleString()}</td>
+      <td>$${b.gratuity.toLocaleString()}</td>
+    </tr>`;
+  }
+
+  addons.forEach(addon => {
+    lineItems += `
+    <tr>
+      <td><div class="inv-row-desc">Add-On: ${addon}</div>
+          <div class="inv-row-sub">Pricing to be confirmed by charter team</div></td>
+      <td>1</td>
+      <td>TBD</td>
+      <td>TBD</td>
+    </tr>`;
+  });
+
+  const depositRow = b.deposit > 0 ? `
+    <div class="inv-total-row"><span>Deposit Received (${b.depositDate || '—'})</span><span style="color:#4caf7d;">−$${b.deposit.toLocaleString()}</span></div>` : '';
+
+  const marina = VESSEL_REGISTRY.find(v => v.fullName === b.vessel)?.marina || 'Miami, FL';
+
+  document.getElementById('inv-doc').innerHTML = `
+    <div class="inv-head">
+      <div>
+        <div class="inv-brand-name">Bound Yachting</div>
+        <div class="inv-brand-sub">Private Charter &amp; Yacht Management</div>
+        <div class="inv-brand-contact">
+          Miami Beach, Florida<br>
+          info@boundyachting.com<br>
+          +1 (305) 000-0000
+        </div>
+      </div>
+      <div class="inv-meta">
+        <div class="inv-meta-label">Invoice</div>
+        <div class="inv-meta-num">${invNum}</div>
+        <div class="inv-meta-date">Issued: ${today}</div>
+        <div class="inv-meta-date" style="color:#c0392b;">Due: ${dueDate}</div>
+        <div><span class="inv-status-pill inv-status-${payStatus}">${payLabel}</span></div>
+      </div>
+    </div>
+
+    <hr class="inv-divider"/>
+
+    <div class="inv-parties">
+      <div>
+        <div class="inv-party-label">Bill To</div>
+        <div class="inv-party-name">${b.customer.name}</div>
+        <div class="inv-party-detail">
+          ${b.customer.email}<br>
+          ${b.customer.phone}<br>
+          ${b.customer.occasion ? 'Occasion: ' + b.customer.occasion : ''}
+        </div>
+      </div>
+      <div>
+        <div class="inv-party-label">Charter Details</div>
+        <div class="inv-party-detail">
+          Booking Ref: <strong>${b.ref}</strong><br>
+          Vessel: <strong>${b.vessel}</strong><br>
+          Departure: <strong>${marina}</strong><br>
+          Agent: ${b.agent?.name || '—'}
+        </div>
+      </div>
+    </div>
+
+    <div class="inv-charter-banner">
+      <div>
+        <div class="inv-charter-item-label">Date</div>
+        <div class="inv-charter-item-val">${b.date}</div>
+      </div>
+      <div>
+        <div class="inv-charter-item-label">Departure</div>
+        <div class="inv-charter-item-val">${b.time}</div>
+      </div>
+      <div>
+        <div class="inv-charter-item-label">Duration</div>
+        <div class="inv-charter-item-val">${b.duration} Hours</div>
+      </div>
+      <div>
+        <div class="inv-charter-item-label">Guests</div>
+        <div class="inv-charter-item-val">${b.guests} Guests</div>
+      </div>
+    </div>
+
+    <table class="inv-table">
+      <thead>
+        <tr>
+          <th style="width:55%;">Description</th>
+          <th>Qty</th>
+          <th>Unit Price</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>${lineItems}</tbody>
+    </table>
+
+    <div class="inv-totals">
+      <div class="inv-totals-box">
+        <div class="inv-total-row subtotal">
+          <span>Subtotal</span><span>$${(b.revenue + (b.gratuity||0)).toLocaleString()}</span>
+        </div>
+        ${depositRow}
+        <div class="inv-total-row grand">
+          <span>Balance Due</span><span>$${balanceDue.toLocaleString()}</span>
+        </div>
+        ${payStatus === 'paid' ? '<div class="inv-total-row" style="color:#4caf7d;font-size:11px;"><span>✓ Payment Complete</span><span>$0.00</span></div>' : ''}
+      </div>
+    </div>
+
+    <div class="inv-notes-label">Payment Instructions</div>
+    <div class="inv-notes-box">
+      Payment is due within 7 days of invoice date. We accept Wire Transfer, Zelle, Credit Card, and Cash.<br>
+      For wire transfer details, please contact your charter coordinator.<br>
+      All sales are final. Cancellation policy applies per your signed charter agreement.
+    </div>
+
+    <div class="inv-footer-bar">
+      <div class="inv-footer-legal">
+        This invoice is generated by Bound Yachting. Charter services are subject to the terms and conditions outlined in your signed charter agreement. All amounts in USD.
+      </div>
+      <div class="inv-footer-brand">Bound Yachting</div>
+    </div>
+  `;
+
+  document.getElementById('inv-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeInvoice() {
+  document.getElementById('inv-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+  invoiceRef = null;
+}
+
+function sendInvoiceEmail() {
+  if (!invoiceRef) return;
+  const b = bookings[invoiceRef];
+  if (!b) return;
+
+  const invNum     = 'INV-' + invoiceRef.replace('BND-', '');
+  const balanceDue = Math.max(0, b.revenue + (b.gratuity || 0) - (b.deposit || 0));
+  const addons     = b.addons?.filter(a => a && a !== '—').join(', ') || 'None';
+
+  const subject = encodeURIComponent(`Bound Yachting – Invoice ${invNum} | ${b.vessel} Charter – ${b.date}`);
+
+  const body = encodeURIComponent(
+`Dear ${b.customer.name},
+
+Thank you for choosing Bound Yachting. Please find your invoice details below.
+
+──────────────────────────────
+INVOICE ${invNum}
+──────────────────────────────
+Booking Ref:   ${b.ref}
+Vessel:        ${b.vessel}
+Charter Date:  ${b.date} at ${b.time}
+Duration:      ${b.duration} hours
+Guests:        ${b.guests}
+Occasion:      ${b.customer.occasion || '—'}
+Add-Ons:       ${addons}
+
+──────────────────────────────
+INVOICE SUMMARY
+──────────────────────────────
+Charter Fee:   $${b.revenue.toLocaleString()}
+Crew Gratuity: $${(b.gratuity||0).toLocaleString()}
+─────────────────────────────
+Subtotal:      $${(b.revenue + (b.gratuity||0)).toLocaleString()}
+Deposit Paid:  $${(b.deposit||0).toLocaleString()}
+BALANCE DUE:   $${balanceDue.toLocaleString()}
+
+──────────────────────────────
+PAYMENT
+──────────────────────────────
+Payment is due within 7 days. We accept Wire Transfer, Zelle, Credit Card, and Cash.
+Please contact us for wire transfer details or to arrange payment.
+
+For questions, contact your charter coordinator or reply to this email.
+
+Warm regards,
+Bound Yachting Charter Team
+Miami Beach, Florida
+info@boundyachting.com
++1 (305) 000-0000`
+  );
+
+  window.location.href = `mailto:${b.customer.email}?subject=${subject}&body=${body}`;
+}
+
+// Close on backdrop click
+document.getElementById('inv-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeInvoice();
 });
 </script>
 </body>
