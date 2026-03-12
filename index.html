@@ -1253,7 +1253,50 @@
     .admin-view { padding: 24px 20px; }
     .admin-topbar { padding: 0 20px; }
     .admin-user-name { display: none; }
+    .admin-hamburger { display: flex !important; }
   }
+
+  /* ── ADMIN MOBILE NAV DRAWER ── */
+  .admin-hamburger {
+    display: none;
+    align-items: center; justify-content: center;
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(184,155,94,0.2);
+    cursor: pointer; flex-direction: column; gap: 5px;
+    flex-shrink: 0;
+  }
+  .admin-hamburger span {
+    display: block; width: 18px; height: 1.5px;
+    background: rgba(255,255,255,0.7); transition: all 0.25s;
+  }
+  .admin-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .admin-hamburger.open span:nth-child(2) { opacity: 0; }
+  .admin-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  .admin-nav-drawer-overlay {
+    display: none; position: fixed; inset: 0; z-index: 890;
+    background: rgba(5,12,24,0.6); backdrop-filter: blur(4px);
+  }
+  .admin-nav-drawer-overlay.active { display: block; }
+
+  .admin-nav-drawer {
+    position: fixed; top: 0; left: -280px; width: 260px; height: 100vh;
+    background: #0a1628; border-right: 1px solid rgba(184,155,94,0.15);
+    z-index: 891; overflow-y: auto; padding: 24px 0;
+    transition: left 0.3s cubic-bezier(0.16,1,0.3,1);
+    display: flex; flex-direction: column;
+  }
+  .admin-nav-drawer.active { left: 0; }
+  .admin-nav-drawer .admin-nav-section { margin-bottom: 8px; display: flex; flex-direction: column; }
+  .admin-nav-drawer .admin-nav-section-label { font-size: 8px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.2); padding: 8px 24px 6px; }
+  .admin-nav-drawer .admin-nav-item { display: flex; align-items: center; gap: 12px; padding: 13px 24px; cursor: pointer; font-size: 13px; color: rgba(255,255,255,0.5); letter-spacing: 0.3px; transition: all 0.15s; border-left: 2px solid transparent; width: 100%; }
+  .admin-nav-drawer .admin-nav-item:hover { color: var(--white); background: rgba(255,255,255,0.03); }
+  .admin-nav-drawer .admin-nav-item.active { color: var(--gold); background: rgba(184,155,94,0.06); border-left-color: var(--gold); }
+  .admin-nav-drawer-header { padding: 0 24px 20px; border-bottom: 1px solid rgba(184,155,94,0.1); margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
+  .admin-nav-drawer-logo { font-family: 'Cormorant Garamond',serif; font-size: 22px; color: var(--white); }
+  .admin-nav-drawer-logo span { color: var(--gold); }
+  .admin-nav-drawer-close { font-size: 18px; color: rgba(255,255,255,0.3); cursor: pointer; padding: 4px 8px; }
 
   /* ══ FLEET PAGE ══ */
   .fleet-page {
@@ -1426,8 +1469,10 @@
     }
     .filter-options { flex-direction: row; flex-wrap: wrap; gap: 8px; }
     .filter-chip { flex: 0 0 auto; }
-    .fleet-main { padding: 28px 20px; }
+    .fleet-main { padding: 20px 16px; }
     .fleet-grid { grid-template-columns: 1fr; gap: 16px; }
+    .fleet-card { width: 100%; max-width: 100%; }
+    .fleet-card-img { width: 100%; height: 220px; object-fit: cover; }
   }
   /* ── BOOKING DETAIL PANEL ── */
   .booking-detail-overlay {
@@ -2877,7 +2922,7 @@ function renderFleet() {
   grid.innerHTML = results.map(y => `
     <div class="fleet-card" onclick="closeFleet(); openVessel('${y.id}')">
       <div style="overflow:hidden;">
-        <img class="fleet-card-img" src="${y.img}" alt="${y.name}" loading="lazy"/>
+        <img class="fleet-card-img" src="${y.img}" alt="${y.name}"/>
       </div>
       <div class="fleet-card-body">
         ${y.flagship ? `<div class="flagship-badge">Flagship Vessel</div>` : ''}
@@ -3880,6 +3925,9 @@ function renderFleet() {
   <!-- Top bar -->
   <div class="admin-topbar">
     <div class="admin-topbar-left">
+      <button class="admin-hamburger" id="admin-hamburger" onclick="toggleAdminDrawer()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
       <div class="admin-brand">Bound<span>.</span></div>
       <div class="admin-badge" id="topbar-role-badge">Admin</div>
     </div>
@@ -3893,6 +3941,40 @@ function renderFleet() {
         <div class="admin-user-name" id="topbar-username">Bound Yachting</div>
       </div>
       <button class="admin-exit-btn" onclick="closeAdmin()">← Exit</button>
+    </div>
+  </div>
+
+  <!-- Mobile Nav Drawer -->
+  <div class="admin-nav-drawer-overlay" id="admin-drawer-overlay" onclick="closeAdminDrawer()"></div>
+  <div class="admin-nav-drawer" id="admin-nav-drawer">
+    <div class="admin-nav-drawer-header">
+      <div class="admin-nav-drawer-logo">Bound<span>.</span></div>
+      <div class="admin-nav-drawer-close" onclick="closeAdminDrawer()">✕</div>
+    </div>
+    <div class="admin-nav-section">
+      <div class="admin-nav-section-label">Overview</div>
+      <div class="admin-nav-item active" onclick="switchView('dashboard',this);closeAdminDrawer()"><span class="admin-nav-icon">📊</span> Dashboard</div>
+    </div>
+    <div class="admin-nav-section">
+      <div class="admin-nav-section-label">Operations</div>
+      <div class="admin-nav-item" onclick="switchView('bookings',this);closeAdminDrawer()"><span class="admin-nav-icon">📋</span> Bookings</div>
+      <div class="admin-nav-item" onclick="switchView('calendar',this);closeAdminDrawer()"><span class="admin-nav-icon">📅</span> Vessel Calendar</div>
+      <div class="admin-nav-item" onclick="switchView('crew',this);closeAdminDrawer()"><span class="admin-nav-icon">👥</span> Crew</div>
+      <div class="admin-nav-item nav-item-admin-only" onclick="switchView('vessels',this);closeAdminDrawer()"><span class="admin-nav-icon">⚓</span> Vessels</div>
+    </div>
+    <div class="admin-nav-section">
+      <div class="admin-nav-section-label">Business</div>
+      <div class="admin-nav-item nav-item-admin-only" onclick="switchView('financials',this);closeAdminDrawer()"><span class="admin-nav-icon">💰</span> Financials</div>
+      <div class="admin-nav-item nav-item-admin-only" onclick="switchView('ownerpayout',this);closeAdminDrawer()"><span class="admin-nav-icon">🏦</span> Owner Payout</div>
+      <div class="admin-nav-item" onclick="switchView('customers',this);closeAdminDrawer()"><span class="admin-nav-icon">👤</span> Customers</div>
+      <div class="admin-nav-item" onclick="switchView('contracts',this);closeAdminDrawer()"><span class="admin-nav-icon">📄</span> Contracts</div>
+      <div class="admin-nav-item" onclick="switchView('payments',this);closeAdminDrawer()"><span class="admin-nav-icon">💳</span> Payments</div>
+      <div class="admin-nav-item nav-item-admin-only" onclick="switchView('invoices',this);closeAdminDrawer()"><span class="admin-nav-icon">🧾</span> Invoices</div>
+    </div>
+    <div class="admin-nav-section">
+      <div class="admin-nav-section-label">Settings</div>
+      <div class="admin-nav-item nav-item-admin-only" onclick="switchView('emails',this);closeAdminDrawer()"><span class="admin-nav-icon">✉️</span> Email Templates</div>
+      <div class="admin-nav-item nav-item-admin-only" onclick="switchView('users',this);closeAdminDrawer()"><span class="admin-nav-icon">🔐</span> Users & Access</div>
     </div>
   </div>
 
@@ -6654,6 +6736,22 @@ function opRemoveDeduction(dedKey, id) {
   if (!opDeductions[dedKey]) return;
   opDeductions[dedKey] = opDeductions[dedKey].filter(d => d.id !== id);
   renderOwnerPayout();
+}
+
+function toggleAdminDrawer() {
+  const drawer = document.getElementById('admin-nav-drawer');
+  const overlay = document.getElementById('admin-drawer-overlay');
+  const btn = document.getElementById('admin-hamburger');
+  const isOpen = drawer.classList.contains('active');
+  drawer.classList.toggle('active', !isOpen);
+  overlay.classList.toggle('active', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+}
+
+function closeAdminDrawer() {
+  document.getElementById('admin-nav-drawer').classList.remove('active');
+  document.getElementById('admin-drawer-overlay').classList.remove('active');
+  document.getElementById('admin-hamburger').classList.remove('open');
 }
 
 function switchView(viewName, el) {
