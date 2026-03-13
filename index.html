@@ -946,6 +946,10 @@
     display:none;flex-direction:column;overflow:hidden;
   }
   .cp-panel.active { display:flex; }
+  @media (max-width: 900px) {
+    #cp-sidebar { display: none !important; }
+    #cp-main { padding: 20px 16px !important; }
+  }
   .cp-topbar { display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:64px;background:rgba(10,22,40,0.98);border-bottom:1px solid rgba(184,155,94,0.15);flex-shrink:0; }
   .cp-topbar-left  { display:flex;align-items:center;gap:12px; }
   .cp-topbar-right { display:flex;align-items:center;gap:16px;position:relative; }
@@ -8654,15 +8658,20 @@ function openCrewPortal() {
   portal.id = 'cp-panel';
   portal.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#070f1c;display:flex;flex-direction:column;overflow:hidden;font-family:Montserrat,sans-serif;color:#fff;';
   portal.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:64px;background:rgba(10,22,40,0.98);border-bottom:1px solid rgba(184,155,94,0.15);flex-shrink:0;">
-      <div style="display:flex;align-items:center;gap:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 12px;height:64px;background:rgba(10,22,40,0.98);border-bottom:1px solid rgba(184,155,94,0.15);flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button id="cp-hamburger" onclick="toggleCpDrawer()" style="display:none;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:38px;height:38px;background:rgba(255,255,255,0.04);border:1px solid rgba(184,155,94,0.2);cursor:pointer;flex-shrink:0;" aria-label="Menu">
+          <span style="display:block;width:18px;height:1.5px;background:rgba(255,255,255,0.7);transition:all 0.25s;"></span>
+          <span style="display:block;width:18px;height:1.5px;background:rgba(255,255,255,0.7);transition:all 0.25s;"></span>
+          <span style="display:block;width:18px;height:1.5px;background:rgba(255,255,255,0.7);transition:all 0.25s;"></span>
+        </button>
         <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:300;letter-spacing:3px;">Bound<span style="color:#b89b5e;">.</span></div>
         <div style="font-size:9px;font-weight:700;letter-spacing:2px;padding:4px 10px;border:1px solid rgba(184,155,94,0.3);color:#b89b5e;">CREW</div>
       </div>
-      <div style="display:flex;align-items:center;gap:16px;">
-        <div style="display:flex;align-items:center;gap:10px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="display:flex;align-items:center;gap:8px;">
           <div style="width:32px;height:32px;background:rgba(184,155,94,0.15);border:1px solid rgba(184,155,94,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#b89b5e;">${initials}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.7);">${cm.name}</div>
+          <div id="cp-crew-name" style="font-size:12px;color:rgba(255,255,255,0.7);">${cm.name}</div>
         </div>
         <button onclick="closeCrewPortal()" style="background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;cursor:pointer;font-family:inherit;">← Exit</button>
       </div>
@@ -8670,11 +8679,30 @@ function openCrewPortal() {
     <div style="display:flex;flex:1;overflow:hidden;">
       <nav id="cp-sidebar" class="admin-sidebar"></nav>
       <div style="flex:1;overflow-y:auto;padding:32px 36px;" id="cp-main"></div>
+    </div>
+    <!-- Mobile drawer overlay -->
+    <div id="cp-drawer-overlay" onclick="closeCpDrawer()" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(5,12,24,0.6);backdrop-filter:blur(4px);"></div>
+    <!-- Mobile drawer -->
+    <div id="cp-drawer" style="position:fixed;top:0;left:-280px;width:260px;height:100vh;background:#0a1628;border-right:1px solid rgba(184,155,94,0.15);z-index:10001;overflow-y:auto;padding:0;transition:left 0.3s cubic-bezier(0.16,1,0.3,1);display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid rgba(184,155,94,0.1);margin-bottom:8px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#fff;">Bound<span style="color:#b89b5e;">.</span></div>
+        <div onclick="closeCpDrawer()" style="font-size:16px;color:rgba(255,255,255,0.3);cursor:pointer;padding:4px 8px;">✕</div>
+      </div>
+      <div style="font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.2);padding:8px 24px 6px;">MY PORTAL</div>
+      <div id="cp-drawer-nav"></div>
     </div>`;
   document.body.appendChild(portal);
   document.body.style.overflow = 'hidden';
 
-  // Build sidebar
+  // Show hamburger on mobile
+  const cpHamburger = document.getElementById('cp-hamburger');
+  const cpCrewName  = document.getElementById('cp-crew-name');
+  if (window.innerWidth <= 900) {
+    cpHamburger.style.display = 'flex';
+    if (cpCrewName) cpCrewName.style.display = 'none';
+  }
+
+  // Build sidebar + drawer nav
   const navItems = [
     { id:'my',     icon:'⚓', label:'My Charters'   },
     { id:'sched',  icon:'📅', label:'Full Schedule'  },
@@ -8683,15 +8711,25 @@ function openCrewPortal() {
     { id:'roster', icon:'👥', label:'Crew Roster'    },
     { id:'pw',     icon:'🔒', label:'Change Password'},
   ];
-  const sidebar = document.getElementById('cp-sidebar');
+  const sidebar    = document.getElementById('cp-sidebar');
+  const drawerNav  = document.getElementById('cp-drawer-nav');
   sidebar.innerHTML = '<div class="admin-nav-section-label" style="padding:16px 24px 6px;">MY PORTAL</div>';
   navItems.forEach((n, i) => {
+    // Sidebar item
     const el = document.createElement('div');
     el.id = 'cp-nav-' + n.id;
     el.className = 'admin-nav-item' + (i === 0 ? ' active' : '');
     el.innerHTML = `<span class="admin-nav-icon">${n.icon}</span> ${n.label}`;
     el.onclick = () => cpSwitch(n.id, el);
     sidebar.appendChild(el);
+    // Drawer item
+    const del = document.createElement('div');
+    del.id = 'cp-drawer-nav-' + n.id;
+    del.className = 'admin-nav-item' + (i === 0 ? ' active' : '');
+    del.style.cssText = 'display:flex;align-items:center;gap:12px;padding:14px 24px;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.5);border-left:2px solid transparent;transition:all 0.15s;';
+    del.innerHTML = `<span style="font-size:15px;width:18px;text-align:center;">${n.icon}</span> ${n.label}`;
+    del.onclick = () => { cpSwitch(n.id, el); closeCpDrawer(); };
+    if (drawerNav) drawerNav.appendChild(del);
   });
 
   cpSwitch('my', document.getElementById('cp-nav-my'));
@@ -8706,13 +8744,57 @@ function closeCrewPortal() {
   currentCrewMember = null;
 }
 
-function cpSwitch(view, el) {
-  // Update nav highlight
-  const sidebar = document.getElementById('cp-sidebar');
-  if (sidebar) {
-    sidebar.querySelectorAll('.admin-nav-item').forEach(n => n.classList.remove('active'));
+function toggleCpDrawer() {
+  const drawer  = document.getElementById('cp-drawer');
+  const overlay = document.getElementById('cp-drawer-overlay');
+  const btn     = document.getElementById('cp-hamburger');
+  const isOpen  = drawer && drawer.style.left === '0px';
+  if (drawer)  drawer.style.left  = isOpen ? '-280px' : '0px';
+  if (overlay) overlay.style.display = isOpen ? 'none' : 'block';
+  if (btn) {
+    const spans = btn.querySelectorAll('span');
+    if (isOpen) {
+      spans[0].style.transform = ''; spans[1].style.opacity = '1'; spans[2].style.transform = '';
+    } else {
+      spans[0].style.transform = 'translateY(6.5px) rotate(45deg)';
+      spans[1].style.opacity = '0';
+      spans[2].style.transform = 'translateY(-6.5px) rotate(-45deg)';
+    }
   }
+}
+
+function closeCpDrawer() {
+  const drawer  = document.getElementById('cp-drawer');
+  const overlay = document.getElementById('cp-drawer-overlay');
+  const btn     = document.getElementById('cp-hamburger');
+  if (drawer)  drawer.style.left  = '-280px';
+  if (overlay) overlay.style.display = 'none';
+  if (btn) {
+    const spans = btn.querySelectorAll('span');
+    spans[0].style.transform = ''; spans[1].style.opacity = '1'; spans[2].style.transform = '';
+  }
+}
+
+function cpSwitch(view, el) {
+  // Sync sidebar active state
+  const sidebar = document.getElementById('cp-sidebar');
+  if (sidebar) sidebar.querySelectorAll('.admin-nav-item').forEach(n => n.classList.remove('active'));
   if (el) el.classList.add('active');
+  // Sync drawer active state
+  const drawerNav = document.getElementById('cp-drawer-nav');
+  if (drawerNav) {
+    drawerNav.querySelectorAll('.admin-nav-item').forEach(n => {
+      n.style.color = 'rgba(255,255,255,0.5)';
+      n.style.borderLeftColor = 'transparent';
+      n.style.background = '';
+    });
+    const drawerItem = document.getElementById('cp-drawer-nav-' + view);
+    if (drawerItem) {
+      drawerItem.style.color = '#b89b5e';
+      drawerItem.style.borderLeftColor = '#b89b5e';
+      drawerItem.style.background = 'rgba(184,155,94,0.06)';
+    }
+  }
   // Render content
   const main = document.getElementById('cp-main');
   if (!main) return;
