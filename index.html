@@ -1465,14 +1465,46 @@
     .fleet-body { grid-template-columns: 1fr; }
     .fleet-filters {
       border-right: none; border-bottom: 1px solid rgba(184,155,94,0.1);
-      padding: 24px 20px;
+      padding: 0;
     }
+    .filter-toggle-bar {
+      display: flex !important;
+    }
+    .fleet-filters-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.16,1,0.3,1), padding 0.3s;
+      padding: 0 20px;
+    }
+    .fleet-filters.open .fleet-filters-body {
+      max-height: 600px;
+      padding: 16px 20px 20px;
+    }
+    .fleet-filters.open .filter-toggle-arrow { transform: rotate(180deg); }
+    .filter-title { display: none; }
     .filter-options { flex-direction: row; flex-wrap: wrap; gap: 8px; }
     .filter-chip { flex: 0 0 auto; }
     .fleet-main { padding: 20px 16px; }
     .fleet-grid { grid-template-columns: 1fr; gap: 16px; }
     .fleet-card { width: 100%; max-width: 100%; }
     .fleet-card-img { width: 100%; height: 220px; object-fit: cover; }
+  }
+
+  /* Collapsible filter toggle bar — hidden on desktop */
+  .filter-toggle-bar {
+    display: none;
+    align-items: center; justify-content: space-between;
+    padding: 16px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(184,155,94,0.1);
+    user-select: none;
+  }
+  .filter-toggle-label {
+    font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase; color: rgba(255,255,255,0.7);
+  }
+  .filter-toggle-arrow {
+    font-size: 14px; color: var(--gold);
+    transition: transform 0.3s ease;
   }
   /* ── BOOKING DETAIL PANEL ── */
   .booking-detail-overlay {
@@ -2737,57 +2769,64 @@
   <div class="fleet-body">
     <!-- Filters -->
     <aside class="fleet-filters">
-      <div class="filter-title">Filter Fleet</div>
+      <!-- Mobile: collapsible toggle bar -->
+      <div class="filter-toggle-bar" onclick="toggleFleetFilters(this)">
+        <span class="filter-toggle-label">🎛 Filter Fleet</span>
+        <span class="filter-toggle-arrow">▾</span>
+      </div>
+      <div class="fleet-filters-body">
+        <div class="filter-title">Filter Fleet</div>
 
-      <div class="filter-group">
-        <span class="filter-group-label">Starting Price (4hrs)</span>
-        <div class="filter-options" id="filter-price">
-          <div class="filter-chip active" data-filter="price" data-value="all" onclick="setFilter('price','all',this)">
-            All Prices <span class="chip-count">3</span>
-          </div>
-          <div class="filter-chip" data-filter="price" data-value="under5k" onclick="setFilter('price','under5k',this)">
-            Under $5,000 <span class="chip-count">2</span>
-          </div>
-          <div class="filter-chip" data-filter="price" data-value="5kplus" onclick="setFilter('price','5kplus',this)">
-            $5,000 &amp; Above <span class="chip-count">1</span>
+        <div class="filter-group">
+          <span class="filter-group-label">Starting Price (4hrs)</span>
+          <div class="filter-options" id="filter-price">
+            <div class="filter-chip active" data-filter="price" data-value="all" onclick="setFilter('price','all',this)">
+              All Prices <span class="chip-count">3</span>
+            </div>
+            <div class="filter-chip" data-filter="price" data-value="under5k" onclick="setFilter('price','under5k',this)">
+              Under $5,000 <span class="chip-count">2</span>
+            </div>
+            <div class="filter-chip" data-filter="price" data-value="5kplus" onclick="setFilter('price','5kplus',this)">
+              $5,000 &amp; Above <span class="chip-count">1</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="filter-group">
-        <span class="filter-group-label">Vessel Size</span>
-        <div class="filter-options" id="filter-size">
-          <div class="filter-chip active" data-filter="size" data-value="all" onclick="setFilter('size','all',this)">
-            All Sizes <span class="chip-count">3</span>
-          </div>
-          <div class="filter-chip" data-filter="size" data-value="under70" onclick="setFilter('size','under70',this)">
-            Under 70ft <span class="chip-count">1</span>
-          </div>
-          <div class="filter-chip" data-filter="size" data-value="70to90" onclick="setFilter('size','70to90',this)">
-            70ft – 90ft <span class="chip-count">1</span>
-          </div>
-          <div class="filter-chip" data-filter="size" data-value="90plus" onclick="setFilter('size','90plus',this)">
-            90ft &amp; Above <span class="chip-count">1</span>
+        <div class="filter-group">
+          <span class="filter-group-label">Vessel Size</span>
+          <div class="filter-options" id="filter-size">
+            <div class="filter-chip active" data-filter="size" data-value="all" onclick="setFilter('size','all',this)">
+              All Sizes <span class="chip-count">3</span>
+            </div>
+            <div class="filter-chip" data-filter="size" data-value="under70" onclick="setFilter('size','under70',this)">
+              Under 70ft <span class="chip-count">1</span>
+            </div>
+            <div class="filter-chip" data-filter="size" data-value="70to90" onclick="setFilter('size','70to90',this)">
+              70ft – 90ft <span class="chip-count">1</span>
+            </div>
+            <div class="filter-chip" data-filter="size" data-value="90plus" onclick="setFilter('size','90plus',this)">
+              90ft &amp; Above <span class="chip-count">1</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="filter-group">
-        <span class="filter-group-label">Vessel Type</span>
-        <div class="filter-options" id="filter-type">
-          <div class="filter-chip active" data-filter="type" data-value="all" onclick="setFilter('type','all',this)">
-            All Types <span class="chip-count">3</span>
-          </div>
-          <div class="filter-chip" data-filter="type" data-value="motor" onclick="setFilter('type','motor',this)">
-            Motor Yacht <span class="chip-count">2</span>
-          </div>
-          <div class="filter-chip" data-filter="type" data-value="flybridge" onclick="setFilter('type','flybridge',this)">
-            Flybridge <span class="chip-count">1</span>
+        <div class="filter-group">
+          <span class="filter-group-label">Vessel Type</span>
+          <div class="filter-options" id="filter-type">
+            <div class="filter-chip active" data-filter="type" data-value="all" onclick="setFilter('type','all',this)">
+              All Types <span class="chip-count">3</span>
+            </div>
+            <div class="filter-chip" data-filter="type" data-value="motor" onclick="setFilter('type','motor',this)">
+              Motor Yacht <span class="chip-count">2</span>
+            </div>
+            <div class="filter-chip" data-filter="type" data-value="flybridge" onclick="setFilter('type','flybridge',this)">
+              Flybridge <span class="chip-count">1</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <button class="filter-reset" onclick="resetFilters()">Reset All Filters</button>
+        <button class="filter-reset" onclick="resetFilters()">Reset All Filters</button>
+      </div>
     </aside>
 
     <!-- Results -->
@@ -2853,6 +2892,10 @@ Object.defineProperty(window, 'fleetData', { get: getFleetData });
 
 const activeFilters = { price: 'all', size: 'all', type: 'all' };
 let sortOrder = 'default';
+
+function toggleFleetFilters(toggleBar) {
+  toggleBar.closest('.fleet-filters').classList.toggle('open');
+}
 
 function openFleet() {
   document.getElementById('fleet-page').classList.add('active');
@@ -3941,40 +3984,6 @@ function renderFleet() {
         <div class="admin-user-name" id="topbar-username">Bound Yachting</div>
       </div>
       <button class="admin-exit-btn" onclick="closeAdmin()">← Exit</button>
-    </div>
-  </div>
-
-  <!-- Mobile Nav Drawer -->
-  <div class="admin-nav-drawer-overlay" id="admin-drawer-overlay" onclick="closeAdminDrawer()"></div>
-  <div class="admin-nav-drawer" id="admin-nav-drawer">
-    <div class="admin-nav-drawer-header">
-      <div class="admin-nav-drawer-logo">Bound<span>.</span></div>
-      <div class="admin-nav-drawer-close" onclick="closeAdminDrawer()">✕</div>
-    </div>
-    <div class="admin-nav-section">
-      <div class="admin-nav-section-label">Overview</div>
-      <div class="admin-nav-item active" onclick="switchView('dashboard',this);closeAdminDrawer()"><span class="admin-nav-icon">📊</span> Dashboard</div>
-    </div>
-    <div class="admin-nav-section">
-      <div class="admin-nav-section-label">Operations</div>
-      <div class="admin-nav-item" onclick="switchView('bookings',this);closeAdminDrawer()"><span class="admin-nav-icon">📋</span> Bookings</div>
-      <div class="admin-nav-item" onclick="switchView('calendar',this);closeAdminDrawer()"><span class="admin-nav-icon">📅</span> Vessel Calendar</div>
-      <div class="admin-nav-item" onclick="switchView('crew',this);closeAdminDrawer()"><span class="admin-nav-icon">👥</span> Crew</div>
-      <div class="admin-nav-item nav-item-admin-only" onclick="switchView('vessels',this);closeAdminDrawer()"><span class="admin-nav-icon">⚓</span> Vessels</div>
-    </div>
-    <div class="admin-nav-section">
-      <div class="admin-nav-section-label">Business</div>
-      <div class="admin-nav-item nav-item-admin-only" onclick="switchView('financials',this);closeAdminDrawer()"><span class="admin-nav-icon">💰</span> Financials</div>
-      <div class="admin-nav-item nav-item-admin-only" onclick="switchView('ownerpayout',this);closeAdminDrawer()"><span class="admin-nav-icon">🏦</span> Owner Payout</div>
-      <div class="admin-nav-item" onclick="switchView('customers',this);closeAdminDrawer()"><span class="admin-nav-icon">👤</span> Customers</div>
-      <div class="admin-nav-item" onclick="switchView('contracts',this);closeAdminDrawer()"><span class="admin-nav-icon">📄</span> Contracts</div>
-      <div class="admin-nav-item" onclick="switchView('payments',this);closeAdminDrawer()"><span class="admin-nav-icon">💳</span> Payments</div>
-      <div class="admin-nav-item nav-item-admin-only" onclick="switchView('invoices',this);closeAdminDrawer()"><span class="admin-nav-icon">🧾</span> Invoices</div>
-    </div>
-    <div class="admin-nav-section">
-      <div class="admin-nav-section-label">Settings</div>
-      <div class="admin-nav-item nav-item-admin-only" onclick="switchView('emails',this);closeAdminDrawer()"><span class="admin-nav-icon">✉️</span> Email Templates</div>
-      <div class="admin-nav-item nav-item-admin-only" onclick="switchView('users',this);closeAdminDrawer()"><span class="admin-nav-icon">🔐</span> Users & Access</div>
     </div>
   </div>
 
@@ -6380,11 +6389,20 @@ function applyRoleRestrictions() {
   document.getElementById('topbar-avatar').textContent     = meta.avatar;
   document.getElementById('topbar-username').textContent   = meta.label;
 
+  const isAdmin = currentRole === 'admin';
+  // Sidebar admin-only items
   document.querySelectorAll('.nav-item-admin-only').forEach(el => {
-    el.style.display = (currentRole === 'admin') ? '' : 'none';
+    el.style.display = isAdmin ? '' : 'none';
   });
-  const finNav = document.querySelector('[onclick*="financials"]');
-  if (finNav) finNav.style.display = (currentRole === 'ops') ? 'none' : '';
+  // Drawer admin-only items
+  document.querySelectorAll('.drawer-admin-only').forEach(el => {
+    el.style.display = isAdmin ? '' : 'none';
+  });
+  // Ops role: hide financials in sidebar only
+  const finSidebarNav = document.querySelector('.admin-sidebar [onclick*="financials"]');
+  if (finSidebarNav) finSidebarNav.style.display = (currentRole === 'ops') ? 'none' : '';
+  const finDrawerNav = document.querySelector('.drawer-nav-item[onclick*="financials"]');
+  if (finDrawerNav) finDrawerNav.style.display = (currentRole === 'ops') ? 'none' : '';
 
   updateExpenseBadge();
 }
@@ -6739,10 +6757,10 @@ function opRemoveDeduction(dedKey, id) {
 }
 
 function toggleAdminDrawer() {
-  const drawer = document.getElementById('admin-nav-drawer');
+  const drawer  = document.getElementById('admin-nav-drawer');
   const overlay = document.getElementById('admin-drawer-overlay');
-  const btn = document.getElementById('admin-hamburger');
-  const isOpen = drawer.classList.contains('active');
+  const btn     = document.getElementById('admin-hamburger');
+  const isOpen  = drawer.classList.contains('active');
   drawer.classList.toggle('active', !isOpen);
   overlay.classList.toggle('active', !isOpen);
   btn.classList.toggle('open', !isOpen);
@@ -6752,6 +6770,18 @@ function closeAdminDrawer() {
   document.getElementById('admin-nav-drawer').classList.remove('active');
   document.getElementById('admin-drawer-overlay').classList.remove('active');
   document.getElementById('admin-hamburger').classList.remove('open');
+}
+
+// drawerNav — called from mobile drawer; finds matching sidebar item and delegates to switchView
+function drawerNav(viewName) {
+  closeAdminDrawer();
+  // Find the sidebar nav item for this view and pass it to switchView
+  const sidebarItem = document.querySelector(`.admin-sidebar .admin-nav-item[onclick*="'${viewName}'"]`);
+  switchView(viewName, sidebarItem);
+  // Also highlight the drawer item
+  document.querySelectorAll('.drawer-nav-item').forEach(n => n.classList.remove('active'));
+  const drawerItem = document.querySelector(`.drawer-nav-item[onclick*="'${viewName}'"]`);
+  if (drawerItem) drawerItem.classList.add('active');
 }
 
 function switchView(viewName, el) {
@@ -9962,5 +9992,39 @@ document.getElementById('inv-overlay').addEventListener('click', function(e) {
   if (e.target === this) closeInvoice();
 });
 </script>
+<!-- ══ ADMIN MOBILE NAV DRAWER — outside admin-panel to avoid overflow:hidden clipping ══ -->
+<div class="admin-nav-drawer-overlay" id="admin-drawer-overlay" onclick="closeAdminDrawer()"></div>
+<div class="admin-nav-drawer" id="admin-nav-drawer">
+  <div class="admin-nav-drawer-header">
+    <div class="admin-nav-drawer-logo">Bound<span>.</span></div>
+    <div class="admin-nav-drawer-close" onclick="closeAdminDrawer()">✕</div>
+  </div>
+  <div class="admin-nav-section">
+    <div class="admin-nav-section-label">Overview</div>
+    <div class="admin-nav-item drawer-nav-item" onclick="drawerNav('dashboard')"><span class="admin-nav-icon">📊</span> Dashboard</div>
+  </div>
+  <div class="admin-nav-section">
+    <div class="admin-nav-section-label">Operations</div>
+    <div class="admin-nav-item drawer-nav-item" onclick="drawerNav('bookings')"><span class="admin-nav-icon">📋</span> Bookings</div>
+    <div class="admin-nav-item drawer-nav-item" onclick="drawerNav('calendar')"><span class="admin-nav-icon">📅</span> Vessel Calendar</div>
+    <div class="admin-nav-item drawer-nav-item" onclick="drawerNav('crew')"><span class="admin-nav-icon">👥</span> Crew</div>
+    <div class="admin-nav-item drawer-nav-item drawer-admin-only" onclick="drawerNav('vessels')"><span class="admin-nav-icon">⚓</span> Vessels</div>
+  </div>
+  <div class="admin-nav-section">
+    <div class="admin-nav-section-label">Business</div>
+    <div class="admin-nav-item drawer-nav-item drawer-admin-only" onclick="drawerNav('financials')"><span class="admin-nav-icon">💰</span> Financials</div>
+    <div class="admin-nav-item drawer-nav-item drawer-admin-only" onclick="drawerNav('ownerpayout')"><span class="admin-nav-icon">🏦</span> Owner Payout</div>
+    <div class="admin-nav-item drawer-nav-item" onclick="drawerNav('customers')"><span class="admin-nav-icon">👤</span> Customers</div>
+    <div class="admin-nav-item drawer-nav-item" onclick="drawerNav('contracts')"><span class="admin-nav-icon">📄</span> Contracts</div>
+    <div class="admin-nav-item drawer-nav-item" onclick="drawerNav('payments')"><span class="admin-nav-icon">💳</span> Payments</div>
+    <div class="admin-nav-item drawer-nav-item drawer-admin-only" onclick="drawerNav('invoices')"><span class="admin-nav-icon">🧾</span> Invoices</div>
+  </div>
+  <div class="admin-nav-section">
+    <div class="admin-nav-section-label">Settings</div>
+    <div class="admin-nav-item drawer-nav-item drawer-admin-only" onclick="drawerNav('emails')"><span class="admin-nav-icon">✉️</span> Email Templates</div>
+    <div class="admin-nav-item drawer-nav-item drawer-admin-only" onclick="drawerNav('users')"><span class="admin-nav-icon">🔐</span> Users & Access</div>
+  </div>
+</div>
+
 </body>
 </html>
