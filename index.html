@@ -5791,6 +5791,12 @@ function renderFleet() {
           <option value="">Assign later…</option>
         </select>
       </div>
+      <div class="nb-field">
+        <label class="nb-label">Deckhand</label>
+        <select class="nb-input" id="nb-deckhand">
+          <option value="">Assign later…</option>
+        </select>
+      </div>
     </div>
     </div>
 
@@ -7409,6 +7415,10 @@ function stewRate(name, vKey) {
   const s = crewRoster.stews.find(x => x.name === name);
   return s ? (s.vessels[vKey] || 0) : 0;
 }
+function deckhandRate(name, vKey) {
+  const d = crewRoster.deckhands.find(x => x.name === name);
+  return d ? (d.vessels[vKey] || 0) : 0;
+}
 function bCrewCost(b) {
   const vk = vesselKey(b.vessel);
   return (captainRate(b.captain, vk) + stewRate(b.stew, vk)) * b.duration;
@@ -8458,7 +8468,7 @@ function togglePayoutView(mode) {
 // Period filter — returns {start, end} as 'YYYY-MM-DD' strings, or null for all-time
 function getPayoutPeriod() {
   const val = document.getElementById('payout-period')?.value || 'this-month';
-  const now = new Date('2026-03-05'); // current date anchored to today
+  const now = new Date(); // live date
   const y = now.getFullYear(), m = now.getMonth();
 
   // helper: get Monday of a week containing a given date
@@ -8501,7 +8511,8 @@ function inPeriod(b, period) {
 
 // Is a booking "completed" — date is on or before today
 function isCompleted(b) {
-  return b.dateSort <= '2026-03-05' && b.status !== 'cancelled';
+  const today = new Date().toISOString().slice(0,10);
+  return b.dateSort <= today && b.status !== 'cancelled';
 }
 
 // Calculate one crew member's payout data for the period
@@ -8509,12 +8520,14 @@ function calcCrewPayout(name, role, period) {
   const myBookings = Object.values(bookings).filter(b => {
     if (b.status === 'cancelled') return false;
     if (!inPeriod(b, period)) return false;
-    return role === 'captain' ? b.captain === name : b.stew === name;
+    if (role === 'captain')  return b.captain  === name;
+    if (role === 'deckhand') return b.deckhand === name;
+    return b.stew === name;
   });
 
   const charters = myBookings.map(b => {
     const vk      = vesselKey(b.vessel);
-    const rate    = role === 'captain' ? captainRate(name, vk) : stewRate(name, vk);
+    const rate    = role === 'captain' ? captainRate(name, vk) : role === 'deckhand' ? deckhandRate(name, vk) : stewRate(name, vk);
     const baseEarn = rate * b.duration;
     const grat    = bGratuityPerCrew(b);
     const earn    = baseEarn + grat;
@@ -8866,12 +8879,13 @@ const VESSEL_REGISTRY = [
     img:        'https://i.ibb.co/BHH6Q5WG/Screenshot-2024-11-22-at-7-49-36-AM.png',
     amenities:  ['ac','water','sodas','ice','bluetooth','floatingmat','staterooms','bathrooms','sundeck','flybridge'],
     ownerDeal: {
+      dealType:   'commission',
       wholesale:  { 4: 2000, 6: 2500, 8: 3000 },
       commission: 0.20,
       crewPerHr:  110,
       iceWater:   15,
       dockFee:    2000,
-      ownerName:  '',
+      ownerName:  'Galeon Owner',
     },
   },
   {
@@ -9082,7 +9096,7 @@ function nbUpdateCommission() {
 
 function openNewBookingModal() {
   // Reset form
-  ['nb-vessel','nb-time','nb-occasion','nb-captain','nb-stew','nb-paytype','nb-pay-method'].forEach(id => {
+  ['nb-vessel','nb-time','nb-occasion','nb-captain','nb-stew','nb-deckhand','nb-paytype','nb-pay-method'].forEach(id => {
     const el = document.getElementById(id); if(el) el.selectedIndex = 0;
   });
   ['nb-date','nb-guests','nb-cname','nb-cemail','nb-cphone','nb-aname','nb-aemail',
@@ -9106,6 +9120,8 @@ function openNewBookingModal() {
   const stewSel = document.getElementById('nb-stew');
   captSel.innerHTML = '<option value="">Assign later…</option>' + crewRoster.captains.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
   stewSel.innerHTML = '<option value="">Assign later…</option>' + crewRoster.stews.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+  const deckSel = document.getElementById('nb-deckhand');
+  if (deckSel) deckSel.innerHTML = '<option value="">Assign later…</option>' + crewRoster.deckhands.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
   nbTogglePayment();
   // Reset crew section to visible (will hide again if external vessel selected)
   const crewSection = document.getElementById('nb-crew-section');
@@ -9166,8 +9182,10 @@ function nbUpdateRevenue() {
       // Clear any crew selections so they don't get saved
       const capt = document.getElementById('nb-captain');
       const stew = document.getElementById('nb-stew');
+      const deck = document.getElementById('nb-deckhand');
       if (capt) capt.selectedIndex = 0;
       if (stew) stew.selectedIndex = 0;
+      if (deck) deck.selectedIndex = 0;
     }
   }
 }
@@ -9304,6 +9322,7 @@ function submitNewBooking() {
     },
     captain:  document.getElementById('nb-captain').value || '',
     stew:     document.getElementById('nb-stew').value || '',
+    deckhand: document.getElementById('nb-deckhand')?.value || '',
     expenses: [],
     notes:    document.getElementById('nb-notes').value.trim(),
     source:   'manual',
