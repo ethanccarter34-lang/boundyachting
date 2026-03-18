@@ -731,10 +731,12 @@
   .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
   @media (max-width: 900px) {
-    header { padding: 0 20px; }
+    header { padding: 0 20px; justify-content: space-between; }
+    header nav { display: none; }
+    .admin-trigger { display: none !important; }
+    .logo { position: absolute; left: 50%; transform: translateX(-50%); }
     .header-cta { display: none; }
     .hamburger { display: flex; }
-    nav { display: none; }
     nav.open {
       display: flex; flex-direction: column; align-items: flex-start;
       position: fixed; top: 72px; left: 0; right: 0;
