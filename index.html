@@ -48,14 +48,14 @@
   }
   .logo span { color: var(--gold); }
 
-  nav {
+  header nav {
     position: absolute; left: 50%; transform: translateX(-50%);
     display: flex; align-items: center; gap: 0;
     border: 1px solid rgba(184,155,94,0.12);
     background: rgba(255,255,255,0.02);
   }
 
-  nav a {
+  header nav a {
     font-size: 10px; font-weight: 600; letter-spacing: 2.5px;
     text-transform: uppercase; color: rgba(255,255,255,0.45);
     text-decoration: none; padding: 0 28px; height: 40px;
@@ -64,13 +64,13 @@
     transition: color 0.2s, background 0.2s;
     position: relative; white-space: nowrap;
   }
-  nav a:last-child { border-right: none; }
-  nav a:hover { color: rgba(255,255,255,0.9); background: rgba(184,155,94,0.06); }
-  nav a.active {
+  header nav a:last-child { border-right: none; }
+  header nav a:hover { color: rgba(255,255,255,0.9); background: rgba(184,155,94,0.06); }
+  header nav a.active {
     color: var(--gold);
     background: rgba(184,155,94,0.08);
   }
-  nav a.active::after {
+  header nav a.active::after {
     content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
     background: linear-gradient(90deg, transparent, var(--gold), transparent);
   }
@@ -420,7 +420,113 @@
     .contact-cta-card { padding: 36px 28px; }
   }
 
-  /* ── ABOUT US SECTION ── */
+  /* ── CUSTOM CALENDAR PICKER ── */
+  .cal-trigger {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(184,155,94,0.2); color: rgba(255,255,255,0.5);
+    cursor: pointer; font-size: 13px; transition: border-color 0.2s;
+    user-select: none;
+  }
+  .cal-trigger:hover { border-color: rgba(184,155,94,0.5); }
+  .cal-trigger.has-value { color: #fff; border-color: rgba(76,175,125,0.5); }
+  .cal-trigger.error { border-color: #e05c5c; }
+
+  .cal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 1200;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center;
+  }
+  .cal-overlay.active { display: flex; }
+
+  .cal-picker {
+    background: #0d1a2e; border: 1px solid rgba(184,155,94,0.2);
+    width: 340px; padding: 24px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+  }
+  .cal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .cal-month-label {
+    font-family: 'Cormorant Garamond', serif; font-size: 20px;
+    color: #fff; font-weight: 300; letter-spacing: 1px;
+  }
+  .cal-nav {
+    background: none; border: 1px solid rgba(184,155,94,0.2); color: rgba(255,255,255,0.5);
+    width: 30px; height: 30px; cursor: pointer; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .cal-nav:hover { border-color: var(--gold); color: var(--gold); }
+  .cal-weekdays {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 6px;
+  }
+  .cal-weekday {
+    text-align: center; font-size: 9px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: rgba(255,255,255,0.3); padding: 4px 0;
+  }
+  .cal-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px;
+  }
+  .cal-day {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; border-radius: 2px; cursor: pointer;
+    transition: all 0.15s; position: relative;
+  }
+  .cal-day.empty { cursor: default; }
+  .cal-day.past {
+    color: rgba(255,255,255,0.15); cursor: not-allowed;
+  }
+  .cal-day.available {
+    color: #fff; background: rgba(76,175,125,0.12);
+    border: 1px solid rgba(76,175,125,0.25);
+  }
+  .cal-day.available:hover {
+    background: rgba(76,175,125,0.3); border-color: #4caf7d;
+  }
+  .cal-day.booked {
+    color: rgba(255,255,255,0.25); background: rgba(224,92,92,0.1);
+    border: 1px solid rgba(224,92,92,0.2); cursor: not-allowed;
+    text-decoration: line-through;
+  }
+  .cal-day.selected {
+    background: var(--gold) !important; color: #0a1628 !important;
+    font-weight: 700; border-color: var(--gold) !important;
+  }
+  .cal-day.today { border: 1px solid rgba(184,155,94,0.4); }
+  .cal-loading {
+    text-align: center; padding: 32px 0;
+    font-size: 12px; color: rgba(255,255,255,0.3); letter-spacing: 1px;
+  }
+  .cal-legend {
+    display: flex; gap: 16px; margin-top: 16px; padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .cal-legend-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 0.5px;
+  }
+  .cal-legend-dot {
+    width: 10px; height: 10px; border-radius: 1px;
+  }
+  .cal-day.partial-day {
+    color: #fff; background: rgba(255,193,7,0.1);
+    border: 1px solid rgba(255,193,7,0.3); cursor: pointer;
+  }
+  .cal-day.partial-day:hover { background: rgba(255,193,7,0.25); border-color: #ffc107; }
+  .cal-dot {
+    position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);
+    width: 4px; height: 4px; border-radius: 50%;
+  }
+  .cal-dot.partial { background: #ffc107; }
+  .cal-close {
+    background: none; border: none; color: rgba(255,255,255,0.3);
+    cursor: pointer; font-size: 18px; padding: 0 4px;
+  }
+  .cal-close:hover { color: #fff; }
   .about-section {
     padding: 100px 64px;
     background: linear-gradient(180deg, rgba(184,155,94,0.03) 0%, transparent 100%);
@@ -1192,17 +1298,32 @@
 
   /* Admin panel */
   .admin-panel {
-    display: none; position: fixed; inset: 0; z-index: 400;
-    background: #070f1c; overflow: hidden;
-    animation: slideUp 0.4s cubic-bezier(0.16,1,0.3,1);
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    z-index: 400;
+    background: #070f1c;
   }
-  .admin-panel.active { display: flex; flex-direction: column; }
+  .admin-panel.active {
+    display: flex;
+    flex-direction: column;
+  }
 
   /* Admin top bar */
   .admin-topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 32px; height: 64px; flex-shrink: 0;
-    background: #0a1628; border-bottom: 1px solid rgba(184,155,94,0.12);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    height: 64px;
+    min-height: 64px;
+    flex-shrink: 0;
+    width: 100%;
+    box-sizing: border-box;
+    background: #0a1628;
+    border-bottom: 1px solid rgba(184,155,94,0.12);
   }
   .admin-topbar-left { display: flex; align-items: center; gap: 20px; }
   .admin-brand { font-family: 'Cormorant Garamond',serif; font-size: 20px; font-weight: 300; letter-spacing: 4px; color: var(--white); }
@@ -1220,16 +1341,28 @@
   .admin-exit-btn:hover { border-color: rgba(255,255,255,0.3); color: var(--white); }
 
   /* Admin body */
-  .admin-body { display: flex; flex: 1; overflow: hidden; }
+  .admin-body {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    overflow: hidden;
+  }
 
   /* Sidebar */
   .admin-sidebar {
-    width: 240px; flex-shrink: 0;
-    background: #0a1628; border-right: 1px solid rgba(184,155,94,0.1);
-    overflow-y: auto; padding: 24px 0;
-    display: flex; flex-direction: column;
-    position: relative; z-index: 1;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    width: 240px;
+    min-width: 240px;
     height: 100%;
+    overflow-y: auto;
+    padding: 24px 0;
+    background: #0a1628;
+    border-right: 1px solid rgba(184,155,94,0.1);
+    box-sizing: border-box;
   }
   .admin-nav-section { margin-bottom: 8px; display: flex; flex-direction: column; }
   .admin-nav-section-label { font-size: 8px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.2); padding: 8px 24px 6px; }
@@ -1248,7 +1381,14 @@
   .admin-nav-badge.gold { background: rgba(184,155,94,0.2); color: var(--gold); }
 
   /* Main content area */
-  .admin-content { flex: 1; overflow-y: auto; background: #070f1c; }
+  .admin-content {
+    display: block;
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    overflow-y: auto;
+    background: #070f1c;
+  }
   .admin-view { display: none; padding: 36px 40px; }
   .admin-view.active { display: block; }
 
@@ -1778,6 +1918,10 @@
   .pnl-margin.bad  { background:rgba(224,92,92,0.12); color:#e05c5c; border:1px solid rgba(224,92,92,0.2); }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  emailjs.init('TrQhb6HynS65E01jR');
+</script>
 </head>
 <body>
 
@@ -2303,7 +2447,15 @@
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="azimut-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="azimut-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="azimut-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="azimut-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="azimut-cal-trigger" onclick="openCalPicker('azimut')">
+            <span id="azimut-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="azimut-date" />
+          <div id="azimut-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="azimut-time-slots">
@@ -2499,7 +2651,15 @@
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="galeon-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="galeon-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="galeon-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="galeon-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="galeon-cal-trigger" onclick="openCalPicker('galeon')">
+            <span id="galeon-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="galeon-date" />
+          <div id="galeon-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="galeon-time-slots">
@@ -3756,33 +3916,302 @@
     document.getElementById(`${vesselId}-summary`).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  function submitBooking(vesselId) {
+  async function submitBooking(vesselId) {
     const state  = bookingState[vesselId];
     const name   = document.getElementById(`${vesselId}-name`).value.trim();
     const email  = document.getElementById(`${vesselId}-email`).value.trim();
     const phone  = document.getElementById(`${vesselId}-phone`).value.trim();
     const date   = document.getElementById(`${vesselId}-date`).value;
     const guests = document.getElementById(`${vesselId}-guests`).value;
+    const notes  = document.getElementById(`${vesselId}-notes`) ? document.getElementById(`${vesselId}-notes`).value.trim() : '';
+    const occasion = document.getElementById(`${vesselId}-occasion`) ? document.getElementById(`${vesselId}-occasion`).value : '';
     const time   = state.departureTime;
 
-    if (!name || !email || !phone || !date || !guests || !time) {
-      alert('Please fill in all required fields, including a departure time.');
+    // Clear previous errors
+    [`${vesselId}-name`,`${vesselId}-email`,`${vesselId}-phone`,`${vesselId}-date`,`${vesselId}-guests`].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.borderColor = '';
+    });
+
+    // Validate — highlight missing fields
+    let errors = [];
+    if (!name)   { document.getElementById(`${vesselId}-name`).style.borderColor  = '#e05c5c'; errors.push('name'); }
+    if (!email || !/\S+@\S+\.\S+/.test(email))  { document.getElementById(`${vesselId}-email`).style.borderColor = '#e05c5c'; errors.push('email'); }
+    if (!phone)  { document.getElementById(`${vesselId}-phone`).style.borderColor = '#e05c5c'; errors.push('phone'); }
+    if (!date)   {
+      const trigger = document.getElementById(`${vesselId}-cal-trigger`);
+      if (trigger) trigger.classList.add('error');
+      errors.push('date');
+    }
+    if (!guests) { document.getElementById(`${vesselId}-guests`).style.borderColor = '#e05c5c'; errors.push('guests'); }
+    if (!time)   { errors.push('time'); }
+    if (!state.hours) { errors.push('duration'); }
+
+    if (errors.length) {
+      // Show inline error message
+      let errEl = document.getElementById(`${vesselId}-form-error`);
+      if (!errEl) {
+        errEl = document.createElement('div');
+        errEl.id = `${vesselId}-form-error`;
+        errEl.style.cssText = 'font-size:11px;color:#e05c5c;margin-bottom:12px;padding:10px 14px;background:rgba(224,92,92,0.08);border:1px solid rgba(224,92,92,0.25);';
+        const btn = document.querySelector(`#${vesselId}-step3 .vessel-enquire-btn`);
+        if (btn) btn.parentNode.insertBefore(errEl, btn);
+      }
+      const missing = [];
+      if (errors.includes('duration')) missing.push('charter duration');
+      if (errors.includes('time'))     missing.push('departure time');
+      if (errors.includes('date'))     missing.push('preferred date');
+      if (errors.includes('guests'))   missing.push('number of guests');
+      if (errors.includes('name'))     missing.push('full name');
+      if (errors.includes('email'))    missing.push('email address');
+      if (errors.includes('phone'))    missing.push('phone number');
+      errEl.textContent = `Please complete: ${missing.join(', ')}.`;
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       return;
     }
 
-    // Show confirmation screen
-    document.getElementById(`${vesselId}-step1`).classList.add('hidden');
-    document.getElementById(`${vesselId}-step2`).classList.add('hidden');
-    document.getElementById(`${vesselId}-summary`).classList.add('hidden');
-    document.getElementById(`${vesselId}-step3`).classList.add('hidden');
-    const confirmEl = document.getElementById(`${vesselId}-confirm`);
-    confirmEl.classList.remove('hidden');
-    confirmEl.classList.add('visible');
-    confirmEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Clear any error
+    const errEl = document.getElementById(`${vesselId}-form-error`);
+    if (errEl) errEl.remove();
+
+    // Check calendar availability before sending
+    if (VESSEL_CALENDARS[vesselId]) {
+      const btn2 = document.querySelector(`#${vesselId}-step3 .vessel-enquire-btn`);
+      if (btn2) { btn2.textContent = 'Checking availability...'; btn2.disabled = true; btn2.style.opacity = '0.6'; }
+      const events  = await fetchEvents(vesselId);
+      const blocked = getBlockedHours(events, date);
+      const slotHour = time ? parseInt(time.split(':')[0]) : null;
+      if (slotHour !== null && blocked.has(slotHour)) {
+        if (btn2) { btn2.textContent = 'Request Charter →'; btn2.disabled = false; btn2.style.opacity = ''; }
+        showDateNote(vesselId, '✗ This time slot is no longer available. Please select another time.', 'error');
+        return;
+      }
+      if (btn2) { btn2.textContent = 'Request Charter →'; btn2.disabled = false; btn2.style.opacity = ''; }
+    }
+
+    // Get vessel name
+    const vesselReg = VESSEL_REGISTRY.find(v => v.fleetId === vesselId);
+    const vesselName = vesselReg ? vesselReg.fullName : vesselId;
+
+    // Format pricing
+    const base     = state.basePrice || 0;
+    const gratPct  = state.gratuityPct || 18;
+    const gratAmt  = Math.round(base * gratPct / 100);
+    const total    = base + gratAmt;
+    const charterRate = `$${base.toLocaleString()} (${state.hours} hrs)`;
+    const gratuityStr = `$${gratAmt.toLocaleString()} (${gratPct}%)`;
+    const totalStr    = `$${total.toLocaleString()}`;
+
+    // Format date nicely
+    const dateObj = new Date(date + 'T12:00:00');
+    const dateFormatted = dateObj.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+    // Show loading state on button
+    const btn = document.querySelector(`#${vesselId}-step3 .vessel-enquire-btn`);
+    const originalText = btn ? btn.textContent : '';
+    if (btn) { btn.textContent = 'Sending...'; btn.disabled = true; btn.style.opacity = '0.6'; }
+
+    const templateParams = {
+      vessel:       vesselName,
+      date:         `${dateFormatted} at ${time}`,
+      duration:     state.hours,
+      guests:       guests,
+      occasion:     occasion || 'Not specified',
+      client_name:  name,
+      client_email: email,
+      client_phone: phone,
+      charter_rate: charterRate,
+      gratuity:     gratuityStr,
+      total:        totalStr,
+      notes:        notes || 'None',
+    };
+
+    // Send both emails in parallel
+    const SERVICE_ID  = 'service_4fzdnad';
+    const INTERNAL_TEMPLATE = 'template_ilge69e';
+    const CLIENT_TEMPLATE   = 'template_gnobw2r';
+
+    Promise.all([
+      emailjs.send(SERVICE_ID, INTERNAL_TEMPLATE, templateParams),
+      emailjs.send(SERVICE_ID, CLIENT_TEMPLATE,   templateParams),
+    ])
+    .then(() => {
+      // Success — show confirmation
+      document.getElementById(`${vesselId}-step1`).classList.add('hidden');
+      document.getElementById(`${vesselId}-step2`).classList.add('hidden');
+      document.getElementById(`${vesselId}-summary`).classList.add('hidden');
+      document.getElementById(`${vesselId}-step3`).classList.add('hidden');
+      const confirmEl = document.getElementById(`${vesselId}-confirm`);
+      confirmEl.classList.remove('hidden');
+      confirmEl.classList.add('visible');
+      confirmEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    })
+    .catch(err => {
+      // Email failed — still show confirmation (booking captured in admin) but note email issue
+      console.error('EmailJS error:', err);
+      if (btn) { btn.textContent = originalText; btn.disabled = false; btn.style.opacity = ''; }
+      const errMsg = document.getElementById(`${vesselId}-form-error`) || document.createElement('div');
+      errMsg.id = `${vesselId}-form-error`;
+      errMsg.style.cssText = 'font-size:11px;color:#e05c5c;margin-bottom:12px;padding:10px 14px;background:rgba(224,92,92,0.08);border:1px solid rgba(224,92,92,0.25);';
+      errMsg.textContent = 'Unable to send confirmation email. Please contact us directly at Hello@boundyachting.com or WhatsApp +1 305-994-3999.';
+      if (btn) btn.parentNode.insertBefore(errMsg, btn);
+    });
   }
 
   function toggleAddon(el) {
     el.classList.toggle('selected');
+  }
+
+  // ── GOOGLE CALENDAR AVAILABILITY ──
+  const GCAL_API_KEY = 'AIzaSyCn6Ep93Efvw-rKvfZ9LbFT5cSWTLWhgZc';
+
+  const VESSEL_CALENDARS = {
+    'azimut':      'c_2feeaa7223b883f9f2b8ae3d5c6e245b7ecfe570fe09eea5104aca144ff83f5a@group.calendar.google.com',
+    'galeon':      'c_7e8afb94954ddad422829a908d5ea69c947911d08513442dc9366d1166a85dfe@group.calendar.google.com',
+    'beneteau':    'c_8d74435e2d4aaabc521ba8fdd5a749c67624d933deca5207d307f8cba3e66ff8@group.calendar.google.com',
+    'prestige680': 'c_820a946e5c7bb8451a14c425458904e1c2928a737bb66baabdab383f5aec99e0@group.calendar.google.com',
+    'galeon680':   'c_263ab3c297456f6a6e96a0af922faaecdd3a0bd29586301ffb0155719619b83f@group.calendar.google.com',
+    'predator80':  'c_61b659bee53f10e7045aefa6f016216c23fdd012121281de9e89187dee0fb168@group.calendar.google.com',
+    'azimut116':   'c_589e82b14448de5bfac77a3d7cd7aad31a5286233c08ced575f1a8066ac06b5b@group.calendar.google.com',
+    // Add remaining vessels when calendar IDs are available:
+    // 'fjord':       'xxxxx@group.calendar.google.com',
+    // 'sunseeker':   'xxxxx@group.calendar.google.com',
+    // 'pardo':       'xxxxx@group.calendar.google.com',
+    // 'sanlorenzo':  'xxxxx@group.calendar.google.com',
+    // 'azimut105':   'xxxxx@group.calendar.google.com',
+    // 'azimut88':    'xxxxx@group.calendar.google.com',
+    // 'saxdor42':    'xxxxx@group.calendar.google.com',
+    // 'pershing116': 'xxxxx@group.calendar.google.com',
+    // 'trinity166':  'xxxxx@group.calendar.google.com',
+  };
+
+  // Cache: { vesselId: [ {start: Date, end: Date}, ... ] }
+  const calendarCache = {};
+
+  async function fetchEvents(vesselId) {
+    const calId = VESSEL_CALENDARS[vesselId];
+    if (!calId) return [];
+    if (calendarCache[vesselId]) return calendarCache[vesselId];
+
+    const now  = new Date();
+    const end  = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000);
+    const url  = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events?key=${GCAL_API_KEY}&timeMin=${now.toISOString()}&timeMax=${end.toISOString()}&singleEvents=true&orderBy=startTime`;
+
+    try {
+      const res  = await fetch(url);
+      const data = await res.json();
+      const events = (data.items || []).map(ev => {
+        let startLocalH, endLocalH, startLocalDate, endLocalDate;
+        if (ev.start.dateTime) {
+          // Timed event — read local time directly from ISO string
+          // Format: "2026-03-20T13:00:00-04:00" — extract T part directly (always local time)
+          const sMatch = ev.start.dateTime.match(/(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})/);
+          const eMatch = ev.end.dateTime.match(/(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})/);
+          startLocalDate = sMatch[1];
+          endLocalDate   = eMatch[1];
+          startLocalH    = parseInt(sMatch[2]) + parseInt(sMatch[3]) / 60;
+          endLocalH      = parseInt(eMatch[2]) + parseInt(eMatch[3]) / 60;
+        } else {
+          // All-day event
+          startLocalDate = ev.start.date;
+          endLocalDate   = ev.end.date;
+          startLocalH    = 0;
+          endLocalH      = 24;
+        }
+        return { startLocalH, endLocalH, startLocalDate, endLocalDate };
+      });
+      calendarCache[vesselId] = events;
+      return events;
+    } catch (err) {
+      console.warn('Calendar fetch failed for', vesselId, err);
+      return [];
+    }
+  }
+
+  // Returns events on a given local date string 'YYYY-MM-DD'
+  function eventsOnDate(events, dateStr) {
+    return events.filter(ev => ev.startLocalDate === dateStr);
+  }
+
+  // For a given date, returns which hour slots are blocked
+  // Uses stored local hours — no timezone math needed
+  function getBlockedHours(events, dateStr) {
+    const dayEvents = eventsOnDate(events, dateStr);
+    if (dayEvents.length === 0) return new Set();
+
+    const blocked    = new Set();
+    const MIN_HOURS  = 4;
+
+    for (let h = 8; h <= 20; h++) {
+      const slotStartH = h;
+      const slotEndH   = h + MIN_HOURS;
+
+      for (const ev of dayEvents) {
+        const evStartH = ev.startLocalH;
+        const evEndH   = ev.endLocalH;
+
+        // Slot overlaps event
+        const overlaps = slotStartH < evEndH && slotEndH > evStartH;
+        // Event starts after slot but within MIN_HOURS — not enough gap
+        const tooClose = evStartH > slotStartH && (evStartH - slotStartH) < MIN_HOURS;
+
+        if (overlaps || tooClose) { blocked.add(h); break; }
+      }
+    }
+    return blocked;
+  }
+
+  // Day status: 'full' = all slots blocked, 'partial' = some blocked, 'open' = none blocked, 'nodata' = no calendar
+  async function getDayStatus(vesselId, dateStr) {
+    if (!VESSEL_CALENDARS[vesselId]) return 'nodata';
+    const events  = await fetchEvents(vesselId);
+    const dayEvs  = eventsOnDate(events, dateStr);
+    if (dayEvs.length === 0) return 'open';
+
+    const blocked = getBlockedHours(events, dateStr);
+    const totalSlots = 13; // 8am to 8pm
+    if (blocked.size >= totalSlots) return 'full';
+    if (blocked.size > 0) return 'partial';
+    return 'open';
+  }
+
+  function showDateNote(vesselId, msg, type) {
+    let el = document.getElementById(`${vesselId}-date-note`);
+    if (!el) {
+      el = document.createElement('div');
+      el.id = `${vesselId}-date-note`;
+      el.style.cssText = 'font-size:11px;margin-top:6px;padding:6px 10px;';
+      const trigger = document.getElementById(`${vesselId}-cal-trigger`);
+      if (trigger) trigger.parentNode.appendChild(el);
+    }
+    el.textContent = msg;
+    el.style.color      = type === 'error' ? '#e05c5c' : type === 'success' ? '#4caf7d' : 'rgba(255,255,255,0.4)';
+    el.style.background = type === 'error' ? 'rgba(224,92,92,0.08)' : type === 'success' ? 'rgba(76,175,125,0.08)' : 'transparent';
+    el.style.border     = type === 'loading' ? 'none' : `1px solid ${type === 'error' ? 'rgba(224,92,92,0.2)' : 'rgba(76,175,125,0.2)'}`;
+  }
+
+  // Update visible time slots when a date is selected — grey out blocked hours
+  async function updateTimeSlotsForDate(vesselId, dateStr) {
+    if (!VESSEL_CALENDARS[vesselId]) return;
+    const events  = await fetchEvents(vesselId);
+    const blocked = getBlockedHours(events, dateStr);
+    const slots   = document.querySelectorAll(`#${vesselId}-time-slots .time-slot`);
+    slots.forEach(slot => {
+      const hour = parseInt(slot.dataset.time?.split(':')[0] || '0');
+      if (blocked.has(hour)) {
+        slot.classList.add('disabled');
+        slot.style.opacity = '0.25';
+        slot.style.cursor  = 'not-allowed';
+        slot.style.textDecoration = 'line-through';
+        slot.onclick = null;
+      } else {
+        slot.classList.remove('disabled');
+        slot.style.opacity = '';
+        slot.style.cursor  = '';
+        slot.style.textDecoration = '';
+        slot.onclick = () => selectTime(vesselId, slot.dataset.time);
+      }
+    });
   }
 
   // ── INIT ──
@@ -4174,7 +4603,15 @@ function renderFleet() {
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="sunseeker-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="sunseeker-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="sunseeker-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="sunseeker-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="sunseeker-cal-trigger" onclick="openCalPicker('sunseeker')">
+            <span id="sunseeker-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="sunseeker-date" />
+          <div id="sunseeker-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="sunseeker-time-slots">
@@ -4346,7 +4783,15 @@ function renderFleet() {
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="pardo-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="pardo-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="pardo-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="pardo-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="pardo-cal-trigger" onclick="openCalPicker('pardo')">
+            <span id="pardo-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="pardo-date" />
+          <div id="pardo-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="pardo-time-slots">
@@ -4520,7 +4965,15 @@ function renderFleet() {
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="beneteau-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="beneteau-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="beneteau-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="beneteau-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="beneteau-cal-trigger" onclick="openCalPicker('beneteau')">
+            <span id="beneteau-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="beneteau-date" />
+          <div id="beneteau-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="beneteau-time-slots">
@@ -4707,7 +5160,15 @@ function renderFleet() {
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="fjord-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="fjord-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="fjord-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="fjord-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="fjord-cal-trigger" onclick="openCalPicker('fjord')">
+            <span id="fjord-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="fjord-date" />
+          <div id="fjord-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="fjord-time-slots">
@@ -4876,7 +5337,15 @@ function renderFleet() {
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="sanlorenzo-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="sanlorenzo-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="sanlorenzo-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="sanlorenzo-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="sanlorenzo-cal-trigger" onclick="openCalPicker('sanlorenzo')">
+            <span id="sanlorenzo-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="sanlorenzo-date" />
+          <div id="sanlorenzo-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="sanlorenzo-time-slots">
@@ -5055,7 +5524,15 @@ function renderFleet() {
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="predator80-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="predator80-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="predator80-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="predator80-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="predator80-cal-trigger" onclick="openCalPicker('predator80')">
+            <span id="predator80-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="predator80-date" />
+          <div id="predator80-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="predator80-time-slots">
@@ -5190,7 +5667,15 @@ function renderFleet() {
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="prestige680-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="prestige680-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="prestige680-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="prestige680-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="prestige680-cal-trigger" onclick="openCalPicker('prestige680')">
+            <span id="prestige680-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="prestige680-date" />
+          <div id="prestige680-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="prestige680-time-slots">
@@ -5322,7 +5807,15 @@ function renderFleet() {
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="azimut105-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="azimut105-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="azimut105-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="azimut105-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="azimut105-cal-trigger" onclick="openCalPicker('azimut105')">
+            <span id="azimut105-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="azimut105-date" />
+          <div id="azimut105-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="azimut105-time-slots">
@@ -5454,7 +5947,15 @@ function renderFleet() {
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="azimut88-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="azimut88-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="azimut88-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="azimut88-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="azimut88-cal-trigger" onclick="openCalPicker('azimut88')">
+            <span id="azimut88-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="azimut88-date" />
+          <div id="azimut88-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="azimut88-time-slots">
@@ -5580,7 +6081,15 @@ function renderFleet() {
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="saxdor42-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="saxdor42-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="saxdor42-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="saxdor42-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="saxdor42-cal-trigger" onclick="openCalPicker('saxdor42')">
+            <span id="saxdor42-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="saxdor42-date" />
+          <div id="saxdor42-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="saxdor42-time-slots">
@@ -5712,7 +6221,15 @@ function renderFleet() {
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="galeon680-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="galeon680-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="galeon680-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="galeon680-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="galeon680-cal-trigger" onclick="openCalPicker('galeon680')">
+            <span id="galeon680-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="galeon680-date" />
+          <div id="galeon680-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="galeon680-time-slots">
@@ -5844,7 +6361,15 @@ function renderFleet() {
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="azimut116-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="azimut116-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="azimut116-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="azimut116-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="azimut116-cal-trigger" onclick="openCalPicker('azimut116')">
+            <span id="azimut116-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="azimut116-date" />
+          <div id="azimut116-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="azimut116-time-slots">
@@ -5976,7 +6501,15 @@ function renderFleet() {
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="pershing116-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="pershing116-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="pershing116-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="pershing116-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="pershing116-cal-trigger" onclick="openCalPicker('pershing116')">
+            <span id="pershing116-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="pershing116-date" />
+          <div id="pershing116-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="pershing116-time-slots">
@@ -6109,7 +6642,15 @@ function renderFleet() {
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="pershing116-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="pershing116-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="pershing116-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="pershing116-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="pershing116-cal-trigger" onclick="openCalPicker('pershing116')">
+            <span id="pershing116-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="pershing116-date" />
+          <div id="pershing116-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="pershing116-time-slots">
@@ -6241,7 +6782,15 @@ function renderFleet() {
         <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="trinity166-name" type="text" placeholder="Full name"/></div>
         <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="trinity166-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="trinity166-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="trinity166-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="trinity166-cal-trigger" onclick="openCalPicker('trinity166')">
+            <span id="trinity166-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="trinity166-date" />
+          <div id="trinity166-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
         <div class="form-group">
           <label class="form-label">Departure Time *</label>
           <div class="time-slots" id="trinity166-time-slots">
@@ -6640,37 +7189,29 @@ function renderFleet() {
         <div class="admin-page-header">
           <div>
             <div class="admin-page-title">Vessel <span>Calendar</span></div>
-            <div class="admin-page-sub">Track availability across your fleet</div>
+            <div class="admin-page-sub">Live availability from Google Calendar</div>
           </div>
-          <button class="admin-action-btn outline">+ Add Block</button>
-        </div>
-
-        <div class="admin-three-col" style="margin-bottom:24px;">
-          <div class="admin-info-card">
-            <div class="admin-info-card-title">The One — Azimut 68</div>
-            <div class="admin-info-row"><span class="admin-info-key">Next Charter</span><span class="admin-info-val">Mar 17</span></div>
-            <div class="admin-info-row"><span class="admin-info-key">This Month</span><span class="admin-info-val">4 charters</span></div>
-            <div class="admin-info-row"><span class="admin-info-key">Available Days</span><span class="admin-info-val" style="color:#4caf7d;">23 days</span></div>
-          </div>
-          <div class="admin-info-card">
-            <div class="admin-info-card-title">Galeon 530 Fly</div>
-            <div class="admin-info-row"><span class="admin-info-key">Next Charter</span><span class="admin-info-val">Mar 11</span></div>
-            <div class="admin-info-row"><span class="admin-info-key">This Month</span><span class="admin-info-val">4 charters</span></div>
-            <div class="admin-info-row"><span class="admin-info-key">Available Days</span><span class="admin-info-val" style="color:#4caf7d;">23 days</span></div>
-          </div>
-          <div class="admin-info-card">
-            <div class="admin-info-card-title">Sanlorenzo SL96</div>
-            <div class="admin-info-row"><span class="admin-info-key">Next Charter</span><span class="admin-info-val">Mar 8</span></div>
-            <div class="admin-info-row"><span class="admin-info-key">This Month</span><span class="admin-info-val">3 charters</span></div>
-            <div class="admin-info-row"><span class="admin-info-key">Available Days</span><span class="admin-info-val" style="color:#4caf7d;">24 days</span></div>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <select id="admin-cal-vessel-select" class="nb-input" style="min-width:220px;font-size:12px;" onchange="adminCalLoad()">
+              <option value="">Select a vessel...</option>
+            </select>
+            <a id="admin-cal-open-link" href="#" target="_blank" style="display:none;padding:10px 18px;background:none;border:1px solid rgba(184,155,94,0.3);color:var(--gold);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(184,155,94,0.1)'" onmouseout="this.style.background='none'">Open in Google →</a>
           </div>
         </div>
 
-        <div class="admin-calendar-wrap">
-          <div class="admin-calendar-icon">📅</div>
-          <div class="admin-calendar-msg">Google Calendar Integration</div>
-          <div class="admin-calendar-sub">Connect your Google Calendar to view and manage vessel availability in real time.</div>
-          <button class="admin-calendar-connect-btn">Connect Google Calendar →</button>
+        <div id="admin-cal-placeholder" style="background:#0d1a2e;border:1px solid rgba(184,155,94,0.1);padding:64px 32px;text-align:center;">
+          <div style="font-size:48px;opacity:0.2;margin-bottom:16px;">📅</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:rgba(255,255,255,0.3);margin-bottom:8px;">Select a vessel to view its calendar</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.2);">Live bookings pulled directly from Google Calendar</div>
+        </div>
+
+        <div id="admin-cal-embed-wrap" style="display:none;border:1px solid rgba(184,155,94,0.1);overflow:hidden;">
+          <iframe id="admin-cal-iframe"
+            src=""
+            style="width:100%;height:680px;border:none;display:block;"
+            frameborder="0"
+            scrolling="no">
+          </iframe>
         </div>
       </div>
 
@@ -8458,7 +8999,15 @@ function saveNewVessel() {
             <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="${fleetId}-name" type="text" placeholder="Full name"/></div>
             <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="${fleetId}-email" type="email" placeholder="your@email.com"/></div>
             <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="${fleetId}-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
-            <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="${fleetId}-date" type="date"/></div>
+            <div class="form-group">
+          <label class="form-label">Preferred Date *</label>
+          <div class="cal-trigger" id="${fleetId}-cal-trigger" onclick="openCalPicker('${fleetId}')">
+            <span id="${fleetId}-date-display">Select a date</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <input type="hidden" id="${fleetId}-date" />
+          <div id="${fleetId}-date-note" style="font-size:11px;margin-top:6px;"></div>
+        </div>
             <div class="form-group">
               <label class="form-label">Departure Time *</label>
               <div class="time-slots" id="${fleetId}-time-slots">
@@ -9191,7 +9740,7 @@ function canAssignCrew()      { return currentRole === 'admin' || currentRole ==
 const opDeductions = {};
 
 function opVesselsWithDeal() {
-  return VESSEL_REGISTRY.filter(v => v.ownerDeal);
+  return VESSEL_REGISTRY.filter(v => v.ownerDeal && !v.externalMgmt);
 }
 
 function opDealFor(shortKey) {
@@ -9518,6 +10067,50 @@ function switchView(viewName, el) {
   if (viewName === 'vessels')     { renderAdminVessels(); }
   if (viewName === 'ownerpayout') { renderOwnerPayout(); }
   if (viewName === 'invoices')    { renderInvoicesView(); }
+  if (viewName === 'calendar')    { adminCalInit(); }
+}
+
+function adminCalInit() {
+  const sel = document.getElementById('admin-cal-vessel-select');
+  if (!sel || sel.options.length > 1) return; // already populated
+
+  // Populate dropdown from VESSEL_CALENDARS + VESSEL_REGISTRY for display names
+  Object.keys(VESSEL_CALENDARS).forEach(fleetId => {
+    const vessel = VESSEL_REGISTRY.find(v => v.fleetId === fleetId);
+    const label  = vessel ? vessel.fullName : fleetId;
+    const opt    = document.createElement('option');
+    opt.value       = fleetId;
+    opt.textContent = label;
+    sel.appendChild(opt);
+  });
+}
+
+function adminCalLoad() {
+  const sel      = document.getElementById('admin-cal-vessel-select');
+  const fleetId  = sel.value;
+  const placeholder = document.getElementById('admin-cal-placeholder');
+  const embedWrap   = document.getElementById('admin-cal-embed-wrap');
+  const iframe      = document.getElementById('admin-cal-iframe');
+  const openLink    = document.getElementById('admin-cal-open-link');
+
+  if (!fleetId) {
+    placeholder.style.display = '';
+    embedWrap.style.display   = 'none';
+    openLink.style.display    = 'none';
+    return;
+  }
+
+  const calId  = VESSEL_CALENDARS[fleetId];
+  const encId  = encodeURIComponent(calId);
+
+  // Google Calendar embed URL — week view, no extra UI chrome
+  const src = `https://calendar.google.com/calendar/embed?src=${encId}&ctz=America%2FNew_York&mode=WEEK&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=0&showCalendars=0&showTz=1`;
+
+  iframe.src              = src;
+  placeholder.style.display = 'none';
+  embedWrap.style.display   = 'block';
+  openLink.href             = `https://calendar.google.com/calendar/r?cid=${encId}`;
+  openLink.style.display    = 'inline-block';
 }
 
 // ══════════════════════════════════════
@@ -9551,6 +10144,45 @@ const bookings = {
   'BND-012': { ref:'#BND-012', status:'confirmed', date:'Feb 26, 2026', dateSort:'2026-02-26', time:'11:00 AM', vessel:'Sanlorenzo SL96',       vesselShort:'SL96',    duration:6, guests:9,  addons:['Catering','Chef'],           revenue:11000, gratuity:900,  deposit:5000,  depositDate:'2026-02-08', depositMethod:'Wire Transfer', paymentStatus:'paid',     paymentMethod:'Wire Transfer', contractStatus:'Signed',   customer:{ name:'Elena Marchetti', email:'elena.m@example.com',    phone:'+1 305 412 8844', occasion:'Client Dinner'  }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Jose Carlo Arroyo', stew:'Claudia Amador',  expenses:[] },
   'BND-011': { ref:'#BND-011', status:'confirmed', date:'Feb 25, 2026', dateSort:'2026-02-25', time:'2:00 PM',  vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:6, guests:12, addons:['DJ','Catering'],             revenue:3000,  gratuity:350,  deposit:3000,  depositDate:'2026-02-10', depositMethod:'Zelle',         paymentStatus:'paid',     paymentMethod:'Zelle',         contractStatus:'Signed',   customer:{ name:'Sofia Delgado',   email:'sofia.d@example.com',    phone:'+1 305 877 3300', occasion:'Bachelorette'   }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com'  }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[{desc:'Extra ice', amt:45}] },
   'BND-010': { ref:'#BND-010', status:'confirmed', date:'Feb 23, 2026', dateSort:'2026-02-23', time:'10:00 AM', vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:8, guests:7,  addons:['Catering','Alcohol Package'], revenue:4500, gratuity:600,  deposit:4500,  depositDate:'2026-02-05', depositMethod:'Wire Transfer', paymentStatus:'paid',     paymentMethod:'Wire Transfer', contractStatus:'Signed',   customer:{ name:'Marcus Rivera',   email:'m.rivera@example.com',   phone:'+1 786 234 9911', occasion:'Corporate'      }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Jorge Yossri',       stew:'Claudia Amador',  expenses:[] },
+
+  // ── PREVIOUS WEEK (Mar 9–15 2026) — owner payout demo ──
+  // The One (Azimut 68) — owned, direct crew
+  'BND-W01': { ref:'#BND-W01', status:'confirmed', date:'Mar 9, 2026',  dateSort:'2026-03-09', time:'10:00 AM', vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:4, guests:6,  addons:['Alcohol Package'],           revenue:2500,  gratuity:350,  deposit:2500,  depositDate:'2026-03-02', depositMethod:'Wire Transfer', paymentStatus:'paid', paymentMethod:'Wire Transfer', contractStatus:'Signed', customer:{ name:'Carla Mendez',    email:'c.mendez@example.com',   phone:'+1 305 441 7720', occasion:'Birthday'       }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com' }, captain:'Jorge Yossri',       stew:'Claudia Amador',  expenses:[] },
+  'BND-W02': { ref:'#BND-W02', status:'confirmed', date:'Mar 12, 2026', dateSort:'2026-03-12', time:'11:00 AM', vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:6, guests:8,  addons:['Catering'],                  revenue:3500,  gratuity:500,  deposit:3500,  depositDate:'2026-03-05', depositMethod:'Zelle',         paymentStatus:'paid', paymentMethod:'Zelle',         contractStatus:'Signed', customer:{ name:'Patrick Duvall',  email:'p.duvall@example.com',   phone:'+1 786 900 3344', occasion:'Anniversary'    }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Jorge Yossri',       stew:'Macla Palomino',  expenses:[] },
+  'BND-W03': { ref:'#BND-W03', status:'confirmed', date:'Mar 15, 2026', dateSort:'2026-03-15', time:'9:00 AM',  vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:8, guests:7,  addons:['DJ','Alcohol Package'],      revenue:4500,  gratuity:650,  deposit:4500,  depositDate:'2026-03-07', depositMethod:'Credit Card',   paymentStatus:'paid', paymentMethod:'Credit Card',   contractStatus:'Signed', customer:{ name:'Luis Herrera',    email:'l.herrera@example.com',  phone:'+1 305 772 9910', occasion:'Corporate'      }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com' }, captain:'Jorge Yossri',       stew:'Claudia Amador',  expenses:[{desc:'Fuel overage', amt:120}] },
+
+  // Galeon 530 Fly — commission deal, crew assigned
+  'BND-W04': { ref:'#BND-W04', status:'confirmed', date:'Mar 9, 2026',  dateSort:'2026-03-09', time:'2:00 PM',  vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:4, guests:10, addons:['DJ'],                        revenue:2500,  gratuity:300,  deposit:2500,  depositDate:'2026-03-03', depositMethod:'Cash',          paymentStatus:'paid', paymentMethod:'Cash',          contractStatus:'Signed', customer:{ name:'Tanya Briggs',    email:'t.briggs@example.com',   phone:'+1 954 220 8831', occasion:'Bachelorette'   }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[] },
+  'BND-W05': { ref:'#BND-W05', status:'confirmed', date:'Mar 11, 2026', dateSort:'2026-03-11', time:'10:00 AM', vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:6, guests:12, addons:['Catering','Chef'],           revenue:3000,  gratuity:400,  deposit:3000,  depositDate:'2026-03-04', depositMethod:'Wire Transfer', paymentStatus:'paid', paymentMethod:'Wire Transfer', contractStatus:'Signed', customer:{ name:'Marco Esposito',  email:'m.esposito@example.com', phone:'+39 06 445 9920', occasion:'Team Building'  }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com' }, captain:'Jose Carlo Arroyo',  stew:'Claudia Amador',  expenses:[] },
+  'BND-W06': { ref:'#BND-W06', status:'confirmed', date:'Mar 14, 2026', dateSort:'2026-03-14', time:'1:00 PM',  vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:6, guests:11, addons:['Alcohol Package'],           revenue:3000,  gratuity:450,  deposit:3000,  depositDate:'2026-03-06', depositMethod:'Zelle',         paymentStatus:'paid', paymentMethod:'Zelle',         contractStatus:'Signed', customer:{ name:'Diana Vega',      email:'d.vega@example.com',     phone:'+1 786 554 2290', occasion:'Birthday'       }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[{desc:'Ice & water', amt:60}] },
+
+  // Prestige 68 Yachtooma — fixed deal, captain + stew with per-hr rates + ice
+  'BND-W07': { ref:'#BND-W07', status:'confirmed', date:'Mar 10, 2026', dateSort:'2026-03-10', time:'10:00 AM', vessel:'Prestige 68 "Yachtooma"', vesselShort:'Yachtooma', duration:4, guests:8,  addons:['—'],                        revenue:2500,  gratuity:380,  deposit:2500,  depositDate:'2026-03-03', depositMethod:'Wire Transfer', paymentStatus:'paid', paymentMethod:'Wire Transfer', contractStatus:'Signed', customer:{ name:'Rachel Torres',   email:'r.torres@example.com',   phone:'+1 305 990 1122', occasion:'Sunset Cruise'  }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com' }, captain:'Antonio Avila',      stew:'Rocio Casas',     expenses:[] },
+  'BND-W08': { ref:'#BND-W08', status:'confirmed', date:'Mar 13, 2026', dateSort:'2026-03-13', time:'11:00 AM', vessel:'Prestige 68 "Yachtooma"', vesselShort:'Yachtooma', duration:6, guests:10, addons:['Catering'],                 revenue:3000,  gratuity:450,  deposit:3000,  depositDate:'2026-03-06', depositMethod:'Cash',          paymentStatus:'paid', paymentMethod:'Cash',          contractStatus:'Signed', customer:{ name:'Kevin Walsh',     email:'k.walsh@example.com',    phone:'+1 646 770 3389', occasion:'Corporate'      }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Alejandro Molero',   stew:'Varu Rodriguez',  expenses:[] },
+  'BND-W09': { ref:'#BND-W09', status:'confirmed', date:'Mar 15, 2026', dateSort:'2026-03-15', time:'10:00 AM', vessel:'Prestige 68 "Yachtooma"', vesselShort:'Yachtooma', duration:8, guests:12, addons:['DJ','Alcohol Package'],      revenue:3500,  gratuity:550,  deposit:3500,  depositDate:'2026-03-08', depositMethod:'Wire Transfer', paymentStatus:'paid', paymentMethod:'Wire Transfer', contractStatus:'Signed', customer:{ name:'Sandra Kim',      email:'s.kim@example.com',      phone:'+1 917 330 4410', occasion:'Birthday'       }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com' }, captain:'Antonio Avila',      stew:'Franchesca Alvernia', expenses:[{desc:'Ice & water', amt:25}] },
+
+  // Saxdor 42 — commission deal, Mikael solo captain
+  'BND-W10': { ref:'#BND-W10', status:'confirmed', date:'Mar 9, 2026',  dateSort:'2026-03-09', time:'9:00 AM',  vessel:"Saxdor 42'",            vesselShort:'Saxdor 42', duration:4, guests:8,  addons:['—'],                         revenue:1800,  gratuity:220,  deposit:1800,  depositDate:'2026-03-02', depositMethod:'Zelle',         paymentStatus:'paid', paymentMethod:'Zelle',         contractStatus:'Signed', customer:{ name:'Felix Romero',    email:'f.romero@example.com',   phone:'+1 305 661 8840', occasion:'Bachelor'       }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Mikael Gation',      stew:null,              expenses:[] },
+  'BND-W11': { ref:'#BND-W11', status:'confirmed', date:'Mar 12, 2026', dateSort:'2026-03-12', time:'10:00 AM', vessel:"Saxdor 42'",            vesselShort:'Saxdor 42', duration:6, guests:10, addons:['Alcohol Package'],           revenue:2200,  gratuity:300,  deposit:2200,  depositDate:'2026-03-05', depositMethod:'Cash',          paymentStatus:'paid', paymentMethod:'Cash',          contractStatus:'Signed', customer:{ name:'Bianca Russo',    email:'b.russo@example.com',    phone:'+1 786 443 2210', occasion:'Birthday'       }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com' }, captain:'Mikael Gation',      stew:null,              expenses:[] },
+  'BND-W12': { ref:'#BND-W12', status:'confirmed', date:'Mar 14, 2026', dateSort:'2026-03-14', time:'11:00 AM', vessel:"Saxdor 42'",            vesselShort:'Saxdor 42', duration:8, guests:12, addons:['DJ'],                        revenue:2700,  gratuity:380,  deposit:2700,  depositDate:'2026-03-07', depositMethod:'Wire Transfer', paymentStatus:'paid', paymentMethod:'Wire Transfer', contractStatus:'Signed', customer:{ name:'Omar Sheikh',     email:'o.sheikh@example.com',   phone:'+1 305 880 5530', occasion:'Corporate'      }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Mikael Gation',      stew:null,              expenses:[{desc:'Ice & water', amt:25}] },
+
+  // Beneteau 30 — fixed deal, direct crew
+  'BND-W13': { ref:'#BND-W13', status:'confirmed', date:'Mar 10, 2026', dateSort:'2026-03-10', time:'2:00 PM',  vessel:'Beneteau 30',           vesselShort:'Beneteau',  duration:4, guests:6,  addons:['—'],                         revenue:1000,  gratuity:150,  deposit:1000,  depositDate:'2026-03-04', depositMethod:'Zelle',         paymentStatus:'paid', paymentMethod:'Zelle',         contractStatus:'Signed', customer:{ name:'Amy Chen',        email:'a.chen@example.com',     phone:'+1 305 550 7712', occasion:'Sunset Cruise'  }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com' }, captain:'Nathan Arcia',       stew:null,              expenses:[] },
+  'BND-W14': { ref:'#BND-W14', status:'confirmed', date:'Mar 13, 2026', dateSort:'2026-03-13', time:'10:00 AM', vessel:'Beneteau 30',           vesselShort:'Beneteau',  duration:6, guests:8,  addons:['—'],                         revenue:1200,  gratuity:180,  deposit:1200,  depositDate:'2026-03-06', depositMethod:'Cash',          paymentStatus:'paid', paymentMethod:'Cash',          contractStatus:'Signed', customer:{ name:'David Park',      email:'d.park@example.com',     phone:'+1 786 334 9900', occasion:'Birthday'       }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Nathan Arcia',       stew:null,              expenses:[] },
+
+  // Pardo 53 — fixed deal
+  'BND-W15': { ref:'#BND-W15', status:'confirmed', date:'Mar 11, 2026', dateSort:'2026-03-11', time:'11:00 AM', vessel:'Pardo 53',              vesselShort:'Pardo',     duration:4, guests:8,  addons:['Alcohol Package'],           revenue:2100,  gratuity:300,  deposit:2100,  depositDate:'2026-03-04', depositMethod:'Wire Transfer', paymentStatus:'paid', paymentMethod:'Wire Transfer', contractStatus:'Signed', customer:{ name:'George Mitchell', email:'g.mitch@example.com',    phone:'+1 212 880 4430', occasion:'Anniversary'    }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com' }, captain:'Gonzalo Vriglino',   stew:null,              expenses:[] },
+  'BND-W16': { ref:'#BND-W16', status:'confirmed', date:'Mar 14, 2026', dateSort:'2026-03-14', time:'10:00 AM', vessel:'Pardo 53',              vesselShort:'Pardo',     duration:6, guests:10, addons:['Catering'],                  revenue:2600,  gratuity:380,  deposit:2600,  depositDate:'2026-03-07', depositMethod:'Zelle',         paymentStatus:'paid', paymentMethod:'Zelle',         contractStatus:'Signed', customer:{ name:'Nina Volkov',     email:'n.volkov@example.com',   phone:'+1 305 770 6610', occasion:'Corporate'      }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Gonzalo Vriglino',   stew:null,              expenses:[] },
+
+  // Sunseeker 64 — fixed deal (Tsion)
+  'BND-W17': { ref:'#BND-W17', status:'confirmed', date:'Mar 10, 2026', dateSort:'2026-03-10', time:'9:00 AM',  vessel:'Sunseeker Predator 64', vesselShort:'Sunseeker',  duration:4, guests:7,  addons:['—'],                        revenue:1500,  gratuity:220,  deposit:1500,  depositDate:'2026-03-03', depositMethod:'Cash',          paymentStatus:'paid', paymentMethod:'Cash',          contractStatus:'Signed', customer:{ name:'Sara Johansson',  email:'s.johansson@example.com',phone:'+1 954 331 7721', occasion:'Birthday'       }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com' }, captain:'Jesus Diaz',         stew:null,              expenses:[] },
+  'BND-W18': { ref:'#BND-W18', status:'confirmed', date:'Mar 13, 2026', dateSort:'2026-03-13', time:'2:00 PM',  vessel:'Sunseeker Predator 64', vesselShort:'Sunseeker',  duration:6, guests:9,  addons:['Alcohol Package'],          revenue:2000,  gratuity:300,  deposit:2000,  depositDate:'2026-03-06', depositMethod:'Wire Transfer', paymentStatus:'paid', paymentMethod:'Wire Transfer', contractStatus:'Signed', customer:{ name:'Carlos Figo',     email:'c.figo@example.com',     phone:'+1 786 220 9940', occasion:'Sunset Cruise'  }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Jesus Diaz',         stew:null,              expenses:[] },
+  'BND-W19': { ref:'#BND-W19', status:'confirmed', date:'Mar 15, 2026', dateSort:'2026-03-15', time:'11:00 AM', vessel:'Sunseeker Predator 64', vesselShort:'Sunseeker',  duration:8, guests:11, addons:['DJ','Catering'],            revenue:2500,  gratuity:380,  deposit:2500,  depositDate:'2026-03-08', depositMethod:'Zelle',         paymentStatus:'paid', paymentMethod:'Zelle',         contractStatus:'Signed', customer:{ name:'Mia Fontaine',    email:'mia.f@example.com',      phone:'+1 305 660 3312', occasion:'Bachelorette'   }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com' }, captain:'Jesus Diaz',         stew:null,              expenses:[{desc:'Fuel surcharge', amt:100}] },
+
+  // 80' Sunseeker Start Me Up — fixed deal, external mgmt
+  'BND-W20': { ref:'#BND-W20', status:'confirmed', date:'Mar 9, 2026',  dateSort:'2026-03-09', time:'10:00 AM', vessel:'80\' Sunseeker "Start Me Up"', vesselShort:'Start Me Up', duration:4, guests:10, addons:['DJ'],               revenue:4600,  gratuity:600,  deposit:4600,  depositDate:'2026-03-02', depositMethod:'Wire Transfer', paymentStatus:'paid', paymentMethod:'Wire Transfer', contractStatus:'Signed', customer:{ name:'Alex Brennan',    email:'a.brennan@example.com',  phone:'+1 212 440 8830', occasion:'Corporate'      }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:null,                 stew:null,              expenses:[] },
+  'BND-W21': { ref:'#BND-W21', status:'confirmed', date:'Mar 12, 2026', dateSort:'2026-03-12', time:'11:00 AM', vessel:'80\' Sunseeker "Start Me Up"', vesselShort:'Start Me Up', duration:6, guests:14, addons:['Catering','Chef'],  revenue:5600,  gratuity:700,  deposit:5600,  depositDate:'2026-03-05', depositMethod:'Zelle',         paymentStatus:'paid', paymentMethod:'Zelle',         contractStatus:'Signed', customer:{ name:'Helena Marsh',    email:'h.marsh@example.com',    phone:'+1 646 554 2201', occasion:'Birthday'       }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com' }, captain:null,                 stew:null,              expenses:[] },
+  'BND-W22': { ref:'#BND-W22', status:'confirmed', date:'Mar 15, 2026', dateSort:'2026-03-15', time:'2:00 PM',  vessel:'80\' Sunseeker "Start Me Up"', vesselShort:'Start Me Up', duration:8, guests:16, addons:['DJ','Alcohol Package'], revenue:6600,  gratuity:900,  deposit:6600,  depositDate:'2026-03-08', depositMethod:'Credit Card',   paymentStatus:'paid', paymentMethod:'Credit Card',   contractStatus:'Signed', customer:{ name:'Victor Santos',   email:'v.santos@example.com',   phone:'+1 786 990 4450', occasion:'Anniversary'    }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:null,                 stew:null,              expenses:[] },
 
   // ── EARLIER HISTORY ──
   'BND-009': { ref:'#BND-009', status:'confirmed', date:'Feb 20, 2026', dateSort:'2026-02-20', time:'10:00 AM', vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:6, guests:11, addons:['Chef'],                      revenue:3000,  gratuity:250,  deposit:3000,  depositDate:'2026-02-04', depositMethod:'Zelle',         paymentStatus:'paid',     paymentMethod:'Zelle',         contractStatus:'Signed',   customer:{ name:'Luca Ferretti',   email:'luca.f@example.com',     phone:'+39 02 8844 1122',occasion:'Team Dinner'    }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[] },
@@ -13239,6 +13871,174 @@ document.getElementById('inv-overlay').addEventListener('click', function(e) {
     <div class="admin-nav-item drawer-nav-item drawer-admin-only" onclick="drawerNav('users')"><span class="admin-nav-icon">🔐</span> Users & Access</div>
   </div>
 </div>
+<!-- ══ CUSTOM CALENDAR PICKER OVERLAY ══ -->
+<div class="cal-overlay" id="cal-overlay" onclick="if(event.target===this)closeCalPicker()">
+  <div class="cal-picker" id="cal-picker">
+    <div class="cal-header">
+      <button class="cal-nav" onclick="calChangeMonth(-1)">&#8249;</button>
+      <div class="cal-month-label" id="cal-month-label"></div>
+      <button class="cal-nav" onclick="calChangeMonth(1)">&#8250;</button>
+      <button class="cal-close" onclick="closeCalPicker()">✕</button>
+    </div>
+    <div class="cal-weekdays">
+      <div class="cal-weekday">Su</div><div class="cal-weekday">Mo</div>
+      <div class="cal-weekday">Tu</div><div class="cal-weekday">We</div>
+      <div class="cal-weekday">Th</div><div class="cal-weekday">Fr</div>
+      <div class="cal-weekday">Sa</div>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+    <div class="cal-legend">
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(76,175,125,0.4);border:1px solid #4caf7d;"></div> Available</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(255,193,7,0.3);border:1px solid #ffc107;"></div> Partial</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(224,92,92,0.2);border:1px solid rgba(224,92,92,0.4);"></div> Booked</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--gold);"></div> Selected</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CALENDAR PICKER STATE ──
+let calActiveVessel = null;
+let calYear  = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+let calEvents = [];
+
+async function openCalPicker(vesselId) {
+  calActiveVessel = vesselId;
+  const today = new Date();
+  calYear  = today.getFullYear();
+  calMonth = today.getMonth();
+
+  document.getElementById('cal-overlay').classList.add('active');
+  document.getElementById('cal-grid').innerHTML = '<div class="cal-loading">Loading availability...</div>';
+  updateCalMonthLabel();
+
+  // Clear cache to always get fresh data
+  delete calendarCache[vesselId];
+
+  // Fetch events for this vessel
+  calEvents = await fetchEvents(vesselId);
+  renderCalGrid();
+}
+
+function closeCalPicker() {
+  document.getElementById('cal-overlay').classList.remove('active');
+  calActiveVessel = null;
+}
+
+function calChangeMonth(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0)  { calMonth = 11; calYear--; }
+  updateCalMonthLabel();
+  renderCalGrid();
+}
+
+function updateCalMonthLabel() {
+  const label = new Date(calYear, calMonth, 1).toLocaleString('en-US', { month: 'long', year: 'numeric' });
+  document.getElementById('cal-month-label').textContent = label;
+}
+
+function renderCalGrid() {
+  const grid  = document.getElementById('cal-grid');
+  const today = new Date(); today.setHours(0,0,0,0);
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const hasCalendar = !!VESSEL_CALENDARS[calActiveVessel];
+
+  // Get currently selected date
+  const selectedVal = document.getElementById(`${calActiveVessel}-date`)?.value;
+
+  let html = '';
+  for (let i = 0; i < firstDay; i++) html += '<div class="cal-day empty"></div>';
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    // Fix timezone: build date in LOCAL time, format as YYYY-MM-DD without UTC conversion
+    const dateObj = new Date(calYear, calMonth, d);
+    const mm = String(calMonth + 1).padStart(2, '0');
+    const dd = String(d).padStart(2, '0');
+    const dateStr = `${calYear}-${mm}-${dd}`;
+
+    const isPast     = dateObj < today;
+    const isToday    = dateObj.getTime() === today.getTime();
+    const isSelected = selectedVal === dateStr;
+
+    if (isPast) {
+      html += `<div class="cal-day past">${d}</div>`;
+      continue;
+    }
+
+    if (!hasCalendar) {
+      // No calendar — show all future as available
+      let cls = 'cal-day available';
+      if (isToday)    cls += ' today';
+      if (isSelected) cls += ' selected';
+      html += `<div class="${cls}" onclick="calSelectDate('${dateStr}')">${d}</div>`;
+      continue;
+    }
+
+    // Check day status using cached events
+    const dayEvs   = eventsOnDate(calEvents, dateStr);
+    const blocked  = getBlockedHours(calEvents, dateStr);
+    const totalSlots = 13; // 8am–8pm
+    let status = 'open';
+    if (dayEvs.length > 0) {
+      if (blocked.size >= totalSlots) status = 'full';
+      else if (blocked.size > 0)      status = 'partial';
+    }
+
+    let cls = 'cal-day';
+    let dot = '';
+    if (isSelected) {
+      cls += ' selected';
+    } else if (status === 'full') {
+      cls += ' booked';
+    } else if (status === 'partial') {
+      cls += ' partial-day';
+      dot = '<span class="cal-dot partial"></span>';
+    } else {
+      cls += ' available';
+    }
+    if (isToday && status !== 'full') cls += ' today';
+
+    const clickable = status !== 'full' && !isSelected;
+    html += `<div class="${cls}" ${clickable ? `onclick="calSelectDate('${dateStr}')"` : ''}>${d}${dot}</div>`;
+  }
+
+  grid.innerHTML = html;
+}
+
+function calSelectDate(dateStr) {
+  if (!calActiveVessel) return;
+
+  // Set hidden input value (already local YYYY-MM-DD, no timezone issue)
+  document.getElementById(`${calActiveVessel}-date`).value = dateStr;
+
+  // Format display date in local time
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dateObj = new Date(y, m - 1, d);
+  const formatted = dateObj.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
+
+  const trigger = document.getElementById(`${calActiveVessel}-cal-trigger`);
+  document.getElementById(`${calActiveVessel}-date-display`).textContent = formatted;
+  if (trigger) { trigger.classList.add('has-value'); trigger.classList.remove('error'); }
+
+  // Update time slots — grey out blocked hours
+  updateTimeSlotsForDate(calActiveVessel, dateStr);
+
+  // Show note
+  const dayEvs  = eventsOnDate(calEvents, dateStr);
+  const blocked = getBlockedHours(calEvents, dateStr);
+  if (dayEvs.length > 0 && blocked.size > 0) {
+    showDateNote(calActiveVessel, `✓ Partially available — ${blocked.size} time slot${blocked.size > 1 ? 's' : ''} unavailable. Select an available departure time below.`, 'success');
+  } else {
+    showDateNote(calActiveVessel, '✓ This date is fully available.', 'success');
+  }
+
+  renderCalGrid();
+  setTimeout(closeCalPicker, 280);
+}
+</script>
 
 </body>
 </html>
