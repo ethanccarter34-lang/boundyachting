@@ -35,38 +35,52 @@
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 48px;
     height: 72px;
-    background: rgba(10,22,40,0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(184,155,94,0.2);
+    background: rgba(10,22,40,0.97);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(184,155,94,0.15);
   }
 
   .logo {
     font-family: 'Cormorant Garamond', serif;
     font-size: 26px; font-weight: 300; letter-spacing: 6px;
     color: var(--white); text-transform: uppercase; text-decoration: none;
+    flex-shrink: 0;
   }
   .logo span { color: var(--gold); }
 
-  nav { display: flex; align-items: center; gap: 0; }
+  nav {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 0;
+    border: 1px solid rgba(184,155,94,0.12);
+    background: rgba(255,255,255,0.02);
+  }
 
   nav a {
-    font-size: 11px; font-weight: 500; letter-spacing: 2px;
-    text-transform: uppercase; color: rgba(255,255,255,0.7);
-    text-decoration: none; padding: 26px 20px;
-    border-bottom: 2px solid transparent;
-    transition: color 0.2s, border-color 0.2s;
-    position: relative;
+    font-size: 10px; font-weight: 600; letter-spacing: 2.5px;
+    text-transform: uppercase; color: rgba(255,255,255,0.45);
+    text-decoration: none; padding: 0 28px; height: 40px;
+    display: flex; align-items: center;
+    border-right: 1px solid rgba(184,155,94,0.12);
+    transition: color 0.2s, background 0.2s;
+    position: relative; white-space: nowrap;
   }
-  nav a:hover, nav a.active {
-    color: var(--gold); border-bottom-color: var(--gold);
+  nav a:last-child { border-right: none; }
+  nav a:hover { color: rgba(255,255,255,0.9); background: rgba(184,155,94,0.06); }
+  nav a.active {
+    color: var(--gold);
+    background: rgba(184,155,94,0.08);
+  }
+  nav a.active::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
   }
 
   .header-cta {
-    font-size: 11px; font-weight: 600; letter-spacing: 2px;
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
     text-transform: uppercase; color: var(--navy);
     background: var(--gold); border: none; cursor: pointer;
-    padding: 10px 24px; text-decoration: none;
-    transition: background 0.2s;
+    padding: 10px 22px; text-decoration: none;
+    transition: background 0.2s; flex-shrink: 0; white-space: nowrap;
   }
   .header-cta:hover { background: var(--gold-light); }
 
@@ -337,6 +351,135 @@
   .info-block-link::after { content: '→'; transition: transform 0.2s; }
   .info-block-link:hover::after { transform: translateX(4px); }
 
+  /* ── CONTACT PANEL ── */
+  .contact-wrap {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    min-height: 600px;
+  }
+  .contact-left {
+    padding: 80px 64px;
+    background: rgba(255,255,255,0.01);
+    border-right: 1px solid rgba(184,155,94,0.1);
+  }
+  .contact-right {
+    padding: 80px 64px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(184,155,94,0.02);
+  }
+  .contact-items { display: flex; flex-direction: column; gap: 2px; margin-top: 8px; }
+  .contact-item {
+    display: flex; align-items: center; gap: 20px;
+    padding: 22px 24px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(184,155,94,0.1);
+    text-decoration: none; color: inherit;
+    transition: background 0.2s, border-color 0.2s;
+    position: relative;
+  }
+  .contact-item:hover { background: rgba(184,155,94,0.05); border-color: rgba(184,155,94,0.3); }
+  .contact-item-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    background: rgba(184,155,94,0.08);
+    border: 1px solid rgba(184,155,94,0.2);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold);
+  }
+  .contact-item-icon-wa { background: rgba(37,211,102,0.1); border-color: rgba(37,211,102,0.25); color: #25d366; }
+  .contact-item-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 4px;
+  }
+  .contact-item-value {
+    font-size: 15px; color: var(--white); font-family: 'Cormorant Garamond', serif;
+  }
+  .contact-item-whatsapp .contact-item-value { color: #25d366; }
+  .wa-badge {
+    margin-left: auto; font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: #25d366;
+    background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.2);
+    padding: 6px 12px; white-space: nowrap;
+  }
+  .contact-cta-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(184,155,94,0.15);
+    padding: 52px 48px; width: 100%; max-width: 420px;
+  }
+  .btn-whatsapp {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; padding: 14px 24px;
+    background: #25d366; color: #fff;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background 0.2s; font-family: inherit;
+  }
+  .btn-whatsapp:hover { background: #1da851; }
+  @media (max-width: 900px) {
+    .contact-wrap { grid-template-columns: 1fr; }
+    .contact-left { padding: 48px 24px; border-right: none; border-bottom: 1px solid rgba(184,155,94,0.1); }
+    .contact-right { padding: 48px 24px; }
+    .contact-cta-card { padding: 36px 28px; }
+  }
+
+  /* ── ABOUT US SECTION ── */
+  .about-section {
+    padding: 100px 64px;
+    background: linear-gradient(180deg, rgba(184,155,94,0.03) 0%, transparent 100%);
+    border-top: 1px solid rgba(184,155,94,0.1);
+    border-bottom: 1px solid rgba(184,155,94,0.1);
+  }
+  .about-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  }
+  .about-left {}
+  .about-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+  }
+  .about-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 54px); font-weight: 300;
+    color: var(--white); line-height: 1.15; margin-bottom: 28px;
+  }
+  .about-title em { font-style: italic; color: var(--gold-light); }
+  .about-body {
+    font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.9;
+    margin-bottom: 40px;
+  }
+  .about-divider {
+    width: 48px; height: 1px; background: var(--gold); opacity: 0.4; margin-bottom: 28px;
+  }
+  .about-right {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+  }
+  .about-stat {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(184,155,94,0.1);
+    padding: 36px 28px;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .about-stat:hover { background: rgba(184,155,94,0.04); }
+  .about-stat::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .about-stat:hover::before { opacity: 1; }
+  .about-stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px; font-weight: 300; color: var(--gold-light);
+    line-height: 1; margin-bottom: 8px;
+  }
+  .about-stat-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: rgba(255,255,255,0.35);
+  }
+  @media (max-width: 900px) {
+    .about-section { padding: 64px 24px; }
+    .about-inner { grid-template-columns: 1fr; gap: 48px; }
+    .about-right { grid-template-columns: 1fr 1fr; }
+  }
   /* ── SELL PANEL SPECIFIC ── */
   .two-col {
     display: grid; grid-template-columns: 1fr 1fr; min-height: 600px;
@@ -492,11 +635,14 @@
       background: rgba(10,22,40,0.98); backdrop-filter: blur(16px);
       padding: 16px 20px 28px; gap: 0; z-index: 99;
       border-bottom: 1px solid rgba(184,155,94,0.2);
+      border: none; /* reset pill border */
     }
     nav.open a {
       width: 100%; padding: 14px 0;
+      border-right: none;
       border-bottom: 1px solid rgba(255,255,255,0.06);
       font-size: 13px; letter-spacing: 2px;
+      height: auto; background: transparent;
     }
     nav.open a:last-child { border-bottom: none; }
 
@@ -571,11 +717,22 @@
   .vessel-back:hover { border-color: var(--gold); color: var(--gold); }
   .vessel-back::before { content: '←'; font-size: 14px; margin-right: 6px; }
 
-  .vessel-gallery { position: relative; height: 55vh; overflow: hidden; }
-  .gallery-main { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.4s ease; }
+  .vessel-gallery {
+    position: relative;
+    background: #060e1c;
+    overflow: hidden;
+    max-height: 80vh;
+  }
+  .gallery-main, .gallery-main-img {
+    display: block;
+    width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    transition: opacity 0.35s ease;
+  }
   .gallery-overlay {
     position: absolute; inset: 0;
-    background: linear-gradient(0deg, rgba(10,22,40,0.85) 0%, rgba(10,22,40,0.1) 50%);
+    background: linear-gradient(0deg, rgba(10,22,40,0.75) 0%, rgba(10,22,40,0.0) 40%);
     pointer-events: none;
   }
   .gallery-hero-info {
@@ -607,12 +764,13 @@
   .gallery-arrow.next { right: 24px; }
 
   .gallery-thumbs {
-    display: flex; gap: 4px; padding: 4px 64px;
-    background: rgba(6,14,28,0.97); overflow-x: auto; scrollbar-width: none;
+    display: flex; gap: 6px; padding: 8px 64px;
+    background: rgba(4,10,20,0.98); overflow-x: auto; scrollbar-width: none;
+    border-top: 1px solid rgba(255,255,255,0.06);
   }
   .gallery-thumbs::-webkit-scrollbar { display: none; }
   .gallery-thumb {
-    flex-shrink: 0; width: 100px; height: 66px;
+    flex-shrink: 0; width: 110px; height: 74px;
     object-fit: cover; cursor: pointer; opacity: 0.45;
     border: 2px solid transparent; transition: opacity 0.2s, border-color 0.2s;
   }
@@ -671,7 +829,7 @@
   }
   .lightbox-strip-thumb.active, .lightbox-strip-thumb:hover { opacity: 1; border-color: var(--gold); }
   /* Make main hero image clickable to open lightbox */
-  .gallery-main { cursor: zoom-in; }
+  .gallery-main, .gallery-main-img { cursor: zoom-in; }
   .gallery-thumb { cursor: zoom-in; }
   /* View all photos hint on hover */
   .vessel-gallery::after {
@@ -841,7 +999,8 @@
   /* ── VESSEL PAGE MOBILE ── */
   @media (max-width: 900px) {
     .vessel-back { top: 12px; left: 12px; padding: 8px 14px; font-size: 10px; }
-    .vessel-gallery { height: 56vw; min-height: 260px; }
+    .vessel-gallery { max-height: none; }
+    .gallery-main, .gallery-main-img { max-height: 60vw; min-height: 240px; }
     .gallery-hero-info { left: 16px; right: 16px; bottom: 16px; flex-direction: column; align-items: flex-start; gap: 6px; }
     .gallery-hero-title { font-size: clamp(28px, 8vw, 52px); }
     .gallery-hero-sub { font-size: 9px; letter-spacing: 2px; }
@@ -1628,11 +1787,7 @@
     <a href="#" class="tab-btn-nav" data-tab="buy">Buy</a>
     <a href="#" class="tab-btn-nav" data-tab="sell">Sell</a>
     <a href="#" class="tab-btn-nav" data-tab="manage">Manage</a>
-    <a href="#">News</a>
-    <a href="#">About</a>
-    <a href="#">Contacts</a>
   </nav>
-  <a href="#" class="header-cta">Enquire</a>
   <button class="admin-trigger" id="admin-trigger" onclick="openAdminLogin()" title="Admin">⚙</button>
   <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -1647,7 +1802,7 @@
     <h1 class="hero-title">The Yacht Experience<br><em>Reimagined</em></h1>
     <p class="hero-sub">Charter, crew, ownership, and management. One team, every detail handled, every time.</p>
     <div class="hero-actions">
-      <a href="#tabs" class="btn-primary">Explore Yachts</a>
+      <a href="#" class="btn-primary" onclick="openTab('contact'); document.getElementById('panel-contact').scrollIntoView({behavior:'smooth'}); return false;">Speak to a Charter Specialist</a>
       <a href="#" class="btn-outline" onclick="openFleet(); return false;">Book Now</a>
     </div>
   </div>
@@ -1671,6 +1826,10 @@
     <button class="tab-btn" data-tab="manage">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
       Manage
+    </button>
+    <button class="tab-btn" data-tab="contact">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      Contact
     </button>
   </div>
 
@@ -1719,6 +1878,38 @@
 
   </div>
 
+  <!-- ══ ABOUT US ══ -->
+  <div class="about-section">
+    <div class="about-inner">
+      <div class="about-left">
+        <div class="about-eyebrow">About Bound Yachting</div>
+        <h2 class="about-title">Miami's Premier<br><em>Yacht Team</em></h2>
+        <div class="about-divider"></div>
+        <p class="about-body">Bound Yachting is Miami's full-service yacht charter and fleet management company. We operate a handpicked fleet of vessels ranging from sleek day boats to world-class superyachts — each maintained to the highest standards and crewed by professionals who understand that every charter is a once-in-a-lifetime experience for the people on board.</p>
+        <p class="about-body">Beyond charters, we manage the complete relationship between vessel owners and the water — handling everything from crew placement and scheduling to ownership advisory and broker introductions. Whether you're stepping aboard for a four-hour sunset cruise or exploring ownership for the first time, Bound Yachting is the team behind every detail.</p>
+        <a href="mailto:Hello@boundyachting.com" class="btn-outline" style="display:inline-block;margin-top:8px;">Get in Touch</a>
+      </div>
+      <div class="about-right">
+        <div class="about-stat">
+          <div class="about-stat-num">16+</div>
+          <div class="about-stat-label">Vessels in Fleet</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">1st</div>
+          <div class="about-stat-label">Class Crew</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">24/7</div>
+          <div class="about-stat-label">Concierge Support</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">100%</div>
+          <div class="about-stat-label">Detail Handled</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ══ BUY PANEL ══ -->
   <div class="tab-panel" id="panel-buy">
     <div class="panel-hero">
@@ -1728,7 +1919,7 @@
         <div class="panel-tag">Yacht Ownership</div>
         <h2 class="panel-title">Ready to Own<br>Your Yacht?</h2>
         <p class="panel-desc">Owning a yacht shouldn't be complicated. Bound Yachting guides you through every step — from finding the right vessel to getting you on the water.</p>
-        <a href="mailto:info@boundyachting.com" class="btn-primary">Start the Conversation</a>
+        <a href="mailto:Hello@boundyachting.com" class="btn-primary">Start the Conversation</a>
       </div>
     </div>
 
@@ -1895,6 +2086,70 @@
     </div>
 
   </div>
+
+  <!-- ══ CONTACT PANEL ══ -->
+  <div class="tab-panel" id="panel-contact">
+    <div class="contact-wrap">
+      <div class="contact-left">
+        <div class="about-eyebrow">Get In Touch</div>
+        <h2 class="about-title">Speak to a<br><em>Charter Specialist</em></h2>
+        <div class="about-divider"></div>
+        <p class="about-body">Our team is available to help you find the perfect vessel, answer any questions about our fleet, or discuss charter packages tailored to your group. Reach out through any of the channels below and we'll get back to you promptly.</p>
+        <div class="contact-items">
+          <a href="mailto:Hello@boundyachting.com" class="contact-item">
+            <div class="contact-item-icon">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Email</div>
+              <div class="contact-item-value">Hello@boundyachting.com</div>
+            </div>
+          </a>
+          <a href="tel:+13059943999" class="contact-item">
+            <div class="contact-item-icon">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .99h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Phone</div>
+              <div class="contact-item-value">+1 305-994-3999</div>
+            </div>
+          </a>
+          <a href="tel:+18329957199" class="contact-item">
+            <div class="contact-item-icon">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .99h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Phone</div>
+              <div class="contact-item-value">+1 832-995-7199</div>
+            </div>
+          </a>
+          <a href="https://wa.me/message/DQPB7HM5MWR6C1" target="_blank" class="contact-item contact-item-whatsapp">
+            <div class="contact-item-icon contact-item-icon-wa">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">WhatsApp</div>
+              <div class="contact-item-value">Message us directly</div>
+            </div>
+            <div class="wa-badge">Open Chat →</div>
+          </a>
+        </div>
+      </div>
+      <div class="contact-right">
+        <div class="contact-cta-card">
+          <div class="about-eyebrow" style="margin-bottom:16px;">Ready to Book?</div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:#fff;margin-bottom:16px;line-height:1.2;">Let us build your<br>perfect charter</h3>
+          <p style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.8;margin-bottom:32px;">Tell us your date, group size, and occasion and we'll match you with the right vessel from our fleet of 16+ yachts. No obligation, just expert advice.</p>
+          <a href="mailto:Hello@boundyachting.com?subject=Charter%20Enquiry" class="btn-primary" style="display:block;text-align:center;margin-bottom:12px;">Email Us Now</a>
+          <a href="https://wa.me/message/DQPB7HM5MWR6C1" target="_blank" class="btn-whatsapp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Chat on WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <!-- FOOTER -->
@@ -2342,6 +2597,7 @@
     tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === tabName));
     tabPanels.forEach(p => p.classList.toggle('active', p.id === `panel-${tabName}`));
   }
+  window.openTab = activateTab;
 
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => activateTab(btn.dataset.tab));
@@ -2543,6 +2799,697 @@
       ],
       current: 0
     },
+    trinity166: {
+      images: [
+        'https://i.ibb.co/TDtB2jwH/165-Trinity-SWEET-CAROLINE-2-Drone-4.jpg',
+        'https://i.ibb.co/hJ2tg4nW/165-Trinity-SWEET-CAROLINE-2-Drone-7.jpg',
+        'https://i.ibb.co/Tx6PtKb1/165-Trinity-SWEET-CAROLINE-2-Drone-9.jpg',
+        'https://i.ibb.co/Z17K3TSk/165-Trinity-SWEET-CAROLINE-2-Drone-11.jpg',
+        'https://i.ibb.co/0V9Knj59/165-Trinity-SWEET-CAROLINE-2-Drone-14.jpg',
+        'https://i.ibb.co/xqjX18B6/165-Trinity-SWEET-CAROLINE-2-Drone-15.jpg',
+        'https://i.ibb.co/9mVnqKMR/165-Trinity-SWEET-CAROLINE-2-Drone-16.jpg',
+        'https://i.ibb.co/GfjpMFSG/165-Trinity-SWEET-CAROLINE-2-Drone-18.jpg',
+        'https://i.ibb.co/gL60ZqbD/165-Trinity-SWEET-CAROLINE-2-Drone-20.jpg',
+        'https://i.ibb.co/WWSsyJnX/165-Trinity-SWEET-CAROLINE-2-Drone-22.jpg',
+        'https://i.ibb.co/cXxF09Cf/165-Trinity-SWEET-CAROLINE-2-Drone-23.jpg',
+        'https://i.ibb.co/5hc4VcPY/165-Trinity-SWEET-CAROLINE-2-Drone-34.jpg',
+        'https://i.ibb.co/Y4vDhPq2/165-Trinity-SWEET-CAROLINE-2-Drone-35.jpg',
+        'https://i.ibb.co/JWK9Qhtc/165-Trinity-SWEET-CAROLINE-2-Drone-36.jpg',
+        'https://i.ibb.co/5hXLM1xR/165-Trinity-SWEET-CAROLINE-2-Drone-37.jpg',
+        'https://i.ibb.co/kV4WQpb7/165-Trinity-SWEET-CAROLINE-2-Drone-38.jpg',
+        'https://i.ibb.co/wrPmXHCt/165-Trinity-SWEET-CAROLINE-2-Drone-39.jpg',
+        'https://i.ibb.co/gbDCYndF/165-Trinity-SWEET-CAROLINE-2-Drone-42.jpg',
+        'https://i.ibb.co/67SRfxCc/165-Trinity-SWEET-CAROLINE-2-Drone-43.jpg',
+        'https://i.ibb.co/QFWNWLKB/165-Trinity-SWEET-CAROLINE-2-Drone-45.jpg',
+        'https://i.ibb.co/1Y5gt6JP/165-Trinity-SWEET-CAROLINE-2-Drone-48.jpg',
+        'https://i.ibb.co/mCJ5QH1v/ARV01612.jpg',
+        'https://i.ibb.co/RkjC4YMx/ARV01618.jpg',
+        'https://i.ibb.co/sGXh3p3/ARV01624.jpg',
+        'https://i.ibb.co/jvzCsGvN/ARV01642.jpg',
+        'https://i.ibb.co/qHqK19S/ARV01645.jpg',
+        'https://i.ibb.co/jkCVngx1/ARV01651.jpg',
+        'https://i.ibb.co/xK8GVSQK/ARV01654.jpg',
+        'https://i.ibb.co/8DdhX4L1/DJI-0927.jpg',
+        'https://i.ibb.co/R4BHQjfX/DJI-0953.jpg',
+        'https://i.ibb.co/QjY2FxBN/DJI-0970.jpg',
+        'https://i.ibb.co/YBNpzhgH/DJI-0971.jpg',
+        'https://i.ibb.co/tw8WJpvm/DJI-0972.jpg',
+        'https://i.ibb.co/KxYhCJHQ/DJI-0988.jpg',
+        'https://i.ibb.co/35bkDWLN/DJI-0989.jpg',
+        'https://i.ibb.co/9H3rdS3C/DJI-0991.jpg',
+        'https://i.ibb.co/Rky0431C/ARV01388.jpg',
+        'https://i.ibb.co/WvWM3Zpv/ARV01394.jpg',
+        'https://i.ibb.co/7d0sYN9F/ARV01415.jpg',
+        'https://i.ibb.co/MyNDJCwn/ARV01451.jpg',
+        'https://i.ibb.co/YFRqfHwY/ARV01472.jpg',
+        'https://i.ibb.co/pBFjx1zf/ARV01475.jpg',
+        'https://i.ibb.co/0pnDJ7Dq/ARV01484.jpg',
+        'https://i.ibb.co/7tQQ8jtq/ARV01502.jpg',
+        'https://i.ibb.co/ZRszGbnb/ARV01505.jpg',
+        'https://i.ibb.co/RkMbfWyc/ARV01526.jpg',
+        'https://i.ibb.co/HDjgLHXV/ARV01535.jpg',
+        'https://i.ibb.co/7NBFCvL8/ARV01544.jpg',
+        'https://i.ibb.co/7xwffc7m/ARV01547.jpg',
+        'https://i.ibb.co/ynr1DzpK/ARV01562.jpg',
+        'https://i.ibb.co/hxk5zMS9/ARV01567.jpg',
+        'https://i.ibb.co/21N0hggq/ARV01573.jpg',
+        'https://i.ibb.co/SYYJqgw/ARV01588.jpg',
+        'https://i.ibb.co/JW5GJJZz/ARV01597.jpg',
+        'https://i.ibb.co/fd7T8SXd/ARV01666a.jpg',
+        'https://i.ibb.co/NMGvcKw/ARV01675.jpg'
+      ],
+      current: 0
+    },
+    pershing116: {
+      images: [
+        'https://i.ibb.co/YFNsWScJ/PERSHING-16-Jan-2026-DRONE-5-MP4-00-05-18-13-Still021.jpg',
+        'https://i.ibb.co/vxyrMX8Y/PERSHING-16-Jan-2026-DRONE-5-MP4-00-05-27-35-Still022.jpg',
+        'https://i.ibb.co/bjRrfCB8/PERSHING-16-Jan-2026-DRONE-5-MP4-00-05-39-56-Still023.jpg',
+        'https://i.ibb.co/nqPZcsgW/PERSHING-16-Jan-2026-DRONE-5-MP4-00-02-07-17-Still008.jpg',
+        'https://i.ibb.co/XrBZXTYD/PERSHING-16-Jan-2026-DRONE-5-MP4-00-01-48-32-Still006.jpg',
+        'https://i.ibb.co/YzN01CR/PERSHING-16-Jan-2026-DRONE-5-MP4-00-01-31-46-Still004.jpg',
+        'https://i.ibb.co/KxJ0Kyr0/PERSHING-16-Jan-2026-DRONE-1-MP4-00-03-21-09-Still004.jpg',
+        'https://i.ibb.co/w1KzskR/PERSHING-16-Jan-2026-DRONE-1-MP4-00-02-54-16-Still003.jpg',
+        'https://i.ibb.co/CKjcN6xN/PERSHING-16-Jan-2026-DRONE-1-MP4-00-04-24-06-Still005.jpg',
+        'https://i.ibb.co/MyY0qw4g/PERSHING-16-Jan-2026-DRONE-1-MP4-00-06-07-22-Still008.jpg',
+        'https://i.ibb.co/9khQtgpm/PERSHING-16-Jan-2026-DRONE-1-MP4-00-06-49-09-Still012.jpg',
+        'https://i.ibb.co/r2vTRRsK/PERSHING-16-Jan-2026-DRONE-2-MP4-00-00-23-58-Still001.jpg',
+        'https://i.ibb.co/hFpZS0wQ/PERSHING-16-Jan-2026-DRONE-4-MP4-00-01-04-48-Still003.jpg',
+        'https://i.ibb.co/GQVcQDwK/PERSHING-16-Jan-2026-DRONE-4-MP4-00-02-58-09-Still008.jpg',
+        'https://i.ibb.co/QvPyq6Sf/PERSHING-16-Jan-2026-DRONE-4-MP4-00-03-44-25-Still011.jpg',
+        'https://i.ibb.co/xKBN4TWJ/PERSHING-16-Jan-2026-DRONE-4-MP4-00-03-51-47-Still012.jpg',
+        'https://i.ibb.co/ZRf7vtpW/PERSHING-16-Jan-2026-DRONE-4-MP4-00-04-15-25-Still016.jpg',
+        'https://i.ibb.co/TMK4dVfJ/PERSHING-16-Jan-2026-DRONE-4-MP4-00-04-33-58-Still018.jpg',
+        'https://i.ibb.co/rG3ny5C5/PERSHING-16-Jan-2026-DRONE-4-MP4-00-04-39-49-Still019.jpg',
+        'https://i.ibb.co/XfgmdjRc/PERSHING-16-Jan-2026-DRONE-4-MP4-00-05-01-40-Still024.jpg',
+        'https://i.ibb.co/PZbCDS4b/PERSHING-16-Jan-2026-DRONE-4-MP4-00-05-06-00-Still026.jpg',
+        'https://i.ibb.co/pvf0xpqG/PERSHING-16-Jan-2026-DRONE-4-MP4-00-05-08-02-Still027.jpg',
+        'https://i.ibb.co/1fNt71Z0/PERSHING-16-Jan-2026-DRONE-5-MP4-00-00-24-40-Still002.jpg',
+        'https://i.ibb.co/21rQKF9b/PERSHING-16-Jan-2026-DRONE-5-MP4-00-00-34-03-Still001.jpg',
+        'https://i.ibb.co/spkQj8MM/PERSHING-16-Jan-2026-DRONE-5-MP4-00-01-21-54-Still003.jpg',
+        'https://i.ibb.co/39Ps0Ms1/PERSHING-16-Jan-2026-DRONE-5-MP4-00-01-25-51-Still005.jpg',
+        'https://i.ibb.co/WWWPyY8D/PERSHING-16-Jan-2026-DRONE-5-MP4-00-02-15-11-Still009.jpg',
+        'https://i.ibb.co/mQBYVZf/PERSHING-16-Jan-2026-DRONE-5-MP4-00-03-15-52-Still015.jpg',
+        'https://i.ibb.co/s9TvgxMn/PERSHING-16-Jan-2026-DRONE-5-MP4-00-04-12-06-Still016.jpg',
+        'https://i.ibb.co/4w1bJqXW/PERSHING-16-Jan-2026-DRONE-5-MP4-00-04-16-03-Still017.jpg',
+        'https://i.ibb.co/vCWC3vRq/PERSHING-16-Jan-2026-DRONE-5-MP4-00-04-43-41-Still020.jpg',
+        'https://i.ibb.co/KxQb9r4t/PERSHING-16-Jan-2026-DRONE-5-MP4-00-05-51-16-Still024.jpg',
+        'https://i.ibb.co/ZC2F9yw/PERSHING-16-Jan-2026-DRONE-5-MP4-00-06-30-15-Still025.jpg',
+        'https://i.ibb.co/0RN00Tqz/PERSHING-16-Jan-2026-DRONE-5-MP4-00-06-56-53-Still026.jpg',
+        'https://i.ibb.co/gMCnSHfK/PERSHING-16-Jan-2026-DRONE-6-MP4-00-00-25-00-Still002.jpg',
+        'https://i.ibb.co/3y37VsWT/PERSHING-16-Jan-2026-DRONE-7-MP4-00-01-35-01-Still001.jpg',
+        'https://i.ibb.co/PZ9KxvXY/PERSHING-16-Jan-2026-DRONE-7-MP4-00-02-02-57-Still002.jpg',
+        'https://i.ibb.co/rRs3NgJN/PERSHING-16-Jan-2026-DRONE-7-MP4-00-02-37-06-Still004.jpg',
+        'https://i.ibb.co/LDtVx9xx/PERSHING-16-Jan-2026-DRONE-7-MP4-00-04-33-51-Still014.jpg',
+        'https://i.ibb.co/CKkNNPbx/PERSHING-16-Jan-2026-DRONE-8-MP4-00-01-16-04-Still003.jpg',
+        'https://i.ibb.co/NnmSSZ3s/PERSHING-16-Jan-2026-DRONE-8-MP4-00-04-17-32-Still008.jpg',
+        'https://i.ibb.co/TB9YFQxp/PERSHING-16-Jan-2026-DRONE-8-MP4-00-04-38-21-Still009.jpg',
+        'https://i.ibb.co/2734TWq8/PERSHING-16-Jan-2026-DRONE-9-MP4-00-01-40-06-Still002.jpg',
+        'https://i.ibb.co/7xRWqgP7/R5-6666.jpg',
+        'https://i.ibb.co/v4T2Pw0T/R5-6670.jpg',
+        'https://i.ibb.co/vxB9QnsH/R5-6674.jpg',
+        'https://i.ibb.co/YT33Wpss/R5-6686.jpg',
+        'https://i.ibb.co/N0qv5Q9/R5-6742-2.jpg',
+        'https://i.ibb.co/5hDp77gZ/R5-6758.jpg',
+        'https://i.ibb.co/rfkfmG7Q/R5-6766-2.jpg',
+        'https://i.ibb.co/GQHKThf3/R5-6770.jpg',
+        'https://i.ibb.co/FqbHc8Sn/R5-6774.jpg',
+        'https://i.ibb.co/YF5BKQPC/R5-6786.jpg',
+        'https://i.ibb.co/3y63Z0ff/R5-6791-HDR.jpg',
+        'https://i.ibb.co/7F9JtdB/R5-6794.jpg',
+        'https://i.ibb.co/0VhKWcDZ/R5-6798.jpg',
+        'https://i.ibb.co/9H9ZnNNx/R5-6801.jpg',
+        'https://i.ibb.co/9kBq5wXw/R5-6806-2.jpg',
+        'https://i.ibb.co/Z1phsxBG/R5-6806.jpg',
+        'https://i.ibb.co/nMjp2gWX/R5-6810.jpg',
+        'https://i.ibb.co/S79hgTwS/R5-6818.jpg',
+        'https://i.ibb.co/N21by3dw/R5-6830.jpg',
+        'https://i.ibb.co/zVjWLKvF/R5-6846.jpg',
+        'https://i.ibb.co/JWVKTxzM/R5-6850.jpg',
+        'https://i.ibb.co/nsc6drVg/R5-6854.jpg',
+        'https://i.ibb.co/jvS2VPCf/R5-6862.jpg',
+        'https://i.ibb.co/TB2p37mm/R5-6866.jpg',
+        'https://i.ibb.co/pq0Wqvq/R5-6870.jpg',
+        'https://i.ibb.co/3Yf9n9Mq/R5-6890.jpg',
+        'https://i.ibb.co/B5DXL7X4/R5-6894.jpg',
+        'https://i.ibb.co/zWZRz3b4/R5-6898-2.jpg',
+        'https://i.ibb.co/5hxkWHFw/R5-6898.jpg',
+        'https://i.ibb.co/YT1V2pV6/R5-6902.jpg',
+        'https://i.ibb.co/QjQL6HkT/R5-6905.jpg',
+        'https://i.ibb.co/HDGcRFKw/R5-6906.jpg',
+        'https://i.ibb.co/JjtnH0kC/R5-6910.jpg',
+        'https://i.ibb.co/WWQb59d8/R5-6914.jpg',
+        'https://i.ibb.co/BHDNMRn2/R5-6918.jpg',
+        'https://i.ibb.co/q3RmXGFq/R5-6922.jpg',
+        'https://i.ibb.co/mCJq149Y/R5-6930.jpg',
+        'https://i.ibb.co/M5jvSmbW/R5-6942.jpg',
+        'https://i.ibb.co/ccFB8DBV/R5-6945.jpg',
+        'https://i.ibb.co/C51byM7W/R5-6955-2.jpg',
+        'https://i.ibb.co/677XJ6Pd/R5-6955.jpg',
+        'https://i.ibb.co/V0hkRGt6/R5-6972-2.jpg',
+        'https://i.ibb.co/nqfHyL2x/R5-6975.jpg',
+        'https://i.ibb.co/WvsD5yv9/R5-6979-2.jpg',
+        'https://i.ibb.co/VcdvJY5g/Whats-App-Image-2025-12-23-at-6-05-03-PM-1.jpg',
+        'https://i.ibb.co/pjYq1d0k/Whats-App-Image-2025-12-23-at-6-05-03-PM-4.jpg',
+        'https://i.ibb.co/355xcX1b/Whats-App-Image-2025-12-23-at-6-05-04-PM-1.jpg'
+      ],
+      current: 0
+    },
+    trinity166: {
+      images: [
+        'https://i.ibb.co/TDtB2jwH/165-Trinity-SWEET-CAROLINE-2-Drone-4.jpg',
+        'https://i.ibb.co/hJ2tg4nW/165-Trinity-SWEET-CAROLINE-2-Drone-7.jpg',
+        'https://i.ibb.co/Tx6PtKb1/165-Trinity-SWEET-CAROLINE-2-Drone-9.jpg',
+        'https://i.ibb.co/Z17K3TSk/165-Trinity-SWEET-CAROLINE-2-Drone-11.jpg',
+        'https://i.ibb.co/0V9Knj59/165-Trinity-SWEET-CAROLINE-2-Drone-14.jpg',
+        'https://i.ibb.co/xqjX18B6/165-Trinity-SWEET-CAROLINE-2-Drone-15.jpg',
+        'https://i.ibb.co/9mVnqKMR/165-Trinity-SWEET-CAROLINE-2-Drone-16.jpg',
+        'https://i.ibb.co/GfjpMFSG/165-Trinity-SWEET-CAROLINE-2-Drone-18.jpg',
+        'https://i.ibb.co/gL60ZqbD/165-Trinity-SWEET-CAROLINE-2-Drone-20.jpg',
+        'https://i.ibb.co/WWSsyJnX/165-Trinity-SWEET-CAROLINE-2-Drone-22.jpg',
+        'https://i.ibb.co/cXxF09Cf/165-Trinity-SWEET-CAROLINE-2-Drone-23.jpg',
+        'https://i.ibb.co/5hc4VcPY/165-Trinity-SWEET-CAROLINE-2-Drone-34.jpg',
+        'https://i.ibb.co/Y4vDhPq2/165-Trinity-SWEET-CAROLINE-2-Drone-35.jpg',
+        'https://i.ibb.co/JWK9Qhtc/165-Trinity-SWEET-CAROLINE-2-Drone-36.jpg',
+        'https://i.ibb.co/5hXLM1xR/165-Trinity-SWEET-CAROLINE-2-Drone-37.jpg',
+        'https://i.ibb.co/kV4WQpb7/165-Trinity-SWEET-CAROLINE-2-Drone-38.jpg',
+        'https://i.ibb.co/wrPmXHCt/165-Trinity-SWEET-CAROLINE-2-Drone-39.jpg',
+        'https://i.ibb.co/gbDCYndF/165-Trinity-SWEET-CAROLINE-2-Drone-42.jpg',
+        'https://i.ibb.co/67SRfxCc/165-Trinity-SWEET-CAROLINE-2-Drone-43.jpg',
+        'https://i.ibb.co/QFWNWLKB/165-Trinity-SWEET-CAROLINE-2-Drone-45.jpg',
+        'https://i.ibb.co/1Y5gt6JP/165-Trinity-SWEET-CAROLINE-2-Drone-48.jpg',
+        'https://i.ibb.co/mCJ5QH1v/ARV01612.jpg',
+        'https://i.ibb.co/RkjC4YMx/ARV01618.jpg',
+        'https://i.ibb.co/sGXh3p3/ARV01624.jpg',
+        'https://i.ibb.co/jvzCsGvN/ARV01642.jpg',
+        'https://i.ibb.co/qHqK19S/ARV01645.jpg',
+        'https://i.ibb.co/jkCVngx1/ARV01651.jpg',
+        'https://i.ibb.co/xK8GVSQK/ARV01654.jpg',
+        'https://i.ibb.co/8DdhX4L1/DJI-0927.jpg',
+        'https://i.ibb.co/R4BHQjfX/DJI-0953.jpg',
+        'https://i.ibb.co/QjY2FxBN/DJI-0970.jpg',
+        'https://i.ibb.co/YBNpzhgH/DJI-0971.jpg',
+        'https://i.ibb.co/tw8WJpvm/DJI-0972.jpg',
+        'https://i.ibb.co/KxYhCJHQ/DJI-0988.jpg',
+        'https://i.ibb.co/35bkDWLN/DJI-0989.jpg',
+        'https://i.ibb.co/9H3rdS3C/DJI-0991.jpg',
+        'https://i.ibb.co/Rky0431C/ARV01388.jpg',
+        'https://i.ibb.co/WvWM3Zpv/ARV01394.jpg',
+        'https://i.ibb.co/7d0sYN9F/ARV01415.jpg',
+        'https://i.ibb.co/MyNDJCwn/ARV01451.jpg',
+        'https://i.ibb.co/YFRqfHwY/ARV01472.jpg',
+        'https://i.ibb.co/pBFjx1zf/ARV01475.jpg',
+        'https://i.ibb.co/0pnDJ7Dq/ARV01484.jpg',
+        'https://i.ibb.co/7tQQ8jtq/ARV01502.jpg',
+        'https://i.ibb.co/ZRszGbnb/ARV01505.jpg',
+        'https://i.ibb.co/RkMbfWyc/ARV01526.jpg',
+        'https://i.ibb.co/HDjgLHXV/ARV01535.jpg',
+        'https://i.ibb.co/7NBFCvL8/ARV01544.jpg',
+        'https://i.ibb.co/7xwffc7m/ARV01547.jpg',
+        'https://i.ibb.co/ynr1DzpK/ARV01562.jpg',
+        'https://i.ibb.co/hxk5zMS9/ARV01567.jpg',
+        'https://i.ibb.co/21N0hggq/ARV01573.jpg',
+        'https://i.ibb.co/SYYJqgw/ARV01588.jpg',
+        'https://i.ibb.co/JW5GJJZz/ARV01597.jpg',
+        'https://i.ibb.co/fd7T8SXd/ARV01666a.jpg',
+        'https://i.ibb.co/NMGvcKw/ARV01675.jpg'
+      ],
+      current: 0
+    },
+    pershing116: {
+      images: [
+        'https://i.ibb.co/YFNsWScJ/PERSHING-16-Jan-2026-DRONE-5-MP4-00-05-18-13-Still021.jpg',
+        'https://i.ibb.co/vxyrMX8Y/PERSHING-16-Jan-2026-DRONE-5-MP4-00-05-27-35-Still022.jpg',
+        'https://i.ibb.co/bjRrfCB8/PERSHING-16-Jan-2026-DRONE-5-MP4-00-05-39-56-Still023.jpg',
+        'https://i.ibb.co/nqPZcsgW/PERSHING-16-Jan-2026-DRONE-5-MP4-00-02-07-17-Still008.jpg',
+        'https://i.ibb.co/XrBZXTYD/PERSHING-16-Jan-2026-DRONE-5-MP4-00-01-48-32-Still006.jpg',
+        'https://i.ibb.co/YzN01CR/PERSHING-16-Jan-2026-DRONE-5-MP4-00-01-31-46-Still004.jpg',
+        'https://i.ibb.co/KxJ0Kyr0/PERSHING-16-Jan-2026-DRONE-1-MP4-00-03-21-09-Still004.jpg',
+        'https://i.ibb.co/w1KzskR/PERSHING-16-Jan-2026-DRONE-1-MP4-00-02-54-16-Still003.jpg',
+        'https://i.ibb.co/CKjcN6xN/PERSHING-16-Jan-2026-DRONE-1-MP4-00-04-24-06-Still005.jpg',
+        'https://i.ibb.co/MyY0qw4g/PERSHING-16-Jan-2026-DRONE-1-MP4-00-06-07-22-Still008.jpg',
+        'https://i.ibb.co/9khQtgpm/PERSHING-16-Jan-2026-DRONE-1-MP4-00-06-49-09-Still012.jpg',
+        'https://i.ibb.co/r2vTRRsK/PERSHING-16-Jan-2026-DRONE-2-MP4-00-00-23-58-Still001.jpg',
+        'https://i.ibb.co/hFpZS0wQ/PERSHING-16-Jan-2026-DRONE-4-MP4-00-01-04-48-Still003.jpg',
+        'https://i.ibb.co/GQVcQDwK/PERSHING-16-Jan-2026-DRONE-4-MP4-00-02-58-09-Still008.jpg',
+        'https://i.ibb.co/QvPyq6Sf/PERSHING-16-Jan-2026-DRONE-4-MP4-00-03-44-25-Still011.jpg',
+        'https://i.ibb.co/xKBN4TWJ/PERSHING-16-Jan-2026-DRONE-4-MP4-00-03-51-47-Still012.jpg',
+        'https://i.ibb.co/ZRf7vtpW/PERSHING-16-Jan-2026-DRONE-4-MP4-00-04-15-25-Still016.jpg',
+        'https://i.ibb.co/TMK4dVfJ/PERSHING-16-Jan-2026-DRONE-4-MP4-00-04-33-58-Still018.jpg',
+        'https://i.ibb.co/rG3ny5C5/PERSHING-16-Jan-2026-DRONE-4-MP4-00-04-39-49-Still019.jpg',
+        'https://i.ibb.co/XfgmdjRc/PERSHING-16-Jan-2026-DRONE-4-MP4-00-05-01-40-Still024.jpg',
+        'https://i.ibb.co/PZbCDS4b/PERSHING-16-Jan-2026-DRONE-4-MP4-00-05-06-00-Still026.jpg',
+        'https://i.ibb.co/pvf0xpqG/PERSHING-16-Jan-2026-DRONE-4-MP4-00-05-08-02-Still027.jpg',
+        'https://i.ibb.co/1fNt71Z0/PERSHING-16-Jan-2026-DRONE-5-MP4-00-00-24-40-Still002.jpg',
+        'https://i.ibb.co/21rQKF9b/PERSHING-16-Jan-2026-DRONE-5-MP4-00-00-34-03-Still001.jpg',
+        'https://i.ibb.co/spkQj8MM/PERSHING-16-Jan-2026-DRONE-5-MP4-00-01-21-54-Still003.jpg',
+        'https://i.ibb.co/39Ps0Ms1/PERSHING-16-Jan-2026-DRONE-5-MP4-00-01-25-51-Still005.jpg',
+        'https://i.ibb.co/WWWPyY8D/PERSHING-16-Jan-2026-DRONE-5-MP4-00-02-15-11-Still009.jpg',
+        'https://i.ibb.co/mQBYVZf/PERSHING-16-Jan-2026-DRONE-5-MP4-00-03-15-52-Still015.jpg',
+        'https://i.ibb.co/s9TvgxMn/PERSHING-16-Jan-2026-DRONE-5-MP4-00-04-12-06-Still016.jpg',
+        'https://i.ibb.co/4w1bJqXW/PERSHING-16-Jan-2026-DRONE-5-MP4-00-04-16-03-Still017.jpg',
+        'https://i.ibb.co/vCWC3vRq/PERSHING-16-Jan-2026-DRONE-5-MP4-00-04-43-41-Still020.jpg',
+        'https://i.ibb.co/KxQb9r4t/PERSHING-16-Jan-2026-DRONE-5-MP4-00-05-51-16-Still024.jpg',
+        'https://i.ibb.co/ZC2F9yw/PERSHING-16-Jan-2026-DRONE-5-MP4-00-06-30-15-Still025.jpg',
+        'https://i.ibb.co/0RN00Tqz/PERSHING-16-Jan-2026-DRONE-5-MP4-00-06-56-53-Still026.jpg',
+        'https://i.ibb.co/gMCnSHfK/PERSHING-16-Jan-2026-DRONE-6-MP4-00-00-25-00-Still002.jpg',
+        'https://i.ibb.co/3y37VsWT/PERSHING-16-Jan-2026-DRONE-7-MP4-00-01-35-01-Still001.jpg',
+        'https://i.ibb.co/PZ9KxvXY/PERSHING-16-Jan-2026-DRONE-7-MP4-00-02-02-57-Still002.jpg',
+        'https://i.ibb.co/rRs3NgJN/PERSHING-16-Jan-2026-DRONE-7-MP4-00-02-37-06-Still004.jpg',
+        'https://i.ibb.co/LDtVx9xx/PERSHING-16-Jan-2026-DRONE-7-MP4-00-04-33-51-Still014.jpg',
+        'https://i.ibb.co/CKkNNPbx/PERSHING-16-Jan-2026-DRONE-8-MP4-00-01-16-04-Still003.jpg',
+        'https://i.ibb.co/NnmSSZ3s/PERSHING-16-Jan-2026-DRONE-8-MP4-00-04-17-32-Still008.jpg',
+        'https://i.ibb.co/TB9YFQxp/PERSHING-16-Jan-2026-DRONE-8-MP4-00-04-38-21-Still009.jpg',
+        'https://i.ibb.co/2734TWq8/PERSHING-16-Jan-2026-DRONE-9-MP4-00-01-40-06-Still002.jpg',
+        'https://i.ibb.co/7xRWqgP7/R5-6666.jpg',
+        'https://i.ibb.co/v4T2Pw0T/R5-6670.jpg',
+        'https://i.ibb.co/vxB9QnsH/R5-6674.jpg',
+        'https://i.ibb.co/YT33Wpss/R5-6686.jpg',
+        'https://i.ibb.co/N0qv5Q9/R5-6742-2.jpg',
+        'https://i.ibb.co/5hDp77gZ/R5-6758.jpg',
+        'https://i.ibb.co/rfkfmG7Q/R5-6766-2.jpg',
+        'https://i.ibb.co/GQHKThf3/R5-6770.jpg',
+        'https://i.ibb.co/FqbHc8Sn/R5-6774.jpg',
+        'https://i.ibb.co/YF5BKQPC/R5-6786.jpg',
+        'https://i.ibb.co/3y63Z0ff/R5-6791-HDR.jpg',
+        'https://i.ibb.co/7F9JtdB/R5-6794.jpg',
+        'https://i.ibb.co/0VhKWcDZ/R5-6798.jpg',
+        'https://i.ibb.co/9H9ZnNNx/R5-6801.jpg',
+        'https://i.ibb.co/9kBq5wXw/R5-6806-2.jpg',
+        'https://i.ibb.co/Z1phsxBG/R5-6806.jpg',
+        'https://i.ibb.co/nMjp2gWX/R5-6810.jpg',
+        'https://i.ibb.co/S79hgTwS/R5-6818.jpg',
+        'https://i.ibb.co/N21by3dw/R5-6830.jpg',
+        'https://i.ibb.co/zVjWLKvF/R5-6846.jpg',
+        'https://i.ibb.co/JWVKTxzM/R5-6850.jpg',
+        'https://i.ibb.co/nsc6drVg/R5-6854.jpg',
+        'https://i.ibb.co/jvS2VPCf/R5-6862.jpg',
+        'https://i.ibb.co/TB2p37mm/R5-6866.jpg',
+        'https://i.ibb.co/pq0Wqvq/R5-6870.jpg',
+        'https://i.ibb.co/3Yf9n9Mq/R5-6890.jpg',
+        'https://i.ibb.co/B5DXL7X4/R5-6894.jpg',
+        'https://i.ibb.co/zWZRz3b4/R5-6898-2.jpg',
+        'https://i.ibb.co/5hxkWHFw/R5-6898.jpg',
+        'https://i.ibb.co/YT1V2pV6/R5-6902.jpg',
+        'https://i.ibb.co/QjQL6HkT/R5-6905.jpg',
+        'https://i.ibb.co/HDGcRFKw/R5-6906.jpg',
+        'https://i.ibb.co/JjtnH0kC/R5-6910.jpg',
+        'https://i.ibb.co/WWQb59d8/R5-6914.jpg',
+        'https://i.ibb.co/BHDNMRn2/R5-6918.jpg',
+        'https://i.ibb.co/q3RmXGFq/R5-6922.jpg',
+        'https://i.ibb.co/mCJq149Y/R5-6930.jpg',
+        'https://i.ibb.co/M5jvSmbW/R5-6942.jpg',
+        'https://i.ibb.co/ccFB8DBV/R5-6945.jpg',
+        'https://i.ibb.co/C51byM7W/R5-6955-2.jpg',
+        'https://i.ibb.co/677XJ6Pd/R5-6955.jpg',
+        'https://i.ibb.co/V0hkRGt6/R5-6972-2.jpg',
+        'https://i.ibb.co/nqfHyL2x/R5-6975.jpg',
+        'https://i.ibb.co/WvsD5yv9/R5-6979-2.jpg',
+        'https://i.ibb.co/VcdvJY5g/Whats-App-Image-2025-12-23-at-6-05-03-PM-1.jpg',
+        'https://i.ibb.co/pjYq1d0k/Whats-App-Image-2025-12-23-at-6-05-03-PM-4.jpg',
+        'https://i.ibb.co/355xcX1b/Whats-App-Image-2025-12-23-at-6-05-04-PM-1.jpg'
+      ],
+      current: 0
+    },
+    azimut116: {
+      images: [
+        'https://i.ibb.co/ZpP5y4R2/116-Azimut-Rylax-Drone-2.jpg',
+        'https://i.ibb.co/wFHgpDNp/116-Azimut-Rylax-Drone-3.jpg',
+        'https://i.ibb.co/JWC31gMJ/116-Azimut-Rylax-Drone-4.jpg',
+        'https://i.ibb.co/FqdyNMMX/116-Azimut-Rylax-Drone-5.jpg',
+        'https://i.ibb.co/dwmPnzHq/116-Azimut-Rylax-Drone-6.jpg',
+        'https://i.ibb.co/MxfnK89t/116-Azimut-Rylax-Drone-7.jpg',
+        'https://i.ibb.co/6JFdt6cC/116-Azimut-Rylax-Drone-8.jpg',
+        'https://i.ibb.co/gbwxPt06/116-Azimut-Rylax-Drone-9.jpg',
+        'https://i.ibb.co/6cp9nR4y/116-Azimut-Rylax-Drone-10.jpg',
+        'https://i.ibb.co/PG2j3d5L/116-Azimut-Rylax-Drone-11.jpg',
+        'https://i.ibb.co/LDxtpcW1/116-Azimut-Rylax-Drone-12.jpg',
+        'https://i.ibb.co/V0JPVvVs/116-Azimut-Rylax-Drone-13.jpg',
+        'https://i.ibb.co/xq86FZ5m/116-Azimut-Rylax-Drone-14.jpg',
+        'https://i.ibb.co/Dg1rQ41D/116-Azimut-Rylax-Drone-15.jpg',
+        'https://i.ibb.co/RkXj3nG8/116-Azimut-Rylax-Drone-16.jpg',
+        'https://i.ibb.co/6RgRtYd6/116-Azimut-Rylax-Drone-17.jpg',
+        'https://i.ibb.co/svmLSbLj/116-Azimut-Rylax-Drone-18.jpg',
+        'https://i.ibb.co/h1wQZ4pv/116-Azimut-Rylax-Drone-19.jpg',
+        'https://i.ibb.co/RkTxsg6K/116-Azimut-Rylax-Drone-20.jpg',
+        'https://i.ibb.co/67gSf3qt/116-Azimut-Rylax-Drone-21.jpg',
+        'https://i.ibb.co/mVm3gF0w/116-Azimut-Rylax-Drone-22.jpg',
+        'https://i.ibb.co/qYtd60Sc/116-Azimut-Rylax-Drone-23.jpg',
+        'https://i.ibb.co/BHVcYD0j/116-Azimut-Rylax-Drone-24.jpg',
+        'https://i.ibb.co/Kxnz2Xn7/116-Azimut-Rylax-Drone-25.jpg',
+        'https://i.ibb.co/6RMMb050/116-Azimut-Rylax-Drone-26.jpg',
+        'https://i.ibb.co/yFZ0WsZs/116-Azimut-Rylax-Drone-27.jpg',
+        'https://i.ibb.co/ks46mMCd/116-Azimut-Rylax-Drone-28.jpg',
+        'https://i.ibb.co/CswqGRfC/116-Azimut-Rylax-Drone-29.jpg',
+        'https://i.ibb.co/B28SPnWS/116-Azimut-Rylax-Drone-30.jpg',
+        'https://i.ibb.co/KZXPCCD/116-Azimut-Rylax-Drone-31.jpg',
+        'https://i.ibb.co/j9V5vQxg/116-Azimut-Rylax-Drone-32.jpg',
+        'https://i.ibb.co/pjv1tqQD/116-Azimut-Rylax-Drone-33-1.jpg',
+        'https://i.ibb.co/VpC6tJW2/116-Azimut-Rylax-Drone-33.jpg',
+        'https://i.ibb.co/DfCcjpQq/116-Azimut-Rylax-Drone-34.jpg',
+        'https://i.ibb.co/wZv6vSHt/116-Azimut-Rylax-Drone-35.jpg',
+        'https://i.ibb.co/0y64TD2Q/116-Azimut-Rylax-Drone-36.jpg',
+        'https://i.ibb.co/RTpVbRkg/116-Azimut-Rylax-Drone-37.jpg',
+        'https://i.ibb.co/DDgRsX1d/116-Azimut-Rylax-Drone-38.jpg',
+        'https://i.ibb.co/60yvkgR6/116-Azimut-Rylax-Drone-39.jpg',
+        'https://i.ibb.co/Z6BdfWxL/116-Azimut-Rylax-Drone-40.jpg',
+        'https://i.ibb.co/Hpgc6sqs/116-Azimut-Rylax-Drone-41.jpg',
+        'https://i.ibb.co/CsNF93th/116-Azimut-Rylax-Drone-42.jpg',
+        'https://i.ibb.co/hx66419j/116-Azimut-Rylax-Drone-43.jpg',
+        'https://i.ibb.co/BHD11WHQ/116-Azimut-Rylax-Drone-44.jpg',
+        'https://i.ibb.co/dJggqx0v/116-Azimut-Rylax-Drone-45.jpg',
+        'https://i.ibb.co/whpJP9Qj/116-Azimut-Rylax-Drone-46.jpg',
+        'https://i.ibb.co/BHGqywPy/116-Azimut-Rylax-Drone.jpg',
+        'https://i.ibb.co/fVvMv7B3/116-Azimut-Rylax-1.jpg',
+        'https://i.ibb.co/v6J2RWNr/116-Azimut-Rylax-2.jpg',
+        'https://i.ibb.co/hxbn9hBT/116-Azimut-Rylax-3.jpg',
+        'https://i.ibb.co/Lhvpgtc4/116-Azimut-Rylax-4.jpg',
+        'https://i.ibb.co/tTtXMVQr/116-Azimut-Rylax-5.jpg',
+        'https://i.ibb.co/XZjRzWkC/116-Azimut-Rylax-6.jpg',
+        'https://i.ibb.co/dsShB4r4/116-Azimut-Rylax-7.jpg',
+        'https://i.ibb.co/BVrQBWjB/116-Azimut-Rylax-8.jpg',
+        'https://i.ibb.co/svRZ7LzD/116-Azimut-Rylax-9.jpg',
+        'https://i.ibb.co/gZNQFfJ3/116-Azimut-Rylax-10.jpg',
+        'https://i.ibb.co/VcQDKmhB/116-Azimut-Rylax-11.jpg',
+        'https://i.ibb.co/s4ssmNg/116-Azimut-Rylax-12.jpg',
+        'https://i.ibb.co/TDJg5r3R/116-Azimut-Rylax-13.jpg',
+        'https://i.ibb.co/gLBddvz0/116-Azimut-Rylax-14.jpg',
+        'https://i.ibb.co/35cpPWQ5/116-Azimut-Rylax-15.jpg',
+        'https://i.ibb.co/kVx72G6h/116-Azimut-Rylax-16.jpg',
+        'https://i.ibb.co/SwCW39Zt/116-Azimut-Rylax-17.jpg',
+        'https://i.ibb.co/5WystY8V/116-Azimut-Rylax-18.jpg',
+        'https://i.ibb.co/FqxDvrBY/116-Azimut-Rylax-19.jpg',
+        'https://i.ibb.co/Q5kN4Yz/116-Azimut-Rylax-20.jpg',
+        'https://i.ibb.co/MkqyZ44V/116-Azimut-Rylax-21.jpg',
+        'https://i.ibb.co/HT2m0F0K/116-Azimut-Rylax-22.jpg',
+        'https://i.ibb.co/HTdQ35Bd/116-Azimut-Rylax-23.jpg',
+        'https://i.ibb.co/y7z9qhY/116-Azimut-Rylax-24.jpg',
+        'https://i.ibb.co/G4HzSYh6/116-Azimut-Rylax-25.jpg',
+        'https://i.ibb.co/hJffC4j2/116-Azimut-Rylax-26.jpg',
+        'https://i.ibb.co/XfZCX4bB/116-Azimut-Rylax-27.jpg',
+        'https://i.ibb.co/7JsbW1WY/116-Azimut-Rylax-28.jpg',
+        'https://i.ibb.co/Lhsy9V3s/116-Azimut-Rylax-29.jpg',
+        'https://i.ibb.co/zTzHqZ9L/116-Azimut-Rylax-30.jpg',
+        'https://i.ibb.co/MDbp13JG/116-Azimut-Rylax-31.jpg',
+        'https://i.ibb.co/sJ3wX3Rc/116-Azimut-Rylax-32.jpg',
+        'https://i.ibb.co/R4kDgDKy/116-Azimut-Rylax-33.jpg',
+        'https://i.ibb.co/fGdkGWnL/116-Azimut-Rylax-34.jpg',
+        'https://i.ibb.co/nZCwKP3/116-Azimut-Rylax-35.jpg',
+        'https://i.ibb.co/svDyxnLV/116-Azimut-Rylax-36.jpg',
+        'https://i.ibb.co/mCFCyTD5/116-Azimut-Rylax-37.jpg',
+        'https://i.ibb.co/TM22VXD2/116-Azimut-Rylax-38.jpg',
+        'https://i.ibb.co/Rkqr0pjv/116-Azimut-Rylax-39.jpg',
+        'https://i.ibb.co/8483YbLm/116-Azimut-Rylax-40.jpg',
+        'https://i.ibb.co/Mk3tnZDZ/116-Azimut-Rylax-41.jpg',
+        'https://i.ibb.co/rKp9wYGj/116-Azimut-Rylax-42.jpg',
+        'https://i.ibb.co/yFvrJSF5/116-Azimut-Rylax-43.jpg',
+        'https://i.ibb.co/VYCSX6z7/116-Azimut-Rylax-44.jpg',
+        'https://i.ibb.co/q3q01wS7/116-Azimut-Rylax-45.jpg',
+        'https://i.ibb.co/gLWZVzBG/116-Azimut-Rylax-46.jpg',
+        'https://i.ibb.co/zhCgKYLR/116-Azimut-Rylax-47.jpg',
+        'https://i.ibb.co/DH4tL0k9/116-Azimut-Rylax-48.jpg',
+        'https://i.ibb.co/Sw49vfrv/116-Azimut-Rylax-49.jpg',
+        'https://i.ibb.co/1Jr9hXzd/116-Azimut-Rylax-50.jpg',
+        'https://i.ibb.co/QFV4V7Ck/116-Azimut-Rylax-51.jpg',
+        'https://i.ibb.co/jk4q2W9d/116-Azimut-Rylax-52.jpg',
+        'https://i.ibb.co/YTPJzDpN/116-Azimut-Rylax-53.jpg',
+        'https://i.ibb.co/nssKGVzX/116-Azimut-Rylax-54.jpg',
+        'https://i.ibb.co/HD7gQNRT/116-Azimut-Rylax-55.jpg',
+        'https://i.ibb.co/qFjCGd0b/116-Azimut-Rylax-56.jpg',
+        'https://i.ibb.co/k6Pgrk4K/116-Azimut-Rylax-57.jpg',
+        'https://i.ibb.co/TDymMwSX/116-Azimut-Rylax-58.jpg',
+        'https://i.ibb.co/1J7cQtWp/116-Azimut-Rylax-59.jpg',
+        'https://i.ibb.co/svxBc83h/116-Azimut-Rylax-60.jpg',
+        'https://i.ibb.co/qYrqXJ07/116-Azimut-Rylax-61.jpg',
+        'https://i.ibb.co/nq8ZhK3G/116-Azimut-Rylax-62.jpg',
+        'https://i.ibb.co/5XPFJwLw/116-Azimut-Rylax-63.jpg',
+        'https://i.ibb.co/1GJqbDWY/116-Azimut-Rylax-64.jpg',
+        'https://i.ibb.co/jv18n4zp/116-Azimut-Rylax-65.jpg',
+        'https://i.ibb.co/fYDzMrZm/116-Azimut-Rylax-66.jpg',
+        'https://i.ibb.co/QjQsnDSY/116-Azimut-Rylax-67.jpg',
+        'https://i.ibb.co/8Dxqtrrb/116-Azimut-Rylax-68.jpg',
+        'https://i.ibb.co/70mnSpc/116-Azimut-Rylax-69.jpg',
+        'https://i.ibb.co/ZznKr9SP/116-Azimut-Rylax-70.jpg',
+        'https://i.ibb.co/cKVCBqjM/116-Azimut-Rylax-71.jpg',
+        'https://i.ibb.co/Z6qHP56v/116-Azimut-Rylax-72.jpg',
+        'https://i.ibb.co/HpnnzsMn/116-Azimut-Rylax-73.jpg',
+        'https://i.ibb.co/23YJDj6R/116-Azimut-Rylax-74.jpg',
+        'https://i.ibb.co/bRNd6XYt/116-Azimut-Rylax-75.jpg',
+        'https://i.ibb.co/gFLJGNhp/116-Azimut-Rylax-76.jpg',
+        'https://i.ibb.co/KcZ5KMv0/116-Azimut-Rylax-77.jpg',
+        'https://i.ibb.co/jkVHrXBh/116-Azimut-Rylax-78.jpg',
+        'https://i.ibb.co/4g4hR1dK/116-Azimut-Rylax-79.jpg',
+        'https://i.ibb.co/CK7FTPC4/116-Azimut-Rylax-80.jpg'
+      ],
+      current: 0
+    },
+    galeon680: {
+      images: [
+        'https://i.ibb.co/rRL2ydS2/DJI-0003.jpg',
+        'https://i.ibb.co/GvZHKqr4/DJI-0900.jpg',
+        'https://i.ibb.co/xSD7BtXC/DJI-0902.jpg',
+        'https://i.ibb.co/bjdjzHLV/DJI-0904.jpg',
+        'https://i.ibb.co/5Wd7W3b0/DJI-0906.jpg',
+        'https://i.ibb.co/ymsMvCns/DJI-0917.jpg',
+        'https://i.ibb.co/LzKYYpnn/A90-A6787-HDR.jpg',
+        'https://i.ibb.co/Y4LQyKFf/A90-A6816-HDR.jpg',
+        'https://i.ibb.co/8gyMqgx4/A90A6824.jpg',
+        'https://i.ibb.co/PGw0yy65/A90A6832.jpg',
+        'https://i.ibb.co/s997Y5QX/A90A6836.jpg',
+        'https://i.ibb.co/k6wX71FN/A90A6840.jpg',
+        'https://i.ibb.co/Vpj98Mqz/A90A6844.jpg',
+        'https://i.ibb.co/kgWFC0mX/A90A6848.jpg',
+        'https://i.ibb.co/JjZbBcBY/A90A6856.jpg',
+        'https://i.ibb.co/fdXM1DmK/A90A6860.jpg',
+        'https://i.ibb.co/G4xsXGGz/A90-A6872-HDR.jpg',
+        'https://i.ibb.co/ns7KwGVK/A90-A6876-HDR.jpg',
+        'https://i.ibb.co/QvkC363X/A90A6880.jpg',
+        'https://i.ibb.co/mFYpM4cH/A90A6884.jpg',
+        'https://i.ibb.co/RTR8xXZ7/A90A6888.jpg',
+        'https://i.ibb.co/6c6dhb4G/A90-A6895-HDR.jpg',
+        'https://i.ibb.co/gbhR8HK1/A90A6904.jpg',
+        'https://i.ibb.co/LjK3JLM/A90A6910.jpg',
+        'https://i.ibb.co/TSJvrYK/A90A6912.jpg',
+        'https://i.ibb.co/vC8jZhsp/A90A6920.jpg',
+        'https://i.ibb.co/CpYcHTm1/A90A6922.jpg',
+        'https://i.ibb.co/Kc1XM49m/A90-A6927-HDR.jpg',
+        'https://i.ibb.co/3YspRLvG/A90A6944.jpg',
+        'https://i.ibb.co/fbh3L2m/A90A6948.jpg',
+        'https://i.ibb.co/gbzr9Dnz/A90A6970.jpg',
+        'https://i.ibb.co/svw1mp8s/A90-A6975-HDR.jpg',
+        'https://i.ibb.co/sJ2MwFZQ/A90-A6983-HDR.jpg',
+        'https://i.ibb.co/n88yHm0Z/A90-A6997-HDR.jpg',
+        'https://i.ibb.co/WWSmKK7J/A90-A7003-HDR.jpg',
+        'https://i.ibb.co/zVVwhHN8/A90-A7019-HDR.jpg',
+        'https://i.ibb.co/sp2MKYBq/A90-A7027-HDR.jpg',
+        'https://i.ibb.co/mV1J29Jb/A90A7035.jpg',
+        'https://i.ibb.co/Ndcn94mJ/A90-A7043-HDR.jpg',
+        'https://i.ibb.co/Q7j1JS0S/A90-A7072-HDR.jpg',
+        'https://i.ibb.co/JStJt7Q/A90-A7082-HDR.jpg',
+        'https://i.ibb.co/spN9Fwx0/A90-A7088-HDR.jpg',
+        'https://i.ibb.co/Sw3gCNbm/A90-A7100-HDR.jpg',
+        'https://i.ibb.co/1Yybtzwy/A90-A7108-HDR-2.jpg',
+        'https://i.ibb.co/5ypmcQz/DJI-0890.jpg',
+        'https://i.ibb.co/XfXzNj7G/DJI-0895.jpg',
+        'https://i.ibb.co/hF6RCV35/DJI-0913.jpg',
+        'https://i.ibb.co/Kzyt6dVX/DJI-0915.jpg',
+        'https://i.ibb.co/Lz3Pss16/DJI-0921.jpg',
+        'https://i.ibb.co/1tgtQqsT/DJI-0922.jpg',
+        'https://i.ibb.co/bgswFwtP/DJI-0926.jpg',
+        'https://i.ibb.co/NgZqpphT/DJI-0928.jpg',
+        'https://i.ibb.co/xShDwPhX/DJI-0930.jpg',
+        'https://i.ibb.co/JjFRsHg1/DJI-0935.jpg',
+        'https://i.ibb.co/Pvv4rGyj/DJI-0936.jpg',
+        'https://i.ibb.co/FpQXWgZ/DJI-0979.jpg',
+        'https://i.ibb.co/cc08bZ17/DJI-0987.jpg',
+        'https://i.ibb.co/DfW9Md80/DJI-0995.jpg',
+        'https://i.ibb.co/270gzwXH/DJI-0997.jpg',
+        'https://i.ibb.co/DfJfjxW8/IMG-8199.jpg',
+        'https://i.ibb.co/vxNtbnt4/IMG-8214.jpg',
+        'https://i.ibb.co/k66gfSdQ/IMG-8217.jpg',
+        'https://i.ibb.co/Jjh4gmLN/IMG-8229.jpg',
+        'https://i.ibb.co/fVS0X9f8/IMG-8232.jpg',
+        'https://i.ibb.co/JjJRCfqv/IMG-8238.jpg',
+        'https://i.ibb.co/8WHwWby/IMG-8270.jpg',
+        'https://i.ibb.co/BHywKmS3/IMG-8279.jpg',
+        'https://i.ibb.co/DHKmgcrG/IMG-8281.jpg',
+        'https://i.ibb.co/x8fK7TNx/IMG-8287.jpg'
+      ],
+      current: 0
+    },
+    saxdor42: {
+      images: [
+        'https://i.ibb.co/35bjQMX0/ebe951cd-53eb-4bb2-a6e4-03d7b927efb5.jpg',
+        'https://i.ibb.co/JFWDcxw1/da9550bc-70a4-40b5-a125-5b0708e760cb.jpg',
+        'https://i.ibb.co/N6V2TQGY/d8fd9172-fa19-48f6-8856-cf57a9425c17.jpg',
+        'https://i.ibb.co/R1gkcVS/11d18a09-9427-4d61-a8cb-619751825367.jpg',
+        'https://i.ibb.co/GQRSJqS4/12c83419-8fd9-44ed-a333-a045f57255e2.jpg',
+        'https://i.ibb.co/1GQPMSNS/0c19abef-f2b8-462b-bae7-76639c6a5ccf.jpg',
+        'https://i.ibb.co/CKnsn174/0ff9c47b-7718-46cd-b10c-e3b5d321d9cf.jpg',
+        'https://i.ibb.co/0jtCZ172/2c4db6b4-5c3e-41f7-b8c8-495503851e31.jpg',
+        'https://i.ibb.co/Tx4KZqQr/2e5931c2-aa18-4be4-8598-18a187e65c7d.jpg',
+        'https://i.ibb.co/0RGNMK5t/2fe44c2b-0bc0-4221-b6e6-871ff0d29780.jpg',
+        'https://i.ibb.co/gbfGvSyZ/2fe5014c-9b43-4063-91a8-b958ed336569.jpg',
+        'https://i.ibb.co/WNTfY2HM/3b653cca-86f0-4847-aa4f-3c5d37369f42.jpg',
+        'https://i.ibb.co/1tbjDqsT/8ef0f9cd-39f0-4e76-8325-b329678e44ad.jpg',
+        'https://i.ibb.co/Mxq1S7CT/9d97eef2-9876-4085-9c2e-f3d3dad9a89e.jpg',
+        'https://i.ibb.co/F4wFHWwn/33a98506-d513-459a-a055-0bb31b7ed5da.jpg',
+        'https://i.ibb.co/5XMtr93Q/42ab2892-cc46-44be-9f7b-ac43b1528f4c.jpg',
+        'https://i.ibb.co/zTQCGR3M/50f7b074-7e41-4330-b0c9-44f238fbbb3c.jpg',
+        'https://i.ibb.co/tpZYgGpG/65f5fb0c-c581-491f-ae6e-2751c93502d5.jpg',
+        'https://i.ibb.co/FLpVrYqC/71f88861-d740-4202-8e57-4e6fbc88f1dd.jpg',
+        'https://i.ibb.co/PHYQWWk/80cd9998-00e5-4a9f-9ee3-64b43a743441.jpg',
+        'https://i.ibb.co/jvyJ2k51/0782ee1e-2511-46da-b4cb-d0e92fa969d6.jpg',
+        'https://i.ibb.co/21b0Sckc/946a5573-f309-40b4-aa3a-266577823380.jpg',
+        'https://i.ibb.co/6cDjc1DY/947e965a-150f-49c5-9cbd-7428895950b9.jpg',
+        'https://i.ibb.co/mCLgs676/76694d68-b55d-4dee-913b-03954b44195a.jpg',
+        'https://i.ibb.co/4n3jXJ2q/08184132-ef14-4ecb-8b6b-4d4a0dcc5969.jpg',
+        'https://i.ibb.co/SXB657JQ/71789622-bd8f-4416-a0b7-b5e880e66b30.jpg',
+        'https://i.ibb.co/VYPTynH9/a07142e8-9828-4cab-a372-a4451aaa7573.jpg',
+        'https://i.ibb.co/nNv7hytG/a91106e4-e3e6-4c8f-af25-e85d38f858fa.jpg',
+        'https://i.ibb.co/Rpxm1s9C/aa79db0f-f93e-4903-a3b4-3aff3090c58f.jpg',
+        'https://i.ibb.co/PzN7v2YK/b0cda6d1-ffb0-409b-910b-8a3c3a33a81a.jpg',
+        'https://i.ibb.co/Ndb8MddV/b709d1de-1404-45ea-8469-4e61b4d78b71.jpg',
+        'https://i.ibb.co/HppdH8jQ/c7c017d4-b92e-423c-810d-8b722314896c.jpg',
+        'https://i.ibb.co/fVxfQpvH/cac6569c-b0dd-4e72-bbfe-a5c6e472199c.jpg',
+        'https://i.ibb.co/h1Ks4Bnz/cf6dd2a6-1dcd-4910-abe0-c6086aed4f21.jpg',
+        'https://i.ibb.co/LdpLTKJj/e0ee3ed5-6eb6-44b8-989b-a2182cc3536c.jpg',
+        'https://i.ibb.co/0VCP6Q6y/ff5af8f6-c4a2-49b1-9882-4fd1d8cd10dc.jpg'
+      ],
+      current: 0
+    },
+    azimut88: {
+      images: [
+        'https://i.ibb.co/1YZyp8h8/IMG-7598.webp',
+        'https://i.ibb.co/chzmGBgG/IMG-7596.webp',
+        'https://i.ibb.co/jvgbm7wK/IMG-5456.webp',
+        'https://i.ibb.co/FqC19SwT/IMG-5466.webp',
+        'https://i.ibb.co/6JYh17Sj/2.png',
+        'https://i.ibb.co/21w2F4RD/3.png',
+        'https://i.ibb.co/1f3dH8p2/DJI-20250131175814-0150-D.jpg',
+        'https://i.ibb.co/1G9LqCQL/DSC02728.jpg',
+        'https://i.ibb.co/VYTyDrjB/DSC02764.jpg',
+        'https://i.ibb.co/pBbgLQLy/DSC02773.jpg',
+        'https://i.ibb.co/4Rq27FW8/DSC02785.jpg',
+        'https://i.ibb.co/84rnxncr/DSC02925.jpg',
+        'https://i.ibb.co/xq2w2NCt/DSC02928.jpg',
+        'https://i.ibb.co/67LjKxZ5/DSC02934.jpg',
+        'https://i.ibb.co/KxR8Hn1V/DSC02937.jpg',
+        'https://i.ibb.co/ds8YXQL4/DSC02945.jpg',
+        'https://i.ibb.co/PZjpnT56/DSC02950.jpg',
+        'https://i.ibb.co/7xwRGtjW/DSC02959.jpg',
+        'https://i.ibb.co/8nNsqmCR/DSC03853-Original.jpg',
+        'https://i.ibb.co/wNxJKbVT/DSC03881-Original.jpg',
+        'https://i.ibb.co/DDnyFMYG/DSC03990-Original.jpg',
+        'https://i.ibb.co/TBCZ6fZg/DSC04046-Original.jpg',
+        'https://i.ibb.co/Z6SzgF8S/DSC100000.jpg',
+        'https://i.ibb.co/Y79G5j74/IMG-5455.webp',
+        'https://i.ibb.co/5Wgdyvxg/IMG-5470.webp',
+        'https://i.ibb.co/ZpVXyjSM/IMG-5472.webp',
+        'https://i.ibb.co/wFCw8RTK/IMG-6667.jpg',
+        'https://i.ibb.co/twZH1tsR/IMG-6672.jpg',
+        'https://i.ibb.co/5X18XHYv/IMG-6691.jpg',
+        'https://i.ibb.co/nq16vDdd/IMG-6712.jpg',
+        'https://i.ibb.co/hx2Fynb0/IMG-6715.jpg',
+        'https://i.ibb.co/zTy9C3kr/IMG-7600.webp',
+        'https://i.ibb.co/MkLg0jdb/IMG-7607.webp',
+        'https://i.ibb.co/wFKcbN0v/Screen-Shot-2025-02-04-at-11-20-00-AM.png',
+        'https://i.ibb.co/jZ3KTgjG/Screen-Shot-2025-02-04-at-11-22-57-AM.png',
+        'https://i.ibb.co/9mpPfCKw/Screenshot-2025-02-04-at-3-12-34-PM.png',
+        'https://i.ibb.co/84YHY41z/Screenshot-2025-02-06-at-10-07-54-PM.png'
+      ],
+      current: 0
+    },
+    azimut105: {
+      images: [
+        'https://i.ibb.co/jvVhskS1/105-Azimut-Drone-6.jpg',
+        'https://i.ibb.co/jZG7pMrw/105-Azimut-Drone-8.jpg',
+        'https://i.ibb.co/SDCkprWW/105-Azimut-Drone-9.jpg',
+        'https://i.ibb.co/yCP6htL/105-Azimut-Drone-10.jpg',
+        'https://i.ibb.co/Fknmg1vM/105-Azimut-Drone-11.jpg',
+        'https://i.ibb.co/zTvhKv8r/105-Azimut-Drone-12.jpg',
+        'https://i.ibb.co/Rpmb0z2g/105-Azimut-Drone-22.jpg',
+        'https://i.ibb.co/QjbH2wXV/105-Azimut-Drone-44.jpg',
+        'https://i.ibb.co/hFLFzxKw/105-Azimut-Drone-47.jpg',
+        'https://i.ibb.co/SX8LJT81/105-Azimut-Drone-48.jpg',
+        'https://i.ibb.co/qYdqkgjB/105-Azimut-Drone-50.jpg',
+        'https://i.ibb.co/3mY6pkVS/105-Azimut-5.jpg',
+        'https://i.ibb.co/bj1WYVSY/105-Azimut-11.jpg',
+        'https://i.ibb.co/xK01S2Jy/105-Azimut-12.jpg',
+        'https://i.ibb.co/B58HPxpf/105-Azimut-13.jpg',
+        'https://i.ibb.co/wFztZ8zN/105-Azimut-14.jpg',
+        'https://i.ibb.co/nsBbTjHH/105-Azimut-15.jpg',
+        'https://i.ibb.co/NdgLRXz3/105-Azimut-16.jpg',
+        'https://i.ibb.co/v6VdTNmw/105-Azimut-17.jpg',
+        'https://i.ibb.co/NdRxMBDB/105-Azimut-18.jpg',
+        'https://i.ibb.co/Y7WqDdQL/105-Azimut-19.jpg',
+        'https://i.ibb.co/7tLFtzdC/105-Azimut-21.jpg',
+        'https://i.ibb.co/svQzwTBp/105-Azimut-24.jpg',
+        'https://i.ibb.co/hF6s0p1V/105-Azimut-25.jpg',
+        'https://i.ibb.co/pjR6kkxr/105-Azimut-28.jpg',
+        'https://i.ibb.co/mCHCt1z5/105-Azimut-31.jpg',
+        'https://i.ibb.co/1fY3HwCZ/105-Azimut-35.jpg',
+        'https://i.ibb.co/qFds8mG3/105-Azimut-36.jpg',
+        'https://i.ibb.co/TMhmDp1j/105-Azimut-38.jpg',
+        'https://i.ibb.co/HT0fT5DY/105-Azimut-50.jpg',
+        'https://i.ibb.co/RGjV0qsS/105-Azimut-51.jpg',
+        'https://i.ibb.co/tPPsfH8h/105-Azimut-53.jpg',
+        'https://i.ibb.co/SXNctCkC/105-Azimut-55.jpg',
+        'https://i.ibb.co/mC76N0Mq/105-Azimut-56.jpg',
+        'https://i.ibb.co/vxW0gT1t/105-Azimut-66.jpg',
+        'https://i.ibb.co/rG6JQV0N/105-Azimut-67.jpg',
+        'https://i.ibb.co/Ldd41wdK/105-Azimut-72.jpg',
+        'https://i.ibb.co/YBmzLhzf/105-Azimut-74.jpg',
+        'https://i.ibb.co/zWHRkyNN/105-Azimut-81.jpg',
+        'https://i.ibb.co/bRWRJ2RM/105-Azimut-83.jpg',
+        'https://i.ibb.co/TqtGBdcw/105-Azimut-84.jpg',
+        'https://i.ibb.co/cS7pwvyg/105-Azimut-86.jpg',
+        'https://i.ibb.co/8gGdDPqk/105-Azimut-87.jpg',
+        'https://i.ibb.co/QRPdLcZ/105-Azimut-88.jpg',
+        'https://i.ibb.co/yFXtMJh5/105-Azimut-89.jpg',
+        'https://i.ibb.co/XvrS6Ms/105-Azimut-92.jpg',
+        'https://i.ibb.co/F4fPLtpg/105-Azimut-93.jpg',
+        'https://i.ibb.co/TBMRxmcL/105-Azimut-96.jpg',
+        'https://i.ibb.co/Xk348gSZ/105-Azimut-97.jpg',
+        'https://i.ibb.co/Ld10TWtC/105-Azimut-98.jpg',
+        'https://i.ibb.co/Df7gSH8x/105-Azimut-99.jpg',
+        'https://i.ibb.co/9Hg1TCDL/105-Azimut-103.jpg',
+        'https://i.ibb.co/zhrsxWSp/105-Azimut-108.jpg'
+      ],
+      current: 0
+    },
+    prestige680: {
+      images: [
+        'https://i.ibb.co/wDZjxZd/IMG-2499.jpg',
+        'https://i.ibb.co/W4Hxpkgy/IMG-2500.jpg',
+        'https://i.ibb.co/932f8fSK/IMG-2512.jpg',
+        'https://i.ibb.co/xt9L4Ypg/IMG-2513.jpg',
+        'https://i.ibb.co/HTcfDpwV/IMG-2514.jpg',
+        'https://i.ibb.co/tw3vP5FS/IMG-2515.jpg',
+        'https://i.ibb.co/WNQJvnkG/IMG-2516.jpg',
+        'https://i.ibb.co/CDW0fN4/IMG-2517.jpg',
+        'https://i.ibb.co/kVxjJq2X/IMG-2518.jpg',
+        'https://i.ibb.co/bM2GxNXS/IMG-2519.jpg',
+        'https://i.ibb.co/whn4zQy0/IMG-2520.jpg',
+        'https://i.ibb.co/r2m4VCR4/IMG-2521.jpg',
+        'https://i.ibb.co/Zp5YbBtn/IMG-2522.jpg',
+        'https://i.ibb.co/Q3ZKd5XR/IMG-2523.jpg',
+        'https://i.ibb.co/PvYv780y/IMG-2524.jpg',
+        'https://i.ibb.co/8gZWNQxd/IMG-2525.jpg',
+        'https://i.ibb.co/bMzSF6QY/IMG-2526.jpg',
+        'https://i.ibb.co/fTTgdZv/IMG-2527.jpg',
+        'https://i.ibb.co/gMZdYYNJ/IMG-2528.jpg',
+        'https://i.ibb.co/ym7hxDBB/IMG-2529.jpg',
+        'https://i.ibb.co/7JS5YjFm/IMG-2530.jpg',
+        'https://i.ibb.co/2YpVRCwh/IMG-2531.jpg',
+        'https://i.ibb.co/4Rg6dmvW/IMG-2532.jpg',
+        'https://i.ibb.co/nNfwSPVX/IMG-2533.jpg',
+        'https://i.ibb.co/xtcFGNJq/IMG-2534.jpg',
+        'https://i.ibb.co/WNw0G3sP/IMG-2535.jpg',
+        'https://i.ibb.co/gMZsgq4Y/IMG-2536.jpg'
+      ],
+      current: 0
+    },
     predator80: {
       images: [
         'https://i.ibb.co/Y7CPKDKm/A90A9422.jpg',
@@ -2703,6 +3650,7 @@
   function closeVessel() {
     document.querySelectorAll('.vessel-page').forEach(p => p.classList.remove('active'));
     document.body.style.overflow = '';
+    openFleet();
   }
 
   // ── BOOKING LOGIC ──
@@ -2714,7 +3662,15 @@
     pardo:      { hours: null, basePrice: null, gratuityPct: null, departureTime: null },
     sunseeker:  { hours: null, basePrice: null, gratuityPct: null, departureTime: null },
     fjord:      { hours: null, basePrice: null, gratuityPct: null, departureTime: null },
-    predator80: { hours: null, basePrice: null, gratuityPct: null, departureTime: null }
+    predator80:  { hours: null, basePrice: null, gratuityPct: null, departureTime: null },
+    prestige680: { hours: null, basePrice: null, gratuityPct: null, departureTime: null },
+    azimut105:   { hours: null, basePrice: null, gratuityPct: null, departureTime: null },
+    azimut88:    { hours: null, basePrice: null, gratuityPct: null, departureTime: null },
+    saxdor42:    { hours: null, basePrice: null, gratuityPct: null, departureTime: null },
+    galeon680:   { hours: null, basePrice: null, gratuityPct: null, departureTime: null },
+    azimut116:   { hours: null, basePrice: null, gratuityPct: null, departureTime: null },
+    pershing116: { hours: null, basePrice: null, gratuityPct: null, departureTime: null },
+    trinity166:  { hours: null, basePrice: null, gratuityPct: null, departureTime: null }
   };
 
   function selectDuration(vesselId, hours, price) {
@@ -2979,7 +3935,7 @@ function getFleetData() {
     cabins:     v.cabins,
     price4hr:   v.price4hr,
     priceLabel: `From $${v.price4hr.toLocaleString()} / 4hrs`,
-    flagship:   true,
+    flagship:   !!v.flagship,
   }));
 }
 // Keep fleetData as live getter for compatibility
@@ -4133,7 +5089,7 @@ function renderFleet() {
           </select>
         </div>
         <div class="form-group"><label class="form-label">Special Requests</label><textarea class="form-input" id="predator80-notes" rows="3" placeholder="Any special requests or questions..."></textarea></div>
-        <button class="cta-btn" onclick="submitBooking('predator80')" style="width:100%;margin-top:8px;">Request Charter →</button>
+        <button class="vessel-enquire-btn" onclick="submitBooking('predator80')">Request Charter →</button>
       </div>
 
       <!-- Confirmation -->
@@ -4141,6 +5097,1191 @@ function renderFleet() {
         <div class="confirm-icon">✓</div>
         <div class="confirm-title">Request Received</div>
         <p class="confirm-text">Thank you! We've received your reservation request for <strong>80' Sunseeker "Start Me Up"</strong>. Our team will review and send your charter agreement within 24 hours.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="vessel-page" id="vessel-prestige680">
+  <button class="vessel-back" onclick="closeVessel()">← Fleet</button>
+
+  <div class="vessel-gallery" id="prestige680-gallery">
+    <img class="gallery-main-img" id="prestige680-main-img" src="https://i.ibb.co/wDZjxZd/IMG-2499.jpg" alt='Prestige 68 "Yachtooma"'/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-hero-info">
+      <div>
+        <div class="gallery-hero-title">Prestige 68</div>
+        <div class="gallery-hero-title" style="color:var(--gold);font-style:italic;">"Yachtooma"</div>
+        <div class="gallery-hero-sub">Flybridge · 2017 · Miami Beach Marina</div>
+      </div>
+      <div class="gallery-counter"><span id="prestige680-cur">1</span> of 27 photos</div>
+    </div>
+    <button class="gallery-arrow prev" onclick="galleryNav('prestige680',-1)">&#8249;</button>
+    <button class="gallery-arrow next" onclick="galleryNav('prestige680', 1)">&#8250;</button>
+  </div>
+
+  <div class="gallery-thumbs" id="prestige680-thumbs"></div>
+
+  <div class="vessel-content">
+    <div class="vessel-main">
+
+      <div class="vessel-section-title">Vessel <span>Specifications</span></div>
+      <div class="vessel-divider"></div>
+      <div class="specs-grid">
+        <div class="spec-item"><div class="spec-label">Length Overall</div><div class="spec-value">70<span class="spec-unit">ft / 21.4m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Beam</div><div class="spec-value">17'5"<span class="spec-unit">5.33m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Draft</div><div class="spec-value">5'2"<span class="spec-unit">1.58m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Builder</div><div class="spec-value" style="font-size:16px;">Prestige Yachts</div></div>
+        <div class="spec-item"><div class="spec-label">Year Built</div><div class="spec-value">2017</div></div>
+        <div class="spec-item"><div class="spec-label">Hull</div><div class="spec-value" style="font-size:15px;">GRP / Fiberglass</div></div>
+        <div class="spec-item"><div class="spec-label">Engines</div><div class="spec-value" style="font-size:13px;">2× Volvo Penta IPS1200</div></div>
+        <div class="spec-item"><div class="spec-label">Max Speed</div><div class="spec-value">30<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Cruising Speed</div><div class="spec-value">23<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Staterooms</div><div class="spec-value">4</div></div>
+        <div class="spec-item"><div class="spec-label">Bathrooms</div><div class="spec-value">3</div></div>
+        <div class="spec-item"><div class="spec-label">Guest Capacity</div><div class="spec-value">13<span class="spec-unit">guests</span></div></div>
+        <div class="spec-item"><div class="spec-label">Fuel Capacity</div><div class="spec-value">759<span class="spec-unit">gal</span></div></div>
+        <div class="spec-item"><div class="spec-label">Water</div><div class="spec-value">202<span class="spec-unit">gal</span></div></div>
+        <div class="spec-item"><div class="spec-label">Departure</div><div class="spec-value" style="font-size:12px;">Miami Beach Marina</div></div>
+      </div>
+
+      <div class="vessel-section-title">On-Board <span>Amenities</span></div>
+      <div class="vessel-divider"></div>
+      <div class="amenities-grid" id="amenities-prestige680"></div>
+
+    </div>
+
+    <div class="vessel-sidebar" id="prestige680-sidebar">
+      <div class="vessel-section-title" style="font-size:26px;">Reserve <span>Your Charter</span></div>
+      <div class="vessel-divider"></div>
+
+      <div class="booking-step" id="prestige680-step1">
+        <div class="booking-step-label">Step 1 — Select Duration</div>
+        <div class="duration-grid">
+          <div class="duration-box" onclick="selectDuration('prestige680',4,2500)" data-hrs="4"><div class="dur-hrs">4 hrs</div><div class="dur-price">$2,500</div></div>
+          <div class="duration-box" onclick="selectDuration('prestige680',6,3000)" data-hrs="6"><div class="dur-hrs">6 hrs</div><div class="dur-price">$3,000</div></div>
+          <div class="duration-box" onclick="selectDuration('prestige680',8,3500)" data-hrs="8"><div class="dur-hrs">8 hrs</div><div class="dur-price">$3,500</div></div>
+        </div>
+        <div class="term-note">Term charter pricing available</div>
+      </div>
+
+      <div class="booking-step hidden" id="prestige680-step2">
+        <div class="booking-step-label">Step 2 — Crew Gratuity</div>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;">Gratuity is customary and greatly appreciated by your crew. Select a percentage:</p>
+        <div class="gratuity-grid" id="prestige680-gratuity-grid">
+          <div class="gratuity-box" onclick="selectGratuity('prestige680',15)">15%</div>
+          <div class="gratuity-box selected" onclick="selectGratuity('prestige680',18)">18%</div>
+          <div class="gratuity-box" onclick="selectGratuity('prestige680',20)">20%</div>
+          <div class="gratuity-box" onclick="selectGratuity('prestige680',25)">25%</div>
+          <div class="gratuity-box" onclick="selectGratuity('prestige680',30)">30%</div>
+        </div>
+      </div>
+
+      <div class="price-summary hidden" id="prestige680-summary">
+        <div class="summary-row"><span>Charter Rate</span><span id="prestige680-base-display">—</span></div>
+        <div class="summary-row"><span id="prestige680-grat-label">Crew Gratuity</span><span id="prestige680-grat-display">—</span></div>
+        <div class="summary-total"><span>Total</span><span id="prestige680-total-display">—</span></div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.25);text-align:right;margin-top:4px;">All inclusive · Subject to availability</div>
+      </div>
+
+      <div class="booking-step hidden" id="prestige680-step3">
+        <div class="booking-step-label">Step 3 — Your Details</div>
+        <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="prestige680-name" type="text" placeholder="Full name"/></div>
+        <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="prestige680-email" type="email" placeholder="your@email.com"/></div>
+        <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="prestige680-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
+        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="prestige680-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Departure Time *</label>
+          <div class="time-slots" id="prestige680-time-slots">
+            <div class="time-slot" data-time="08:00" onclick="selectTime('prestige680','08:00')">8:00 AM</div>
+            <div class="time-slot" data-time="09:00" onclick="selectTime('prestige680','09:00')">9:00 AM</div>
+            <div class="time-slot" data-time="10:00" onclick="selectTime('prestige680','10:00')">10:00 AM</div>
+            <div class="time-slot" data-time="11:00" onclick="selectTime('prestige680','11:00')">11:00 AM</div>
+            <div class="time-slot" data-time="12:00" onclick="selectTime('prestige680','12:00')">12:00 PM</div>
+            <div class="time-slot" data-time="13:00" onclick="selectTime('prestige680','13:00')">1:00 PM</div>
+            <div class="time-slot" data-time="14:00" onclick="selectTime('prestige680','14:00')">2:00 PM</div>
+            <div class="time-slot" data-time="15:00" onclick="selectTime('prestige680','15:00')">3:00 PM</div>
+            <div class="time-slot" data-time="16:00" onclick="selectTime('prestige680','16:00')">4:00 PM</div>
+            <div class="time-slot" data-time="17:00" onclick="selectTime('prestige680','17:00')">5:00 PM</div>
+            <div class="time-slot" data-time="18:00" onclick="selectTime('prestige680','18:00')">6:00 PM</div>
+          </div>
+          <div class="time-end-note" id="prestige680-time-note"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Number of Guests *</label>
+          <select class="form-input" id="prestige680-guests">
+            <option value="">Select guests</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option>
+            <option>9</option><option>10</option><option>11</option><option>12</option>
+            <option>13</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Occasion</label>
+          <select class="form-input" id="prestige680-occasion">
+            <option value="">Select occasion</option>
+            <option>Birthday</option><option>Anniversary</option><option>Corporate</option>
+            <option>Bachelorette</option><option>Bachelor</option><option>Client Entertainment</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Special Requests</label><textarea class="form-input" id="prestige680-notes" rows="3" placeholder="Any special requests or questions..."></textarea></div>
+        <button class="vessel-enquire-btn" onclick="submitBooking('prestige680')">Request Charter →</button>
+      </div>
+
+      <div class="booking-confirm hidden" id="prestige680-confirm">
+        <div class="confirm-icon">✓</div>
+        <div class="confirm-title">Request Received</div>
+        <p class="confirm-text">Thank you! We've received your reservation request for <strong>Prestige 68 "Yachtooma"</strong>. Our team will review and send your charter agreement within 24 hours.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="vessel-page" id="vessel-azimut105">
+  <button class="vessel-back" onclick="closeVessel()">← Fleet</button>
+
+  <div class="vessel-gallery" id="azimut105-gallery">
+    <img class="gallery-main-img" id="azimut105-main-img" src="https://i.ibb.co/jvVhskS1/105-Azimut-Drone-6.jpg" alt="Azimut 105"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-hero-info">
+      <div>
+        <div class="gallery-hero-title">Azimut 105</div>
+        <div class="gallery-hero-sub">Superyacht · 2015 · Grove Harbor Marina</div>
+      </div>
+      <div class="gallery-counter"><span id="azimut105-cur">1</span> of 53 photos</div>
+    </div>
+    <button class="gallery-arrow prev" onclick="galleryNav('azimut105',-1)">&#8249;</button>
+    <button class="gallery-arrow next" onclick="galleryNav('azimut105', 1)">&#8250;</button>
+  </div>
+
+  <div class="gallery-thumbs" id="azimut105-thumbs"></div>
+
+  <div class="vessel-content">
+    <div class="vessel-main">
+
+      <div class="vessel-section-title">Vessel <span>Specifications</span></div>
+      <div class="vessel-divider"></div>
+      <div class="specs-grid">
+        <div class="spec-item"><div class="spec-label">Length Overall</div><div class="spec-value">105<span class="spec-unit">ft / 31.4m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Beam</div><div class="spec-value">24'<span class="spec-unit">7.35m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Draft</div><div class="spec-value">6'6"<span class="spec-unit">1.97m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Builder</div><div class="spec-value" style="font-size:15px;">Azimut Yachts</div></div>
+        <div class="spec-item"><div class="spec-label">Year Built</div><div class="spec-value">2015</div></div>
+        <div class="spec-item"><div class="spec-label">Hull</div><div class="spec-value" style="font-size:15px;">GRP / Teak Decks</div></div>
+        <div class="spec-item"><div class="spec-label">Engines</div><div class="spec-value" style="font-size:12px;">2× MTU 16V 2000 M93</div></div>
+        <div class="spec-item"><div class="spec-label">Max Speed</div><div class="spec-value">28<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Cruising Speed</div><div class="spec-value">25<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Staterooms</div><div class="spec-value">5</div></div>
+        <div class="spec-item"><div class="spec-label">Bathrooms</div><div class="spec-value">5</div></div>
+        <div class="spec-item"><div class="spec-label">Guest Capacity</div><div class="spec-value">13<span class="spec-unit">guests</span></div></div>
+        <div class="spec-item"><div class="spec-label">Fuel Capacity</div><div class="spec-value">4,606<span class="spec-unit">gal</span></div></div>
+        <div class="spec-item"><div class="spec-label">Gross Tonnage</div><div class="spec-value">193<span class="spec-unit">GT</span></div></div>
+        <div class="spec-item"><div class="spec-label">Departure</div><div class="spec-value" style="font-size:11px;">Grove Harbor Marina</div></div>
+      </div>
+
+      <div class="vessel-section-title">On-Board <span>Amenities</span></div>
+      <div class="vessel-divider"></div>
+      <div class="amenities-grid" id="amenities-azimut105"></div>
+
+    </div>
+
+    <div class="vessel-sidebar" id="azimut105-sidebar">
+      <div class="vessel-section-title" style="font-size:26px;">Reserve <span>Your Charter</span></div>
+      <div class="vessel-divider"></div>
+
+      <div class="booking-step" id="azimut105-step1">
+        <div class="booking-step-label">Step 1 — Select Duration</div>
+        <div class="duration-grid">
+          <div class="duration-box" onclick="selectDuration('azimut105',4,5500)" data-hrs="4"><div class="dur-hrs">4 hrs</div><div class="dur-price">$5,500</div></div>
+          <div class="duration-box" onclick="selectDuration('azimut105',6,7500)" data-hrs="6"><div class="dur-hrs">6 hrs</div><div class="dur-price">$7,500</div></div>
+          <div class="duration-box" onclick="selectDuration('azimut105',8,9500)" data-hrs="8"><div class="dur-hrs">8 hrs</div><div class="dur-price">$9,500</div></div>
+        </div>
+        <div class="term-note">Term charter pricing available</div>
+      </div>
+
+      <div class="booking-step hidden" id="azimut105-step2">
+        <div class="booking-step-label">Step 2 — Crew Gratuity</div>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;">Gratuity is customary and greatly appreciated by your crew. Select a percentage:</p>
+        <div class="gratuity-grid" id="azimut105-gratuity-grid">
+          <div class="gratuity-box" onclick="selectGratuity('azimut105',15)">15%</div>
+          <div class="gratuity-box selected" onclick="selectGratuity('azimut105',18)">18%</div>
+          <div class="gratuity-box" onclick="selectGratuity('azimut105',20)">20%</div>
+          <div class="gratuity-box" onclick="selectGratuity('azimut105',25)">25%</div>
+          <div class="gratuity-box" onclick="selectGratuity('azimut105',30)">30%</div>
+        </div>
+      </div>
+
+      <div class="price-summary hidden" id="azimut105-summary">
+        <div class="summary-row"><span>Charter Rate</span><span id="azimut105-base-display">—</span></div>
+        <div class="summary-row"><span id="azimut105-grat-label">Crew Gratuity</span><span id="azimut105-grat-display">—</span></div>
+        <div class="summary-total"><span>Total</span><span id="azimut105-total-display">—</span></div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.25);text-align:right;margin-top:4px;">All inclusive · Subject to availability</div>
+      </div>
+
+      <div class="booking-step hidden" id="azimut105-step3">
+        <div class="booking-step-label">Step 3 — Your Details</div>
+        <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="azimut105-name" type="text" placeholder="Full name"/></div>
+        <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="azimut105-email" type="email" placeholder="your@email.com"/></div>
+        <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="azimut105-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
+        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="azimut105-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Departure Time *</label>
+          <div class="time-slots" id="azimut105-time-slots">
+            <div class="time-slot" data-time="08:00" onclick="selectTime('azimut105','08:00')">8:00 AM</div>
+            <div class="time-slot" data-time="09:00" onclick="selectTime('azimut105','09:00')">9:00 AM</div>
+            <div class="time-slot" data-time="10:00" onclick="selectTime('azimut105','10:00')">10:00 AM</div>
+            <div class="time-slot" data-time="11:00" onclick="selectTime('azimut105','11:00')">11:00 AM</div>
+            <div class="time-slot" data-time="12:00" onclick="selectTime('azimut105','12:00')">12:00 PM</div>
+            <div class="time-slot" data-time="13:00" onclick="selectTime('azimut105','13:00')">1:00 PM</div>
+            <div class="time-slot" data-time="14:00" onclick="selectTime('azimut105','14:00')">2:00 PM</div>
+            <div class="time-slot" data-time="15:00" onclick="selectTime('azimut105','15:00')">3:00 PM</div>
+            <div class="time-slot" data-time="16:00" onclick="selectTime('azimut105','16:00')">4:00 PM</div>
+            <div class="time-slot" data-time="17:00" onclick="selectTime('azimut105','17:00')">5:00 PM</div>
+            <div class="time-slot" data-time="18:00" onclick="selectTime('azimut105','18:00')">6:00 PM</div>
+          </div>
+          <div class="time-end-note" id="azimut105-time-note"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Number of Guests *</label>
+          <select class="form-input" id="azimut105-guests">
+            <option value="">Select guests</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option>
+            <option>9</option><option>10</option><option>11</option><option>12</option>
+            <option>13</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Occasion</label>
+          <select class="form-input" id="azimut105-occasion">
+            <option value="">Select occasion</option>
+            <option>Birthday</option><option>Anniversary</option><option>Corporate</option>
+            <option>Bachelorette</option><option>Bachelor</option><option>Client Entertainment</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Special Requests</label><textarea class="form-input" id="azimut105-notes" rows="3" placeholder="Any special requests or questions..."></textarea></div>
+        <button class="vessel-enquire-btn" onclick="submitBooking('azimut105')">Request Charter →</button>
+      </div>
+
+      <div class="booking-confirm hidden" id="azimut105-confirm">
+        <div class="confirm-icon">✓</div>
+        <div class="confirm-title">Request Received</div>
+        <p class="confirm-text">Thank you! We've received your reservation request for <strong>Azimut 105</strong>. Our team will review and send your charter agreement within 24 hours.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="vessel-page" id="vessel-azimut88">
+  <button class="vessel-back" onclick="closeVessel()">← Fleet</button>
+
+  <div class="vessel-gallery" id="azimut88-gallery">
+    <img class="gallery-main-img" id="azimut88-main-img" src="https://i.ibb.co/1YZyp8h8/IMG-7598.webp" alt="Azimut 88"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-hero-info">
+      <div>
+        <div class="gallery-hero-title">Azimut 88</div>
+        <div class="gallery-hero-sub">Motor Yacht · 2017 · Aston Martin Residences</div>
+      </div>
+      <div class="gallery-counter"><span id="azimut88-cur">1</span> of 37 photos</div>
+    </div>
+    <button class="gallery-arrow prev" onclick="galleryNav('azimut88',-1)">&#8249;</button>
+    <button class="gallery-arrow next" onclick="galleryNav('azimut88', 1)">&#8250;</button>
+  </div>
+
+  <div class="gallery-thumbs" id="azimut88-thumbs"></div>
+
+  <div class="vessel-content">
+    <div class="vessel-main">
+
+      <div class="vessel-section-title">Vessel <span>Specifications</span></div>
+      <div class="vessel-divider"></div>
+      <div class="specs-grid">
+        <div class="spec-item"><div class="spec-label">Length Overall</div><div class="spec-value">88<span class="spec-unit">ft / 26.8m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Beam</div><div class="spec-value">21'<span class="spec-unit">6.4m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Draft</div><div class="spec-value">5'11"<span class="spec-unit">1.80m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Builder</div><div class="spec-value" style="font-size:15px;">Azimut Yachts</div></div>
+        <div class="spec-item"><div class="spec-label">Year Built</div><div class="spec-value">2017</div></div>
+        <div class="spec-item"><div class="spec-label">Hull</div><div class="spec-value" style="font-size:15px;">GRP / Deep-V</div></div>
+        <div class="spec-item"><div class="spec-label">Engines</div><div class="spec-value" style="font-size:13px;">2× MTU 12V 2000 M94</div></div>
+        <div class="spec-item"><div class="spec-label">Max Speed</div><div class="spec-value">30<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Cruising Speed</div><div class="spec-value">27<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Staterooms</div><div class="spec-value">4</div></div>
+        <div class="spec-item"><div class="spec-label">Bathrooms</div><div class="spec-value">4</div></div>
+        <div class="spec-item"><div class="spec-label">Guest Capacity</div><div class="spec-value">13<span class="spec-unit">guests</span></div></div>
+        <div class="spec-item"><div class="spec-label">Fuel Capacity</div><div class="spec-value">2,377<span class="spec-unit">gal</span></div></div>
+        <div class="spec-item"><div class="spec-label">Gross Tonnage</div><div class="spec-value">110<span class="spec-unit">GT</span></div></div>
+        <div class="spec-item"><div class="spec-label">Departure</div><div class="spec-value" style="font-size:11px;">Aston Martin Residences</div></div>
+      </div>
+
+      <div class="vessel-section-title">On-Board <span>Amenities</span></div>
+      <div class="vessel-divider"></div>
+      <div class="amenities-grid" id="amenities-azimut88"></div>
+
+    </div>
+
+    <div class="vessel-sidebar" id="azimut88-sidebar">
+      <div class="vessel-section-title" style="font-size:26px;">Reserve <span>Your Charter</span></div>
+      <div class="vessel-divider"></div>
+
+      <div class="booking-step" id="azimut88-step1">
+        <div class="booking-step-label">Step 1 — Select Duration</div>
+        <div class="duration-grid">
+          <div class="duration-box" onclick="selectDuration('azimut88',4,4500)" data-hrs="4"><div class="dur-hrs">4 hrs</div><div class="dur-price">$4,500</div></div>
+          <div class="duration-box" onclick="selectDuration('azimut88',6,5500)" data-hrs="6"><div class="dur-hrs">6 hrs</div><div class="dur-price">$5,500</div></div>
+          <div class="duration-box" onclick="selectDuration('azimut88',8,6000)" data-hrs="8"><div class="dur-hrs">8 hrs</div><div class="dur-price">$6,000</div></div>
+        </div>
+        <div class="term-note">Term charter pricing available</div>
+      </div>
+
+      <div class="booking-step hidden" id="azimut88-step2">
+        <div class="booking-step-label">Step 2 — Crew Gratuity</div>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;">Gratuity is customary and greatly appreciated by your crew. Select a percentage:</p>
+        <div class="gratuity-grid" id="azimut88-gratuity-grid">
+          <div class="gratuity-box" onclick="selectGratuity('azimut88',15)">15%</div>
+          <div class="gratuity-box selected" onclick="selectGratuity('azimut88',18)">18%</div>
+          <div class="gratuity-box" onclick="selectGratuity('azimut88',20)">20%</div>
+          <div class="gratuity-box" onclick="selectGratuity('azimut88',25)">25%</div>
+          <div class="gratuity-box" onclick="selectGratuity('azimut88',30)">30%</div>
+        </div>
+      </div>
+
+      <div class="price-summary hidden" id="azimut88-summary">
+        <div class="summary-row"><span>Charter Rate</span><span id="azimut88-base-display">—</span></div>
+        <div class="summary-row"><span id="azimut88-grat-label">Crew Gratuity</span><span id="azimut88-grat-display">—</span></div>
+        <div class="summary-total"><span>Total</span><span id="azimut88-total-display">—</span></div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.25);text-align:right;margin-top:4px;">All inclusive · Subject to availability</div>
+      </div>
+
+      <div class="booking-step hidden" id="azimut88-step3">
+        <div class="booking-step-label">Step 3 — Your Details</div>
+        <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="azimut88-name" type="text" placeholder="Full name"/></div>
+        <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="azimut88-email" type="email" placeholder="your@email.com"/></div>
+        <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="azimut88-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
+        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="azimut88-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Departure Time *</label>
+          <div class="time-slots" id="azimut88-time-slots">
+            <div class="time-slot" data-time="08:00" onclick="selectTime('azimut88','08:00')">8:00 AM</div>
+            <div class="time-slot" data-time="09:00" onclick="selectTime('azimut88','09:00')">9:00 AM</div>
+            <div class="time-slot" data-time="10:00" onclick="selectTime('azimut88','10:00')">10:00 AM</div>
+            <div class="time-slot" data-time="11:00" onclick="selectTime('azimut88','11:00')">11:00 AM</div>
+            <div class="time-slot" data-time="12:00" onclick="selectTime('azimut88','12:00')">12:00 PM</div>
+            <div class="time-slot" data-time="13:00" onclick="selectTime('azimut88','13:00')">1:00 PM</div>
+            <div class="time-slot" data-time="14:00" onclick="selectTime('azimut88','14:00')">2:00 PM</div>
+            <div class="time-slot" data-time="15:00" onclick="selectTime('azimut88','15:00')">3:00 PM</div>
+            <div class="time-slot" data-time="16:00" onclick="selectTime('azimut88','16:00')">4:00 PM</div>
+            <div class="time-slot" data-time="17:00" onclick="selectTime('azimut88','17:00')">5:00 PM</div>
+            <div class="time-slot" data-time="18:00" onclick="selectTime('azimut88','18:00')">6:00 PM</div>
+          </div>
+          <div class="time-end-note" id="azimut88-time-note"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Number of Guests *</label>
+          <select class="form-input" id="azimut88-guests">
+            <option value="">Select guests</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option>
+            <option>9</option><option>10</option><option>11</option><option>12</option>
+            <option>13</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Occasion</label>
+          <select class="form-input" id="azimut88-occasion">
+            <option value="">Select occasion</option>
+            <option>Birthday</option><option>Anniversary</option><option>Corporate</option>
+            <option>Bachelorette</option><option>Bachelor</option><option>Client Entertainment</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Special Requests</label><textarea class="form-input" id="azimut88-notes" rows="3" placeholder="Any special requests or questions..."></textarea></div>
+        <button class="vessel-enquire-btn" onclick="submitBooking('azimut88')">Request Charter →</button>
+      </div>
+
+      <div class="booking-confirm hidden" id="azimut88-confirm">
+        <div class="confirm-icon">✓</div>
+        <div class="confirm-title">Request Received</div>
+        <p class="confirm-text">Thank you! We've received your reservation request for <strong>Azimut 88'</strong>. Our team will review and send your charter agreement within 24 hours.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="vessel-page" id="vessel-saxdor42">
+  <button class="vessel-back" onclick="closeVessel()">← Fleet</button>
+
+  <div class="vessel-gallery" id="saxdor42-gallery">
+    <img class="gallery-main-img" id="saxdor42-main-img" src="https://i.ibb.co/35bjQMX0/ebe951cd-53eb-4bb2-a6e4-03d7b927efb5.jpg" alt="Saxdor 42"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-hero-info">
+      <div>
+        <div class="gallery-hero-title">Saxdor 42</div>
+        <div class="gallery-hero-sub">Day Boat · 2025 · Vice City Marina</div>
+      </div>
+      <div class="gallery-counter"><span id="saxdor42-cur">1</span> of 36 photos</div>
+    </div>
+    <button class="gallery-arrow prev" onclick="galleryNav('saxdor42',-1)">&#8249;</button>
+    <button class="gallery-arrow next" onclick="galleryNav('saxdor42', 1)">&#8250;</button>
+  </div>
+
+  <div class="gallery-thumbs" id="saxdor42-thumbs"></div>
+
+  <div class="vessel-content">
+    <div class="vessel-main">
+
+      <div class="vessel-section-title">Vessel <span>Specifications</span></div>
+      <div class="vessel-divider"></div>
+      <div class="specs-grid">
+        <div class="spec-item"><div class="spec-label">Length Overall</div><div class="spec-value">42<span class="spec-unit">ft / 12.8m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Builder</div><div class="spec-value" style="font-size:16px;">Saxdor Yachts</div></div>
+        <div class="spec-item"><div class="spec-label">Year Built</div><div class="spec-value">2025</div></div>
+        <div class="spec-item"><div class="spec-label">Hull</div><div class="spec-value" style="font-size:15px;">GRP Deep-V</div></div>
+        <div class="spec-item"><div class="spec-label">Engines</div><div class="spec-value" style="font-size:13px;">2× Mercury 400 V10</div></div>
+        <div class="spec-item"><div class="spec-label">Max Speed</div><div class="spec-value">50+<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Guest Capacity</div><div class="spec-value">13<span class="spec-unit">guests</span></div></div>
+        <div class="spec-item"><div class="spec-label">Configuration</div><div class="spec-value" style="font-size:13px;">Open Day Boat</div></div>
+        <div class="spec-item"><div class="spec-label">Departure</div><div class="spec-value" style="font-size:12px;">Vice City Marina</div></div>
+      </div>
+
+      <div class="vessel-section-title">On-Board <span>Amenities</span></div>
+      <div class="vessel-divider"></div>
+      <div class="amenities-grid" id="amenities-saxdor42"></div>
+
+    </div>
+
+    <div class="vessel-sidebar" id="saxdor42-sidebar">
+      <div class="vessel-section-title" style="font-size:26px;">Reserve <span>Your Charter</span></div>
+      <div class="vessel-divider"></div>
+
+      <div class="booking-step" id="saxdor42-step1">
+        <div class="booking-step-label">Step 1 — Select Duration</div>
+        <div class="duration-grid">
+          <div class="duration-box" onclick="selectDuration('saxdor42',4,1800)" data-hrs="4"><div class="dur-hrs">4 hrs</div><div class="dur-price">$1,800</div></div>
+          <div class="duration-box" onclick="selectDuration('saxdor42',6,2200)" data-hrs="6"><div class="dur-hrs">6 hrs</div><div class="dur-price">$2,200</div></div>
+          <div class="duration-box" onclick="selectDuration('saxdor42',8,2700)" data-hrs="8"><div class="dur-hrs">8 hrs</div><div class="dur-price">$2,700</div></div>
+        </div>
+        <div class="term-note">Term charter pricing available</div>
+      </div>
+
+      <div class="booking-step hidden" id="saxdor42-step2">
+        <div class="booking-step-label">Step 2 — Crew Gratuity</div>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;">Gratuity is customary and greatly appreciated by your crew. Select a percentage:</p>
+        <div class="gratuity-grid" id="saxdor42-gratuity-grid">
+          <div class="gratuity-box" onclick="selectGratuity('saxdor42',15)">15%</div>
+          <div class="gratuity-box selected" onclick="selectGratuity('saxdor42',18)">18%</div>
+          <div class="gratuity-box" onclick="selectGratuity('saxdor42',20)">20%</div>
+          <div class="gratuity-box" onclick="selectGratuity('saxdor42',25)">25%</div>
+          <div class="gratuity-box" onclick="selectGratuity('saxdor42',30)">30%</div>
+        </div>
+      </div>
+
+      <div class="price-summary hidden" id="saxdor42-summary">
+        <div class="summary-row"><span>Charter Rate</span><span id="saxdor42-base-display">—</span></div>
+        <div class="summary-row"><span id="saxdor42-grat-label">Crew Gratuity</span><span id="saxdor42-grat-display">—</span></div>
+        <div class="summary-total"><span>Total</span><span id="saxdor42-total-display">—</span></div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.25);text-align:right;margin-top:4px;">All inclusive · Subject to availability</div>
+      </div>
+
+      <div class="booking-step hidden" id="saxdor42-step3">
+        <div class="booking-step-label">Step 3 — Your Details</div>
+        <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="saxdor42-name" type="text" placeholder="Full name"/></div>
+        <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="saxdor42-email" type="email" placeholder="your@email.com"/></div>
+        <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="saxdor42-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
+        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="saxdor42-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Departure Time *</label>
+          <div class="time-slots" id="saxdor42-time-slots">
+            <div class="time-slot" data-time="08:00" onclick="selectTime('saxdor42','08:00')">8:00 AM</div>
+            <div class="time-slot" data-time="09:00" onclick="selectTime('saxdor42','09:00')">9:00 AM</div>
+            <div class="time-slot" data-time="10:00" onclick="selectTime('saxdor42','10:00')">10:00 AM</div>
+            <div class="time-slot" data-time="11:00" onclick="selectTime('saxdor42','11:00')">11:00 AM</div>
+            <div class="time-slot" data-time="12:00" onclick="selectTime('saxdor42','12:00')">12:00 PM</div>
+            <div class="time-slot" data-time="13:00" onclick="selectTime('saxdor42','13:00')">1:00 PM</div>
+            <div class="time-slot" data-time="14:00" onclick="selectTime('saxdor42','14:00')">2:00 PM</div>
+            <div class="time-slot" data-time="15:00" onclick="selectTime('saxdor42','15:00')">3:00 PM</div>
+            <div class="time-slot" data-time="16:00" onclick="selectTime('saxdor42','16:00')">4:00 PM</div>
+            <div class="time-slot" data-time="17:00" onclick="selectTime('saxdor42','17:00')">5:00 PM</div>
+            <div class="time-slot" data-time="18:00" onclick="selectTime('saxdor42','18:00')">6:00 PM</div>
+          </div>
+          <div class="time-end-note" id="saxdor42-time-note"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Number of Guests *</label>
+          <select class="form-input" id="saxdor42-guests">
+            <option value="">Select guests</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option>
+            <option>9</option><option>10</option><option>11</option><option>12</option>
+            <option>13</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Occasion</label>
+          <select class="form-input" id="saxdor42-occasion">
+            <option value="">Select occasion</option>
+            <option>Birthday</option><option>Anniversary</option><option>Corporate</option>
+            <option>Bachelorette</option><option>Bachelor</option><option>Client Entertainment</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Special Requests</label><textarea class="form-input" id="saxdor42-notes" rows="3" placeholder="Any special requests or questions..."></textarea></div>
+        <button class="vessel-enquire-btn" onclick="submitBooking('saxdor42')">Request Charter →</button>
+      </div>
+
+      <div class="booking-confirm hidden" id="saxdor42-confirm">
+        <div class="confirm-icon">✓</div>
+        <div class="confirm-title">Request Received</div>
+        <p class="confirm-text">Thank you! We've received your reservation request for <strong>Saxdor 42'</strong>. Our team will review and send your charter agreement within 24 hours.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="vessel-page" id="vessel-galeon680">
+  <button class="vessel-back" onclick="closeVessel()">← Fleet</button>
+
+  <div class="vessel-gallery" id="galeon680-gallery">
+    <img class="gallery-main-img" id="galeon680-main-img" src="https://i.ibb.co/rRL2ydS2/DJI-0003.jpg" alt="Galeon 68"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-hero-info">
+      <div>
+        <div class="gallery-hero-title">Galeon 68</div>
+        <div class="gallery-hero-sub">Flybridge · 2024 · Miami Beach Marina</div>
+      </div>
+      <div class="gallery-counter"><span id="galeon680-cur">1</span> of 69 photos</div>
+    </div>
+    <button class="gallery-arrow prev" onclick="galleryNav('galeon680',-1)">&#8249;</button>
+    <button class="gallery-arrow next" onclick="galleryNav('galeon680', 1)">&#8250;</button>
+  </div>
+
+  <div class="gallery-thumbs" id="galeon680-thumbs"></div>
+
+  <div class="vessel-content">
+    <div class="vessel-main">
+
+      <div class="vessel-section-title">Vessel <span>Specifications</span></div>
+      <div class="vessel-divider"></div>
+      <div class="specs-grid">
+        <div class="spec-item"><div class="spec-label">Length Overall</div><div class="spec-value">68<span class="spec-unit">ft / 21.0m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Beam</div><div class="spec-value">17'3"<span class="spec-unit">5.25m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Draft</div><div class="spec-value">3'3"<span class="spec-unit">1.00m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Builder</div><div class="spec-value" style="font-size:16px;">Galeon Yachts</div></div>
+        <div class="spec-item"><div class="spec-label">Year Built</div><div class="spec-value">2024</div></div>
+        <div class="spec-item"><div class="spec-label">Hull</div><div class="spec-value" style="font-size:14px;">GRP / Carbon Fiber</div></div>
+        <div class="spec-item"><div class="spec-label">Engines</div><div class="spec-value" style="font-size:13px;">2× MAN V8 1200hp</div></div>
+        <div class="spec-item"><div class="spec-label">Max Speed</div><div class="spec-value">32<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Cruising Speed</div><div class="spec-value">25<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Staterooms</div><div class="spec-value">4</div></div>
+        <div class="spec-item"><div class="spec-label">Bathrooms</div><div class="spec-value">3</div></div>
+        <div class="spec-item"><div class="spec-label">Guest Capacity</div><div class="spec-value">13<span class="spec-unit">guests</span></div></div>
+        <div class="spec-item"><div class="spec-label">Fuel Capacity</div><div class="spec-value">885<span class="spec-unit">gal</span></div></div>
+        <div class="spec-item"><div class="spec-label">Range</div><div class="spec-value">260<span class="spec-unit">nm</span></div></div>
+        <div class="spec-item"><div class="spec-label">Departure</div><div class="spec-value" style="font-size:12px;">Miami Beach Marina</div></div>
+      </div>
+
+      <div class="vessel-section-title">On-Board <span>Amenities</span></div>
+      <div class="vessel-divider"></div>
+      <div class="amenities-grid" id="amenities-galeon680"></div>
+
+    </div>
+
+    <div class="vessel-sidebar" id="galeon680-sidebar">
+      <div class="vessel-section-title" style="font-size:26px;">Reserve <span>Your Charter</span></div>
+      <div class="vessel-divider"></div>
+
+      <div class="booking-step" id="galeon680-step1">
+        <div class="booking-step-label">Step 1 — Select Duration</div>
+        <div class="duration-grid">
+          <div class="duration-box" onclick="selectDuration('galeon680',4,5500)" data-hrs="4"><div class="dur-hrs">4 hrs</div><div class="dur-price">$5,500</div></div>
+          <div class="duration-box" onclick="selectDuration('galeon680',6,6800)" data-hrs="6"><div class="dur-hrs">6 hrs</div><div class="dur-price">$6,800</div></div>
+          <div class="duration-box" onclick="selectDuration('galeon680',8,8000)" data-hrs="8"><div class="dur-hrs">8 hrs</div><div class="dur-price">$8,000</div></div>
+        </div>
+        <div class="term-note">Term charter pricing available</div>
+      </div>
+
+      <div class="booking-step hidden" id="galeon680-step2">
+        <div class="booking-step-label">Step 2 — Crew Gratuity</div>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;">Gratuity is customary and greatly appreciated by your crew. Select a percentage:</p>
+        <div class="gratuity-grid" id="galeon680-gratuity-grid">
+          <div class="gratuity-box" onclick="selectGratuity('galeon680',15)">15%</div>
+          <div class="gratuity-box selected" onclick="selectGratuity('galeon680',18)">18%</div>
+          <div class="gratuity-box" onclick="selectGratuity('galeon680',20)">20%</div>
+          <div class="gratuity-box" onclick="selectGratuity('galeon680',25)">25%</div>
+          <div class="gratuity-box" onclick="selectGratuity('galeon680',30)">30%</div>
+        </div>
+      </div>
+
+      <div class="price-summary hidden" id="galeon680-summary">
+        <div class="summary-row"><span>Charter Rate</span><span id="galeon680-base-display">—</span></div>
+        <div class="summary-row"><span id="galeon680-grat-label">Crew Gratuity</span><span id="galeon680-grat-display">—</span></div>
+        <div class="summary-total"><span>Total</span><span id="galeon680-total-display">—</span></div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.25);text-align:right;margin-top:4px;">All inclusive · Subject to availability</div>
+      </div>
+
+      <div class="booking-step hidden" id="galeon680-step3">
+        <div class="booking-step-label">Step 3 — Your Details</div>
+        <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="galeon680-name" type="text" placeholder="Full name"/></div>
+        <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="galeon680-email" type="email" placeholder="your@email.com"/></div>
+        <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="galeon680-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
+        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="galeon680-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Departure Time *</label>
+          <div class="time-slots" id="galeon680-time-slots">
+            <div class="time-slot" data-time="08:00" onclick="selectTime('galeon680','08:00')">8:00 AM</div>
+            <div class="time-slot" data-time="09:00" onclick="selectTime('galeon680','09:00')">9:00 AM</div>
+            <div class="time-slot" data-time="10:00" onclick="selectTime('galeon680','10:00')">10:00 AM</div>
+            <div class="time-slot" data-time="11:00" onclick="selectTime('galeon680','11:00')">11:00 AM</div>
+            <div class="time-slot" data-time="12:00" onclick="selectTime('galeon680','12:00')">12:00 PM</div>
+            <div class="time-slot" data-time="13:00" onclick="selectTime('galeon680','13:00')">1:00 PM</div>
+            <div class="time-slot" data-time="14:00" onclick="selectTime('galeon680','14:00')">2:00 PM</div>
+            <div class="time-slot" data-time="15:00" onclick="selectTime('galeon680','15:00')">3:00 PM</div>
+            <div class="time-slot" data-time="16:00" onclick="selectTime('galeon680','16:00')">4:00 PM</div>
+            <div class="time-slot" data-time="17:00" onclick="selectTime('galeon680','17:00')">5:00 PM</div>
+            <div class="time-slot" data-time="18:00" onclick="selectTime('galeon680','18:00')">6:00 PM</div>
+          </div>
+          <div class="time-end-note" id="galeon680-time-note"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Number of Guests *</label>
+          <select class="form-input" id="galeon680-guests">
+            <option value="">Select guests</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option>
+            <option>9</option><option>10</option><option>11</option><option>12</option>
+            <option>13</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Occasion</label>
+          <select class="form-input" id="galeon680-occasion">
+            <option value="">Select occasion</option>
+            <option>Birthday</option><option>Anniversary</option><option>Corporate</option>
+            <option>Bachelorette</option><option>Bachelor</option><option>Client Entertainment</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Special Requests</label><textarea class="form-input" id="galeon680-notes" rows="3" placeholder="Any special requests or questions..."></textarea></div>
+        <button class="vessel-enquire-btn" onclick="submitBooking('galeon680')">Request Charter →</button>
+      </div>
+
+      <div class="booking-confirm hidden" id="galeon680-confirm">
+        <div class="confirm-icon">✓</div>
+        <div class="confirm-title">Request Received</div>
+        <p class="confirm-text">Thank you! We've received your reservation request for <strong>Galeon 68'</strong>. Our team will review and send your charter agreement within 24 hours.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="vessel-page" id="vessel-azimut116">
+  <button class="vessel-back" onclick="closeVessel()">← Fleet</button>
+
+  <div class="vessel-gallery" id="azimut116-gallery">
+    <img class="gallery-main-img" id="azimut116-main-img" src="https://i.ibb.co/ZpP5y4R2/116-Azimut-Rylax-Drone-2.jpg" alt="Azimut 116"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-hero-info">
+      <div>
+        <div class="gallery-hero-title">Azimut 116</div>
+        <div class="gallery-hero-sub">Superyacht · 2010 · Miami Beach Marina</div>
+      </div>
+      <div class="gallery-counter"><span id="azimut116-cur">1</span> of 127 photos</div>
+    </div>
+    <button class="gallery-arrow prev" onclick="galleryNav('azimut116',-1)">&#8249;</button>
+    <button class="gallery-arrow next" onclick="galleryNav('azimut116', 1)">&#8250;</button>
+  </div>
+
+  <div class="gallery-thumbs" id="azimut116-thumbs"></div>
+
+  <div class="vessel-content">
+    <div class="vessel-main">
+
+      <div class="vessel-section-title">Vessel <span>Specifications</span></div>
+      <div class="vessel-divider"></div>
+      <div class="specs-grid">
+        <div class="spec-item"><div class="spec-label">Length Overall</div><div class="spec-value">116<span class="spec-unit">ft / 35.5m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Beam</div><div class="spec-value">25'<span class="spec-unit">7.6m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Draft</div><div class="spec-value">6'7"<span class="spec-unit">2.0m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Builder</div><div class="spec-value" style="font-size:15px;">Azimut Yachts</div></div>
+        <div class="spec-item"><div class="spec-label">Year Built</div><div class="spec-value">2010</div></div>
+        <div class="spec-item"><div class="spec-label">Hull</div><div class="spec-value" style="font-size:14px;">GRP / Teak Decks</div></div>
+        <div class="spec-item"><div class="spec-label">Engines</div><div class="spec-value" style="font-size:12px;">2× MTU 16V 2000 M91</div></div>
+        <div class="spec-item"><div class="spec-label">Max Speed</div><div class="spec-value">25<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Cruising Speed</div><div class="spec-value">23<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Staterooms</div><div class="spec-value">5</div></div>
+        <div class="spec-item"><div class="spec-label">Bathrooms</div><div class="spec-value">5</div></div>
+        <div class="spec-item"><div class="spec-label">Guest Capacity</div><div class="spec-value">13<span class="spec-unit">guests</span></div></div>
+        <div class="spec-item"><div class="spec-label">Fuel Capacity</div><div class="spec-value">4,755<span class="spec-unit">gal</span></div></div>
+        <div class="spec-item"><div class="spec-label">Gross Tonnage</div><div class="spec-value">248<span class="spec-unit">GT</span></div></div>
+        <div class="spec-item"><div class="spec-label">Departure</div><div class="spec-value" style="font-size:11px;">Miami Beach Marina</div></div>
+      </div>
+
+      <div class="vessel-section-title">On-Board <span>Amenities</span></div>
+      <div class="vessel-divider"></div>
+      <div class="amenities-grid" id="amenities-azimut116"></div>
+
+    </div>
+
+    <div class="vessel-sidebar" id="azimut116-sidebar">
+      <div class="vessel-section-title" style="font-size:26px;">Reserve <span>Your Charter</span></div>
+      <div class="vessel-divider"></div>
+
+      <div class="booking-step" id="azimut116-step1">
+        <div class="booking-step-label">Step 1 — Select Duration</div>
+        <div class="duration-grid">
+          <div class="duration-box" onclick="selectDuration('azimut116',4,10500)" data-hrs="4"><div class="dur-hrs">4 hrs</div><div class="dur-price">$10,500</div></div>
+          <div class="duration-box" onclick="selectDuration('azimut116',6,12000)" data-hrs="6"><div class="dur-hrs">6 hrs</div><div class="dur-price">$12,000</div></div>
+          <div class="duration-box" onclick="selectDuration('azimut116',8,15000)" data-hrs="8"><div class="dur-hrs">8 hrs</div><div class="dur-price">$15,000</div></div>
+        </div>
+        <div class="term-note">Term charter pricing available</div>
+      </div>
+
+      <div class="booking-step hidden" id="azimut116-step2">
+        <div class="booking-step-label">Step 2 — Crew Gratuity</div>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;">Gratuity is customary and greatly appreciated by your crew. Select a percentage:</p>
+        <div class="gratuity-grid" id="azimut116-gratuity-grid">
+          <div class="gratuity-box" onclick="selectGratuity('azimut116',15)">15%</div>
+          <div class="gratuity-box selected" onclick="selectGratuity('azimut116',18)">18%</div>
+          <div class="gratuity-box" onclick="selectGratuity('azimut116',20)">20%</div>
+          <div class="gratuity-box" onclick="selectGratuity('azimut116',25)">25%</div>
+          <div class="gratuity-box" onclick="selectGratuity('azimut116',30)">30%</div>
+        </div>
+      </div>
+
+      <div class="price-summary hidden" id="azimut116-summary">
+        <div class="summary-row"><span>Charter Rate</span><span id="azimut116-base-display">—</span></div>
+        <div class="summary-row"><span id="azimut116-grat-label">Crew Gratuity</span><span id="azimut116-grat-display">—</span></div>
+        <div class="summary-total"><span>Total</span><span id="azimut116-total-display">—</span></div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.25);text-align:right;margin-top:4px;">All inclusive · Subject to availability</div>
+      </div>
+
+      <div class="booking-step hidden" id="azimut116-step3">
+        <div class="booking-step-label">Step 3 — Your Details</div>
+        <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="azimut116-name" type="text" placeholder="Full name"/></div>
+        <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="azimut116-email" type="email" placeholder="your@email.com"/></div>
+        <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="azimut116-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
+        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="azimut116-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Departure Time *</label>
+          <div class="time-slots" id="azimut116-time-slots">
+            <div class="time-slot" data-time="08:00" onclick="selectTime('azimut116','08:00')">8:00 AM</div>
+            <div class="time-slot" data-time="09:00" onclick="selectTime('azimut116','09:00')">9:00 AM</div>
+            <div class="time-slot" data-time="10:00" onclick="selectTime('azimut116','10:00')">10:00 AM</div>
+            <div class="time-slot" data-time="11:00" onclick="selectTime('azimut116','11:00')">11:00 AM</div>
+            <div class="time-slot" data-time="12:00" onclick="selectTime('azimut116','12:00')">12:00 PM</div>
+            <div class="time-slot" data-time="13:00" onclick="selectTime('azimut116','13:00')">1:00 PM</div>
+            <div class="time-slot" data-time="14:00" onclick="selectTime('azimut116','14:00')">2:00 PM</div>
+            <div class="time-slot" data-time="15:00" onclick="selectTime('azimut116','15:00')">3:00 PM</div>
+            <div class="time-slot" data-time="16:00" onclick="selectTime('azimut116','16:00')">4:00 PM</div>
+            <div class="time-slot" data-time="17:00" onclick="selectTime('azimut116','17:00')">5:00 PM</div>
+            <div class="time-slot" data-time="18:00" onclick="selectTime('azimut116','18:00')">6:00 PM</div>
+          </div>
+          <div class="time-end-note" id="azimut116-time-note"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Number of Guests *</label>
+          <select class="form-input" id="azimut116-guests">
+            <option value="">Select guests</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option>
+            <option>9</option><option>10</option><option>11</option><option>12</option>
+            <option>13</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Occasion</label>
+          <select class="form-input" id="azimut116-occasion">
+            <option value="">Select occasion</option>
+            <option>Birthday</option><option>Anniversary</option><option>Corporate</option>
+            <option>Bachelorette</option><option>Bachelor</option><option>Client Entertainment</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Special Requests</label><textarea class="form-input" id="azimut116-notes" rows="3" placeholder="Any special requests or questions..."></textarea></div>
+        <button class="vessel-enquire-btn" onclick="submitBooking('azimut116')">Request Charter →</button>
+      </div>
+
+      <div class="booking-confirm hidden" id="azimut116-confirm">
+        <div class="confirm-icon">✓</div>
+        <div class="confirm-title">Request Received</div>
+        <p class="confirm-text">Thank you! We've received your reservation request for <strong>Azimut 116'</strong>. Our team will review and send your charter agreement within 24 hours.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="vessel-page" id="vessel-pershing116">
+  <button class="vessel-back" onclick="closeVessel()">← Fleet</button>
+
+  <div class="vessel-gallery" id="pershing116-gallery">
+    <img class="gallery-main-img" id="pershing116-main-img" src="https://i.ibb.co/YFNsWScJ/PERSHING-16-Jan-2026-DRONE-5-MP4-00-05-18-13-Still021.jpg" alt="Pershing 116"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-hero-info">
+      <div>
+        <div class="gallery-hero-title">Pershing 116</div>
+        <div class="gallery-hero-sub">Sport Yacht · 2024 · Miami Beach Marina</div>
+      </div>
+      <div class="gallery-counter"><span id="pershing116-cur">1</span> of 90 photos</div>
+    </div>
+    <button class="gallery-arrow prev" onclick="galleryNav('pershing116',-1)">&#8249;</button>
+    <button class="gallery-arrow next" onclick="galleryNav('pershing116', 1)">&#8250;</button>
+  </div>
+
+  <div class="gallery-thumbs" id="pershing116-thumbs"></div>
+
+  <div class="vessel-content">
+    <div class="vessel-main">
+
+      <div class="vessel-section-title">Vessel <span>Specifications</span></div>
+      <div class="vessel-divider"></div>
+      <div class="specs-grid">
+        <div class="spec-item"><div class="spec-label">Length Overall</div><div class="spec-value">116<span class="spec-unit">ft / 35.3m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Beam</div><div class="spec-value">25'4"<span class="spec-unit">7.72m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Draft</div><div class="spec-value">4'10"<span class="spec-unit">1.47m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Builder</div><div class="spec-value" style="font-size:15px;">Pershing Yachts</div></div>
+        <div class="spec-item"><div class="spec-label">Year Built</div><div class="spec-value">2024</div></div>
+        <div class="spec-item"><div class="spec-label">Hull</div><div class="spec-value" style="font-size:14px;">GRP / Carbon</div></div>
+        <div class="spec-item"><div class="spec-label">Engines</div><div class="spec-value" style="font-size:12px;">3× MAN V12 2000hp</div></div>
+        <div class="spec-item"><div class="spec-label">Propulsion</div><div class="spec-value" style="font-size:13px;">Triple Waterjets</div></div>
+        <div class="spec-item"><div class="spec-label">Max Speed</div><div class="spec-value">35.5<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Cruising Speed</div><div class="spec-value">29.5<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Staterooms</div><div class="spec-value">5</div></div>
+        <div class="spec-item"><div class="spec-label">Bathrooms</div><div class="spec-value">5</div></div>
+        <div class="spec-item"><div class="spec-label">Guest Capacity</div><div class="spec-value">13<span class="spec-unit">guests</span></div></div>
+        <div class="spec-item"><div class="spec-label">Fuel Capacity</div><div class="spec-value">3,830<span class="spec-unit">gal</span></div></div>
+        <div class="spec-item"><div class="spec-label">Range</div><div class="spec-value">400<span class="spec-unit">nm</span></div></div>
+      </div>
+
+      <div class="vessel-section-title">On-Board <span>Amenities</span></div>
+      <div class="vessel-divider"></div>
+      <div class="amenities-grid" id="amenities-pershing116"></div>
+
+    </div>
+
+    <div class="vessel-sidebar" id="pershing116-sidebar">
+      <div class="vessel-section-title" style="font-size:26px;">Reserve <span>Your Charter</span></div>
+      <div class="vessel-divider"></div>
+
+      <div class="booking-step" id="pershing116-step1">
+        <div class="booking-step-label">Step 1 — Select Duration</div>
+        <div class="duration-grid">
+          <div class="duration-box" onclick="selectDuration('pershing116',4,16500)" data-hrs="4"><div class="dur-hrs">4 hrs</div><div class="dur-price">$16,500</div></div>
+          <div class="duration-box" onclick="selectDuration('pershing116',6,18000)" data-hrs="6"><div class="dur-hrs">6 hrs</div><div class="dur-price">$18,000</div></div>
+          <div class="duration-box" onclick="selectDuration('pershing116',8,21000)" data-hrs="8"><div class="dur-hrs">8 hrs</div><div class="dur-price">$21,000</div></div>
+        </div>
+        <div class="term-note">Term charter pricing available</div>
+      </div>
+
+      <div class="booking-step hidden" id="pershing116-step2">
+        <div class="booking-step-label">Step 2 — Crew Gratuity</div>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;">Gratuity is customary and greatly appreciated by your crew. Select a percentage:</p>
+        <div class="gratuity-grid" id="pershing116-gratuity-grid">
+          <div class="gratuity-box" onclick="selectGratuity('pershing116',15)">15%</div>
+          <div class="gratuity-box selected" onclick="selectGratuity('pershing116',18)">18%</div>
+          <div class="gratuity-box" onclick="selectGratuity('pershing116',20)">20%</div>
+          <div class="gratuity-box" onclick="selectGratuity('pershing116',25)">25%</div>
+          <div class="gratuity-box" onclick="selectGratuity('pershing116',30)">30%</div>
+        </div>
+      </div>
+
+      <div class="price-summary hidden" id="pershing116-summary">
+        <div class="summary-row"><span>Charter Rate</span><span id="pershing116-base-display">—</span></div>
+        <div class="summary-row"><span id="pershing116-grat-label">Crew Gratuity</span><span id="pershing116-grat-display">—</span></div>
+        <div class="summary-total"><span>Total</span><span id="pershing116-total-display">—</span></div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.25);text-align:right;margin-top:4px;">All inclusive · Subject to availability</div>
+      </div>
+
+      <div class="booking-step hidden" id="pershing116-step3">
+        <div class="booking-step-label">Step 3 — Your Details</div>
+        <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="pershing116-name" type="text" placeholder="Full name"/></div>
+        <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="pershing116-email" type="email" placeholder="your@email.com"/></div>
+        <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="pershing116-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
+        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="pershing116-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Departure Time *</label>
+          <div class="time-slots" id="pershing116-time-slots">
+            <div class="time-slot" data-time="08:00" onclick="selectTime('pershing116','08:00')">8:00 AM</div>
+            <div class="time-slot" data-time="09:00" onclick="selectTime('pershing116','09:00')">9:00 AM</div>
+            <div class="time-slot" data-time="10:00" onclick="selectTime('pershing116','10:00')">10:00 AM</div>
+            <div class="time-slot" data-time="11:00" onclick="selectTime('pershing116','11:00')">11:00 AM</div>
+            <div class="time-slot" data-time="12:00" onclick="selectTime('pershing116','12:00')">12:00 PM</div>
+            <div class="time-slot" data-time="13:00" onclick="selectTime('pershing116','13:00')">1:00 PM</div>
+            <div class="time-slot" data-time="14:00" onclick="selectTime('pershing116','14:00')">2:00 PM</div>
+            <div class="time-slot" data-time="15:00" onclick="selectTime('pershing116','15:00')">3:00 PM</div>
+            <div class="time-slot" data-time="16:00" onclick="selectTime('pershing116','16:00')">4:00 PM</div>
+            <div class="time-slot" data-time="17:00" onclick="selectTime('pershing116','17:00')">5:00 PM</div>
+            <div class="time-slot" data-time="18:00" onclick="selectTime('pershing116','18:00')">6:00 PM</div>
+          </div>
+          <div class="time-end-note" id="pershing116-time-note"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Number of Guests *</label>
+          <select class="form-input" id="pershing116-guests">
+            <option value="">Select guests</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option>
+            <option>9</option><option>10</option><option>11</option><option>12</option>
+            <option>13</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Occasion</label>
+          <select class="form-input" id="pershing116-occasion">
+            <option value="">Select occasion</option>
+            <option>Birthday</option><option>Anniversary</option><option>Corporate</option>
+            <option>Bachelorette</option><option>Bachelor</option><option>Client Entertainment</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Special Requests</label><textarea class="form-input" id="pershing116-notes" rows="3" placeholder="Any special requests or questions..."></textarea></div>
+        <button class="vessel-enquire-btn" onclick="submitBooking('pershing116')">Request Charter →</button>
+      </div>
+
+      <div class="booking-confirm hidden" id="pershing116-confirm">
+        <div class="confirm-icon">✓</div>
+        <div class="confirm-title">Request Received</div>
+        <p class="confirm-text">Thank you! We've received your reservation request for <strong>Pershing 116'</strong>. Our team will review and send your charter agreement within 24 hours.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="vessel-page" id="vessel-pershing116">
+  <button class="vessel-back" onclick="closeVessel()">← Fleet</button>
+
+  <div class="vessel-gallery" id="pershing116-gallery">
+    <img class="gallery-main-img" id="pershing116-main-img" src="https://i.ibb.co/YFNsWScJ/PERSHING-16-Jan-2026-DRONE-5-MP4-00-05-18-13-Still021.jpg" alt="Pershing 116"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-hero-info">
+      <div>
+        <div class="gallery-hero-title">Pershing 116</div>
+        <div class="gallery-hero-sub">Superyacht · 2024 · Miami Beach Marina</div>
+      </div>
+      <div class="gallery-counter"><span id="pershing116-cur">1</span> of 90 photos</div>
+    </div>
+    <button class="gallery-arrow prev" onclick="galleryNav('pershing116',-1)">&#8249;</button>
+    <button class="gallery-arrow next" onclick="galleryNav('pershing116', 1)">&#8250;</button>
+  </div>
+
+  <div class="gallery-thumbs" id="pershing116-thumbs"></div>
+
+  <div class="vessel-content">
+    <div class="vessel-main">
+
+      <div class="vessel-section-title">Vessel <span>Specifications</span></div>
+      <div class="vessel-divider"></div>
+      <div class="specs-grid">
+        <div class="spec-item"><div class="spec-label">Length Overall</div><div class="spec-value">116<span class="spec-unit">ft / 35.2m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Beam</div><div class="spec-value">25'4"<span class="spec-unit">7.7m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Draft</div><div class="spec-value">4'10"<span class="spec-unit">1.47m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Builder</div><div class="spec-value" style="font-size:15px;">Pershing Yachts</div></div>
+        <div class="spec-item"><div class="spec-label">Year Built</div><div class="spec-value">2024</div></div>
+        <div class="spec-item"><div class="spec-label">Hull</div><div class="spec-value" style="font-size:13px;">GRP &amp; Carbon Fiber</div></div>
+        <div class="spec-item"><div class="spec-label">Engines</div><div class="spec-value" style="font-size:12px;">3× MAN V12 2000hp</div></div>
+        <div class="spec-item"><div class="spec-label">Max Speed</div><div class="spec-value">35.5<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Cruising Speed</div><div class="spec-value">29<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Propulsion</div><div class="spec-value" style="font-size:12px;">Kamewa Waterjets</div></div>
+        <div class="spec-item"><div class="spec-label">Staterooms</div><div class="spec-value">5</div></div>
+        <div class="spec-item"><div class="spec-label">Bathrooms</div><div class="spec-value">5</div></div>
+        <div class="spec-item"><div class="spec-label">Guest Capacity</div><div class="spec-value">13<span class="spec-unit">guests</span></div></div>
+        <div class="spec-item"><div class="spec-label">Fuel Capacity</div><div class="spec-value">3,187<span class="spec-unit">gal</span></div></div>
+        <div class="spec-item"><div class="spec-label">Gross Tonnage</div><div class="spec-value">239<span class="spec-unit">GT</span></div></div>
+        <div class="spec-item"><div class="spec-label">Departure</div><div class="spec-value" style="font-size:11px;">Miami Beach Marina</div></div>
+      </div>
+
+      <div class="vessel-section-title">On-Board <span>Amenities</span></div>
+      <div class="vessel-divider"></div>
+      <div class="amenities-grid" id="amenities-pershing116"></div>
+
+    </div>
+
+    <div class="vessel-sidebar" id="pershing116-sidebar">
+      <div class="vessel-section-title" style="font-size:26px;">Reserve <span>Your Charter</span></div>
+      <div class="vessel-divider"></div>
+
+      <div class="booking-step" id="pershing116-step1">
+        <div class="booking-step-label">Step 1 — Select Duration</div>
+        <div class="duration-grid">
+          <div class="duration-box" onclick="selectDuration('pershing116',4,16500)" data-hrs="4"><div class="dur-hrs">4 hrs</div><div class="dur-price">$16,500</div></div>
+          <div class="duration-box" onclick="selectDuration('pershing116',6,18000)" data-hrs="6"><div class="dur-hrs">6 hrs</div><div class="dur-price">$18,000</div></div>
+          <div class="duration-box" onclick="selectDuration('pershing116',8,21000)" data-hrs="8"><div class="dur-hrs">8 hrs</div><div class="dur-price">$21,000</div></div>
+        </div>
+        <div class="term-note">Term charter pricing available</div>
+      </div>
+
+      <div class="booking-step hidden" id="pershing116-step2">
+        <div class="booking-step-label">Step 2 — Crew Gratuity</div>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;">Gratuity is customary and greatly appreciated by your crew. Select a percentage:</p>
+        <div class="gratuity-grid" id="pershing116-gratuity-grid">
+          <div class="gratuity-box" onclick="selectGratuity('pershing116',15)">15%</div>
+          <div class="gratuity-box selected" onclick="selectGratuity('pershing116',18)">18%</div>
+          <div class="gratuity-box" onclick="selectGratuity('pershing116',20)">20%</div>
+          <div class="gratuity-box" onclick="selectGratuity('pershing116',25)">25%</div>
+          <div class="gratuity-box" onclick="selectGratuity('pershing116',30)">30%</div>
+        </div>
+      </div>
+
+      <div class="price-summary hidden" id="pershing116-summary">
+        <div class="summary-row"><span>Charter Rate</span><span id="pershing116-base-display">—</span></div>
+        <div class="summary-row"><span id="pershing116-grat-label">Crew Gratuity</span><span id="pershing116-grat-display">—</span></div>
+        <div class="summary-total"><span>Total</span><span id="pershing116-total-display">—</span></div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.25);text-align:right;margin-top:4px;">All inclusive · Subject to availability</div>
+      </div>
+
+      <div class="booking-step hidden" id="pershing116-step3">
+        <div class="booking-step-label">Step 3 — Your Details</div>
+        <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="pershing116-name" type="text" placeholder="Full name"/></div>
+        <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="pershing116-email" type="email" placeholder="your@email.com"/></div>
+        <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="pershing116-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
+        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="pershing116-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Departure Time *</label>
+          <div class="time-slots" id="pershing116-time-slots">
+            <div class="time-slot" data-time="08:00" onclick="selectTime('pershing116','08:00')">8:00 AM</div>
+            <div class="time-slot" data-time="09:00" onclick="selectTime('pershing116','09:00')">9:00 AM</div>
+            <div class="time-slot" data-time="10:00" onclick="selectTime('pershing116','10:00')">10:00 AM</div>
+            <div class="time-slot" data-time="11:00" onclick="selectTime('pershing116','11:00')">11:00 AM</div>
+            <div class="time-slot" data-time="12:00" onclick="selectTime('pershing116','12:00')">12:00 PM</div>
+            <div class="time-slot" data-time="13:00" onclick="selectTime('pershing116','13:00')">1:00 PM</div>
+            <div class="time-slot" data-time="14:00" onclick="selectTime('pershing116','14:00')">2:00 PM</div>
+            <div class="time-slot" data-time="15:00" onclick="selectTime('pershing116','15:00')">3:00 PM</div>
+            <div class="time-slot" data-time="16:00" onclick="selectTime('pershing116','16:00')">4:00 PM</div>
+            <div class="time-slot" data-time="17:00" onclick="selectTime('pershing116','17:00')">5:00 PM</div>
+            <div class="time-slot" data-time="18:00" onclick="selectTime('pershing116','18:00')">6:00 PM</div>
+          </div>
+          <div class="time-end-note" id="pershing116-time-note"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Number of Guests *</label>
+          <select class="form-input" id="pershing116-guests">
+            <option value="">Select guests</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option>
+            <option>9</option><option>10</option><option>11</option><option>12</option>
+            <option>13</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Occasion</label>
+          <select class="form-input" id="pershing116-occasion">
+            <option value="">Select occasion</option>
+            <option>Birthday</option><option>Anniversary</option><option>Corporate</option>
+            <option>Bachelorette</option><option>Bachelor</option><option>Client Entertainment</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Special Requests</label><textarea class="form-input" id="pershing116-notes" rows="3" placeholder="Any special requests or questions..."></textarea></div>
+        <button class="vessel-enquire-btn" onclick="submitBooking('pershing116')">Request Charter →</button>
+      </div>
+
+      <div class="booking-confirm hidden" id="pershing116-confirm">
+        <div class="confirm-icon">✓</div>
+        <div class="confirm-title">Request Received</div>
+        <p class="confirm-text">Thank you! We've received your reservation request for <strong>Pershing 116'</strong>. Our team will review and send your charter agreement within 24 hours.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="vessel-page" id="vessel-trinity166">
+  <button class="vessel-back" onclick="closeVessel()">← Fleet</button>
+
+  <div class="vessel-gallery" id="trinity166-gallery">
+    <img class="gallery-main-img" id="trinity166-main-img" src="https://i.ibb.co/TDtB2jwH/165-Trinity-SWEET-CAROLINE-2-Drone-4.jpg" alt="Trinity 166"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-hero-info">
+      <div>
+        <div class="gallery-hero-title">Trinity 166</div>
+        <div class="gallery-hero-sub">Superyacht · 2009 · Miami Beach Marina</div>
+      </div>
+      <div class="gallery-counter"><span id="trinity166-cur">1</span> of 56 photos</div>
+    </div>
+    <button class="gallery-arrow prev" onclick="galleryNav('trinity166',-1)">&#8249;</button>
+    <button class="gallery-arrow next" onclick="galleryNav('trinity166', 1)">&#8250;</button>
+  </div>
+
+  <div class="gallery-thumbs" id="trinity166-thumbs"></div>
+
+  <div class="vessel-content">
+    <div class="vessel-main">
+
+      <div class="vessel-section-title">Vessel <span>Specifications</span></div>
+      <div class="vessel-divider"></div>
+      <div class="specs-grid">
+        <div class="spec-item"><div class="spec-label">Length Overall</div><div class="spec-value">166<span class="spec-unit">ft / 50.5m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Beam</div><div class="spec-value">28'2"<span class="spec-unit">8.59m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Draft</div><div class="spec-value">8'6"<span class="spec-unit">2.59m</span></div></div>
+        <div class="spec-item"><div class="spec-label">Builder</div><div class="spec-value" style="font-size:14px;">Trinity Yachts</div></div>
+        <div class="spec-item"><div class="spec-label">Year Built</div><div class="spec-value">2009</div></div>
+        <div class="spec-item"><div class="spec-label">Hull</div><div class="spec-value" style="font-size:13px;">Aluminium Semi-Disp.</div></div>
+        <div class="spec-item"><div class="spec-label">Engines</div><div class="spec-value" style="font-size:12px;">2× MTU 16V 4000 M90</div></div>
+        <div class="spec-item"><div class="spec-label">Power</div><div class="spec-value">7,300<span class="spec-unit">hp total</span></div></div>
+        <div class="spec-item"><div class="spec-label">Max Speed</div><div class="spec-value">24<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Cruising Speed</div><div class="spec-value">15<span class="spec-unit">knots</span></div></div>
+        <div class="spec-item"><div class="spec-label">Staterooms</div><div class="spec-value">7</div></div>
+        <div class="spec-item"><div class="spec-label">Guest Capacity</div><div class="spec-value">20<span class="spec-unit">guests</span></div></div>
+        <div class="spec-item"><div class="spec-label">Gross Tonnage</div><div class="spec-value">478<span class="spec-unit">GT</span></div></div>
+        <div class="spec-item"><div class="spec-label">Range</div><div class="spec-value">3,200<span class="spec-unit">nm</span></div></div>
+        <div class="spec-item"><div class="spec-label">Departure</div><div class="spec-value" style="font-size:11px;">Miami Beach Marina</div></div>
+      </div>
+
+      <div class="vessel-section-title">On-Board <span>Amenities</span></div>
+      <div class="vessel-divider"></div>
+      <div class="amenities-grid" id="amenities-trinity166"></div>
+
+    </div>
+
+    <div class="vessel-sidebar" id="trinity166-sidebar">
+      <div class="vessel-section-title" style="font-size:26px;">Reserve <span>Your Charter</span></div>
+      <div class="vessel-divider"></div>
+
+      <div class="booking-step" id="trinity166-step1">
+        <div class="booking-step-label">Step 1 — Select Duration</div>
+        <div class="duration-grid">
+          <div class="duration-box" onclick="selectDuration('trinity166',4,35000)" data-hrs="4"><div class="dur-hrs">4 hrs</div><div class="dur-price">$35,000</div></div>
+          <div class="duration-box" onclick="selectDuration('trinity166',6,40000)" data-hrs="6"><div class="dur-hrs">6 hrs</div><div class="dur-price">$40,000</div></div>
+          <div class="duration-box" onclick="selectDuration('trinity166',8,50000)" data-hrs="8"><div class="dur-hrs">8 hrs</div><div class="dur-price">$50,000</div></div>
+        </div>
+        <div class="term-note">Term charter pricing available · Chef &amp; Masseuse included</div>
+      </div>
+
+      <div class="booking-step hidden" id="trinity166-step2">
+        <div class="booking-step-label">Step 2 — Crew Gratuity</div>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;">Gratuity is customary and greatly appreciated by your crew. Select a percentage:</p>
+        <div class="gratuity-grid" id="trinity166-gratuity-grid">
+          <div class="gratuity-box" onclick="selectGratuity('trinity166',15)">15%</div>
+          <div class="gratuity-box selected" onclick="selectGratuity('trinity166',18)">18%</div>
+          <div class="gratuity-box" onclick="selectGratuity('trinity166',20)">20%</div>
+          <div class="gratuity-box" onclick="selectGratuity('trinity166',25)">25%</div>
+          <div class="gratuity-box" onclick="selectGratuity('trinity166',30)">30%</div>
+        </div>
+      </div>
+
+      <div class="price-summary hidden" id="trinity166-summary">
+        <div class="summary-row"><span>Charter Rate</span><span id="trinity166-base-display">—</span></div>
+        <div class="summary-row"><span id="trinity166-grat-label">Crew Gratuity</span><span id="trinity166-grat-display">—</span></div>
+        <div class="summary-total"><span>Total</span><span id="trinity166-total-display">—</span></div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.25);text-align:right;margin-top:4px;">All inclusive · Subject to availability</div>
+      </div>
+
+      <div class="booking-step hidden" id="trinity166-step3">
+        <div class="booking-step-label">Step 3 — Your Details</div>
+        <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="trinity166-name" type="text" placeholder="Full name"/></div>
+        <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="trinity166-email" type="email" placeholder="your@email.com"/></div>
+        <div class="form-group"><label class="form-label">Phone Number *</label><input class="form-input" id="trinity166-phone" type="tel" placeholder="+1 (000) 000-0000"/></div>
+        <div class="form-group"><label class="form-label">Preferred Date *</label><input class="form-input" id="trinity166-date" type="date"/></div>
+        <div class="form-group">
+          <label class="form-label">Departure Time *</label>
+          <div class="time-slots" id="trinity166-time-slots">
+            <div class="time-slot" data-time="08:00" onclick="selectTime('trinity166','08:00')">8:00 AM</div>
+            <div class="time-slot" data-time="09:00" onclick="selectTime('trinity166','09:00')">9:00 AM</div>
+            <div class="time-slot" data-time="10:00" onclick="selectTime('trinity166','10:00')">10:00 AM</div>
+            <div class="time-slot" data-time="11:00" onclick="selectTime('trinity166','11:00')">11:00 AM</div>
+            <div class="time-slot" data-time="12:00" onclick="selectTime('trinity166','12:00')">12:00 PM</div>
+            <div class="time-slot" data-time="13:00" onclick="selectTime('trinity166','13:00')">1:00 PM</div>
+            <div class="time-slot" data-time="14:00" onclick="selectTime('trinity166','14:00')">2:00 PM</div>
+            <div class="time-slot" data-time="15:00" onclick="selectTime('trinity166','15:00')">3:00 PM</div>
+            <div class="time-slot" data-time="16:00" onclick="selectTime('trinity166','16:00')">4:00 PM</div>
+            <div class="time-slot" data-time="17:00" onclick="selectTime('trinity166','17:00')">5:00 PM</div>
+            <div class="time-slot" data-time="18:00" onclick="selectTime('trinity166','18:00')">6:00 PM</div>
+          </div>
+          <div class="time-end-note" id="trinity166-time-note"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Number of Guests *</label>
+          <select class="form-input" id="trinity166-guests">
+            <option value="">Select guests</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option>
+            <option>9</option><option>10</option><option>11</option><option>12</option>
+            <option>13</option><option>14</option><option>15</option><option>16</option>
+            <option>17</option><option>18</option><option>19</option><option>20</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Occasion</label>
+          <select class="form-input" id="trinity166-occasion">
+            <option value="">Select occasion</option>
+            <option>Birthday</option><option>Anniversary</option><option>Corporate</option>
+            <option>Bachelorette</option><option>Bachelor</option><option>Client Entertainment</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Special Requests</label><textarea class="form-input" id="trinity166-notes" rows="3" placeholder="Any special requests or questions..."></textarea></div>
+        <button class="vessel-enquire-btn" onclick="submitBooking('trinity166')">Request Charter →</button>
+      </div>
+
+      <div class="booking-confirm hidden" id="trinity166-confirm">
+        <div class="confirm-icon">✓</div>
+        <div class="confirm-title">Request Received</div>
+        <p class="confirm-text">Thank you! We've received your reservation request for <strong>Trinity 166'</strong>. Our team will review and send your charter agreement within 24 hours.</p>
       </div>
     </div>
   </div>
@@ -4903,7 +7044,7 @@ function renderFleet() {
           <div class="admin-info-card">
             <div class="admin-info-card-title">Sender Configuration</div>
             <div class="admin-info-row"><span class="admin-info-key">From Name</span><span class="admin-info-val">Bound Yachting</span></div>
-            <div class="admin-info-row"><span class="admin-info-key">From Email</span><span class="admin-info-val">bookings@boundyachting.com</span></div>
+            <div class="admin-info-row"><span class="admin-info-key">From Email</span><span class="admin-info-val">Hello@boundyachting.com</span></div>
             <div class="admin-info-row"><span class="admin-info-key">SMTP Status</span><span class="admin-info-val" style="color:rgba(255,255,255,0.25);">○ Not Connected</span></div>
           </div>
         </div>
@@ -5770,7 +7911,7 @@ function renderFleet() {
         </div>
         <div class="nb-field">
           <label class="nb-label">Agent Email</label>
-          <input class="nb-input" id="nb-aemail-retail" type="email" placeholder="agent@boundyachting.com" />
+          <input class="nb-input" id="nb-aemail-retail" type="email" placeholder="Hello@boundyachting.com" />
         </div>
       </div>
     </div>
@@ -5960,21 +8101,22 @@ function renderFleet() {
 
 const crewRoster = {
   captains: [
-    { name:'Jorge Yossri',      initials:'JY', phone:'', vessels:{ 'The One':75, 'Galeon':65 } },
-    { name:'Jose Carlo Arroyo', initials:'JC', phone:'', vessels:{ 'The One':75, 'SL96':100, 'Galeon':65 } },
+    { name:'Jorge Yossri',      initials:'JY', phone:'', vessels:{ 'The One':75, 'Galeon':65 , 'Yachtooma':75} },
+    { name:'Jose Carlo Arroyo', initials:'JC', phone:'', vessels:{ 'The One':75, 'SL96':100, 'Galeon':65 , 'Yachtooma':75} },
     { name:'Ethan Carter',      initials:'EC', phone:'', vessels:{ 'Galeon':65 } },
-    { name:'Alejandro Molero',  initials:'AM', phone:'', vessels:{} },
+    { name:'Alejandro Molero',  initials:'AM', phone:'', vessels:{'Yachtooma':75} },
     { name:'Jesus Diaz',        initials:'JD', phone:'', vessels:{} },
     { name:'Nathan Arcia',      initials:'NA', phone:'', vessels:{} },
-    { name:'Antonio Avila',     initials:'AA', phone:'', vessels:{} },
+    { name:'Antonio Avila',     initials:'AA', phone:'', vessels:{'Yachtooma':75} },
     { name:'Gonzalo Vriglino',  initials:'GV', phone:'', vessels:{} },
+    { name:'Mikael Gation',    initials:'MG', phone:'', vessels:{"Saxdor 42":65} },
   ],
   stews: [
-    { name:'Claudia Amador',      initials:'CA', phone:'', vessels:{ 'SL96':50, 'Galeon':35, 'The One':35 } },
-    { name:'Macla Palomino',      initials:'MP', phone:'', vessels:{ 'SL96':50, 'Galeon':35, 'The One':35 } },
-    { name:'Rocio Casas',         initials:'RC', phone:'', vessels:{} },
-    { name:'Varu Rodriguez',      initials:'VR', phone:'', vessels:{} },
-    { name:'Franchesca Alvernia', initials:'FA', phone:'', vessels:{} },
+    { name:'Claudia Amador',      initials:'CA', phone:'', vessels:{ 'SL96':50, 'Galeon':35, 'The One':35 , 'Yachtooma':35} },
+    { name:'Macla Palomino',      initials:'MP', phone:'', vessels:{ 'SL96':50, 'Galeon':35, 'The One':35 , 'Yachtooma':35} },
+    { name:'Rocio Casas',         initials:'RC', phone:'', vessels:{'Yachtooma':35} },
+    { name:'Varu Rodriguez',      initials:'VR', phone:'', vessels:{'Yachtooma':35} },
+    { name:'Franchesca Alvernia', initials:'FA', phone:'', vessels:{'Yachtooma':35} },
     { name:"Olenka O'Brien",      initials:'OO', phone:'', vessels:{} },
   ],
   deckhands: [
@@ -6011,6 +8153,7 @@ const CREW_PASSWORDS = {
   'franchesca-alvernia': 'franchesca2026',
   "olenka-o'brien":      'olenka2026',
   'eduardo-guillen':     'eduardo2026',
+  'mikael-gation':       'mikael2026',
 };
 
 function crewSlug(name) { return name.toLowerCase().replace(/\s+/g,'-'); }
@@ -6331,7 +8474,7 @@ function saveNewVessel() {
               </select>
             </div>
             <div class="form-group"><label class="form-label">Special Requests</label><textarea class="form-input" id="${fleetId}-notes" rows="3" placeholder="Any special requests..."></textarea></div>
-            <button class="cta-btn" onclick="submitBooking('${fleetId}')" style="width:100%;margin-top:8px;">Request Charter →</button>
+            <button class="vessel-enquire-btn" onclick="submitBooking('${fleetId}')">Request Charter →</button>
           </div>
           <div class="booking-confirm hidden" id="${fleetId}-confirm">
             <div class="confirm-icon">✓</div>
@@ -6368,6 +8511,15 @@ function showAvmError(msg) {
   el.style.display = 'block';
 }
 
+function moveVessel(i, dir) {
+  const j = i + dir;
+  if (j < 0 || j >= VESSEL_REGISTRY.length) return;
+  // Swap in place
+  [VESSEL_REGISTRY[i], VESSEL_REGISTRY[j]] = [VESSEL_REGISTRY[j], VESSEL_REGISTRY[i]];
+  renderAdminVessels();
+  renderFleet();
+}
+
 function renderAdminVessels() {
   const grid = document.getElementById('admin-vessel-grid');
   if (!grid) return;
@@ -6384,7 +8536,11 @@ function renderAdminVessels() {
       <div style="padding:18px;">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2px;">
           <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#fff;">${v.fullName}</div>
-          <button onclick="openEditVesselModal(${i})" style="background:rgba(184,155,94,0.08);border:1px solid rgba(184,155,94,0.2);color:rgba(184,155,94,0.7);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 10px;cursor:pointer;font-family:inherit;white-space:nowrap;">✎ Edit</button>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <button onclick="moveVessel(${i},-1)" title="Move up" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);width:26px;height:26px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;" ${i === 0 ? 'disabled style="opacity:0.2;cursor:default;"' : ''}>↑</button>
+            <button onclick="moveVessel(${i}, 1)" title="Move down" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);width:26px;height:26px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;" ${i === VESSEL_REGISTRY.length-1 ? 'disabled style="opacity:0.2;cursor:default;"' : ''}>↓</button>
+            <button onclick="openEditVesselModal(${i})" style="background:rgba(184,155,94,0.08);border:1px solid rgba(184,155,94,0.2);color:rgba(184,155,94,0.7);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 10px;cursor:pointer;font-family:inherit;white-space:nowrap;">✎ Edit</button>
+          </div>
         </div>
         <div style="font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:1px;margin-bottom:14px;">${v.tag}</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
@@ -7363,34 +9519,34 @@ function switchView(viewName, el) {
 const bookings = {
 
   // ── PENDING APPROVAL ──
-  'BND-027': { ref:'#BND-027', status:'pending',   date:'Mar 21, 2026', dateSort:'2026-03-21', time:'10:00 AM', vessel:'The One (Azimut 68)',  vesselShort:'The One', duration:4, guests:6,  addons:['Alcohol Package'],           revenue:2500,  gratuity:0,    deposit:0,     depositDate:null,         depositMethod:null,            paymentStatus:'unpaid',   paymentMethod:'—',             contractStatus:'Not Sent', customer:{ name:'Isabella Voss',   email:'i.voss@example.com',     phone:'+1 305 771 4490', occasion:'Anniversary'    }, agent:{ name:'Sofia Bernal',   email:'sofia@boundyachting.com'  }, captain:'Jorge Yossri',       stew:'Macla Palomino',  expenses:[{desc:'Dock fee', amt:150, submittedBy:'Jorge Yossri', pending:true}] },
-  'BND-026': { ref:'#BND-026', status:'pending',   date:'Mar 26, 2026', dateSort:'2026-03-26', time:'11:00 AM', vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:6, guests:11, addons:['DJ','Catering'],             revenue:3000,  gratuity:0,    deposit:0,     depositDate:null,         depositMethod:null,            paymentStatus:'unpaid',   paymentMethod:'—',             contractStatus:'Not Sent', customer:{ name:'Derek Fontaine',  email:'d.font@example.com',     phone:'+1 786 903 2241', occasion:'Birthday'       }, agent:{ name:'Carlos Medina',  email:'carlos@boundyachting.com' }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[] },
-  'BND-024': { ref:'#BND-024', status:'pending',   date:'Mar 14, 2026', dateSort:'2026-03-14', time:'11:00 AM', vessel:'Sanlorenzo SL96',       vesselShort:'SL96',    duration:8, guests:10, addons:['DJ','Catering'],             revenue:13000, gratuity:0,    deposit:0,     depositDate:null,         depositMethod:null,            paymentStatus:'unpaid',   paymentMethod:'—',             contractStatus:'Not Sent', customer:{ name:'Marcus Rivera',   email:'m.rivera@example.com',   phone:'+1 786 234 9911', occasion:'Birthday'       }, agent:{ name:'Sofia Bernal',   email:'sofia@boundyachting.com'  }, captain:'Jose Carlo Arroyo', stew:'Claudia Amador',  expenses:[] },
-  'BND-023': { ref:'#BND-023', status:'pending',   date:'Mar 22, 2026', dateSort:'2026-03-22', time:'10:00 AM', vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:6, guests:9,  addons:['Chef'],                      revenue:3000,  gratuity:0,    deposit:0,     depositDate:null,         depositMethod:null,            paymentStatus:'unpaid',   paymentMethod:'—',             contractStatus:'Not Sent', customer:{ name:'James Whitfield', email:'j.whitfield@example.com', phone:'+1 212 554 8821', occasion:'Anniversary'    }, agent:{ name:'Carlos Medina',  email:'carlos@boundyachting.com' }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[] },
-  'BND-022': { ref:'#BND-022', status:'pending',   date:'Apr 2, 2026',  dateSort:'2026-04-02', time:'9:00 AM',  vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:4, guests:5,  addons:['Alcohol Package'],           revenue:2500,  gratuity:0,    deposit:0,     depositDate:null,         depositMethod:null,            paymentStatus:'unpaid',   paymentMethod:'—',             contractStatus:'Not Sent', customer:{ name:'Ryan Castellano', email:'r.cast@example.com',     phone:'+1 305 990 4477', occasion:'Corporate'      }, agent:{ name:'Sofia Bernal',   email:'sofia@boundyachting.com'  }, captain:'Jorge Yossri',       stew:'Macla Palomino',  expenses:[] },
+  'BND-027': { ref:'#BND-027', status:'pending',   date:'Mar 21, 2026', dateSort:'2026-03-21', time:'10:00 AM', vessel:'The One (Azimut 68)',  vesselShort:'The One', duration:4, guests:6,  addons:['Alcohol Package'],           revenue:2500,  gratuity:0,    deposit:0,     depositDate:null,         depositMethod:null,            paymentStatus:'unpaid',   paymentMethod:'—',             contractStatus:'Not Sent', customer:{ name:'Isabella Voss',   email:'i.voss@example.com',     phone:'+1 305 771 4490', occasion:'Anniversary'    }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com'  }, captain:'Jorge Yossri',       stew:'Macla Palomino',  expenses:[{desc:'Dock fee', amt:150, submittedBy:'Jorge Yossri', pending:true}] },
+  'BND-026': { ref:'#BND-026', status:'pending',   date:'Mar 26, 2026', dateSort:'2026-03-26', time:'11:00 AM', vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:6, guests:11, addons:['DJ','Catering'],             revenue:3000,  gratuity:0,    deposit:0,     depositDate:null,         depositMethod:null,            paymentStatus:'unpaid',   paymentMethod:'—',             contractStatus:'Not Sent', customer:{ name:'Derek Fontaine',  email:'d.font@example.com',     phone:'+1 786 903 2241', occasion:'Birthday'       }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[] },
+  'BND-024': { ref:'#BND-024', status:'pending',   date:'Mar 14, 2026', dateSort:'2026-03-14', time:'11:00 AM', vessel:'Sanlorenzo SL96',       vesselShort:'SL96',    duration:8, guests:10, addons:['DJ','Catering'],             revenue:13000, gratuity:0,    deposit:0,     depositDate:null,         depositMethod:null,            paymentStatus:'unpaid',   paymentMethod:'—',             contractStatus:'Not Sent', customer:{ name:'Marcus Rivera',   email:'m.rivera@example.com',   phone:'+1 786 234 9911', occasion:'Birthday'       }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com'  }, captain:'Jose Carlo Arroyo', stew:'Claudia Amador',  expenses:[] },
+  'BND-023': { ref:'#BND-023', status:'pending',   date:'Mar 22, 2026', dateSort:'2026-03-22', time:'10:00 AM', vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:6, guests:9,  addons:['Chef'],                      revenue:3000,  gratuity:0,    deposit:0,     depositDate:null,         depositMethod:null,            paymentStatus:'unpaid',   paymentMethod:'—',             contractStatus:'Not Sent', customer:{ name:'James Whitfield', email:'j.whitfield@example.com', phone:'+1 212 554 8821', occasion:'Anniversary'    }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[] },
+  'BND-022': { ref:'#BND-022', status:'pending',   date:'Apr 2, 2026',  dateSort:'2026-04-02', time:'9:00 AM',  vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:4, guests:5,  addons:['Alcohol Package'],           revenue:2500,  gratuity:0,    deposit:0,     depositDate:null,         depositMethod:null,            paymentStatus:'unpaid',   paymentMethod:'—',             contractStatus:'Not Sent', customer:{ name:'Ryan Castellano', email:'r.cast@example.com',     phone:'+1 305 990 4477', occasion:'Corporate'      }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com'  }, captain:'Jorge Yossri',       stew:'Macla Palomino',  expenses:[] },
 
   // ── CONFIRMED — BALANCE DUE (partial deposit) ──
-  'BND-025': { ref:'#BND-025', status:'confirmed', date:'Mar 8, 2026',  dateSort:'2026-03-08', time:'2:00 PM',  vessel:'Sanlorenzo SL96',       vesselShort:'SL96',    duration:6, guests:9,  addons:['Catering','Chef'],           revenue:11000, gratuity:800,  deposit:5000,  depositDate:'2026-02-20', depositMethod:'Wire Transfer', paymentStatus:'deposit',  paymentMethod:'Wire Transfer', contractStatus:'Signed',   customer:{ name:'Natalie Cross',   email:'n.cross@example.com',    phone:'+1 954 822 3310', occasion:'Corporate'      }, agent:{ name:'Sofia Bernal',   email:'sofia@boundyachting.com'  }, captain:'Jose Carlo Arroyo', stew:'Claudia Amador',  expenses:[] },
-  'BND-021': { ref:'#BND-021', status:'confirmed', date:'Mar 28, 2026', dateSort:'2026-03-28', time:'2:00 PM',  vessel:'Sanlorenzo SL96',       vesselShort:'SL96',    duration:6, guests:8,  addons:['Catering','Chef'],           revenue:11000, gratuity:1000, deposit:5500,  depositDate:'2026-03-01', depositMethod:'Zelle',         paymentStatus:'deposit',  paymentMethod:'Zelle',         contractStatus:'Signed',   customer:{ name:'Elena Marchetti', email:'elena.m@example.com',    phone:'+1 305 412 8844', occasion:'Birthday'       }, agent:{ name:'Carlos Medina',  email:'carlos@boundyachting.com' }, captain:'Jose Carlo Arroyo', stew:'Claudia Amador',  expenses:[] },
-  'BND-020': { ref:'#BND-020', status:'confirmed', date:'Mar 18, 2026', dateSort:'2026-03-18', time:'10:00 AM', vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:6, guests:7,  addons:['—'],                         revenue:3500,  gratuity:300,  deposit:1500,  depositDate:'2026-02-28', depositMethod:'Cash',          paymentStatus:'deposit',  paymentMethod:'Cash',          contractStatus:'Signed',   customer:{ name:'Sofia Delgado',   email:'sofia.d@example.com',    phone:'+1 305 877 3300', occasion:'Sunset Cruise'  }, agent:{ name:'Sofia Bernal',   email:'sofia@boundyachting.com'  }, captain:'Jorge Yossri',       stew:'Macla Palomino',  expenses:[] },
+  'BND-025': { ref:'#BND-025', status:'confirmed', date:'Mar 8, 2026',  dateSort:'2026-03-08', time:'2:00 PM',  vessel:'Sanlorenzo SL96',       vesselShort:'SL96',    duration:6, guests:9,  addons:['Catering','Chef'],           revenue:11000, gratuity:800,  deposit:5000,  depositDate:'2026-02-20', depositMethod:'Wire Transfer', paymentStatus:'deposit',  paymentMethod:'Wire Transfer', contractStatus:'Signed',   customer:{ name:'Natalie Cross',   email:'n.cross@example.com',    phone:'+1 954 822 3310', occasion:'Corporate'      }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com'  }, captain:'Jose Carlo Arroyo', stew:'Claudia Amador',  expenses:[] },
+  'BND-021': { ref:'#BND-021', status:'confirmed', date:'Mar 28, 2026', dateSort:'2026-03-28', time:'2:00 PM',  vessel:'Sanlorenzo SL96',       vesselShort:'SL96',    duration:6, guests:8,  addons:['Catering','Chef'],           revenue:11000, gratuity:1000, deposit:5500,  depositDate:'2026-03-01', depositMethod:'Zelle',         paymentStatus:'deposit',  paymentMethod:'Zelle',         contractStatus:'Signed',   customer:{ name:'Elena Marchetti', email:'elena.m@example.com',    phone:'+1 305 412 8844', occasion:'Birthday'       }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Jose Carlo Arroyo', stew:'Claudia Amador',  expenses:[] },
+  'BND-020': { ref:'#BND-020', status:'confirmed', date:'Mar 18, 2026', dateSort:'2026-03-18', time:'10:00 AM', vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:6, guests:7,  addons:['—'],                         revenue:3500,  gratuity:300,  deposit:1500,  depositDate:'2026-02-28', depositMethod:'Cash',          paymentStatus:'deposit',  paymentMethod:'Cash',          contractStatus:'Signed',   customer:{ name:'Sofia Delgado',   email:'sofia.d@example.com',    phone:'+1 305 877 3300', occasion:'Sunset Cruise'  }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com'  }, captain:'Jorge Yossri',       stew:'Macla Palomino',  expenses:[] },
 
   // ── CONFIRMED — PAID IN FULL ──
-  'BND-019': { ref:'#BND-019', status:'confirmed', date:'Mar 11, 2026', dateSort:'2026-03-11', time:'2:00 PM',  vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:4, guests:12, addons:['DJ'],                        revenue:2500,  gratuity:0,    deposit:2500,  depositDate:'2026-03-02', depositMethod:'Zelle',         paymentStatus:'paid',     paymentMethod:'Zelle',         contractStatus:'Sent',     customer:{ name:'Luca Ferretti',   email:'luca.f@example.com',     phone:'+39 02 8844 1122',occasion:'Corporate Event'}, agent:{ name:'Carlos Medina',  email:'carlos@boundyachting.com' }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[{desc:'Dock fee', amt:150}] },
-  'BND-018': { ref:'#BND-018', status:'confirmed', date:'Mar 17, 2026', dateSort:'2026-03-17', time:'9:00 AM',  vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:4, guests:6,  addons:['—'],                         revenue:2500,  gratuity:250,  deposit:2500,  depositDate:'2026-03-03', depositMethod:'Wire Transfer', paymentStatus:'paid',     paymentMethod:'Wire Transfer', contractStatus:'Signed',   customer:{ name:'Priya Nair',      email:'priya.n@example.com',    phone:'+1 954 661 7750', occasion:'Birthday'       }, agent:{ name:'Sofia Bernal',   email:'sofia@boundyachting.com'  }, captain:'Jorge Yossri',       stew:'Claudia Amador',  expenses:[] },
+  'BND-019': { ref:'#BND-019', status:'confirmed', date:'Mar 11, 2026', dateSort:'2026-03-11', time:'2:00 PM',  vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:4, guests:12, addons:['DJ'],                        revenue:2500,  gratuity:0,    deposit:2500,  depositDate:'2026-03-02', depositMethod:'Zelle',         paymentStatus:'paid',     paymentMethod:'Zelle',         contractStatus:'Sent',     customer:{ name:'Luca Ferretti',   email:'luca.f@example.com',     phone:'+39 02 8844 1122',occasion:'Corporate Event'}, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[{desc:'Dock fee', amt:150}] },
+  'BND-018': { ref:'#BND-018', status:'confirmed', date:'Mar 17, 2026', dateSort:'2026-03-17', time:'9:00 AM',  vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:4, guests:6,  addons:['—'],                         revenue:2500,  gratuity:250,  deposit:2500,  depositDate:'2026-03-03', depositMethod:'Wire Transfer', paymentStatus:'paid',     paymentMethod:'Wire Transfer', contractStatus:'Signed',   customer:{ name:'Priya Nair',      email:'priya.n@example.com',    phone:'+1 954 661 7750', occasion:'Birthday'       }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com'  }, captain:'Jorge Yossri',       stew:'Claudia Amador',  expenses:[] },
 
   // ── LAST WEEK — completed ──
-  'BND-016': { ref:'#BND-016', status:'confirmed', date:'Feb 28, 2026', dateSort:'2026-02-28', time:'11:00 AM', vessel:'Sanlorenzo SL96',       vesselShort:'SL96',    duration:8, guests:14, addons:['DJ','Alcohol Package'],      revenue:13000, gratuity:1200, deposit:13000, depositDate:'2026-02-10', depositMethod:'Wire Transfer', paymentStatus:'paid',     paymentMethod:'Wire Transfer', contractStatus:'Signed',   customer:{ name:'Tom Hargreaves',  email:'tom.h@example.com',      phone:'+1 646 333 9020', occasion:'Corporate'      }, agent:{ name:'Carlos Medina',  email:'carlos@boundyachting.com' }, captain:'Jose Carlo Arroyo', stew:'Claudia Amador',  expenses:[{desc:'Fuel overage', amt:320},{desc:'Ice & supplies', amt:85}] },
-  'BND-015': { ref:'#BND-015', status:'confirmed', date:'Mar 1, 2026',  dateSort:'2026-03-01', time:'10:00 AM', vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:6, guests:8,  addons:['Catering'],                  revenue:3500,  gratuity:400,  deposit:3500,  depositDate:'2026-02-15', depositMethod:'Credit Card',   paymentStatus:'paid',     paymentMethod:'Credit Card',   contractStatus:'Signed',   customer:{ name:'Ana Castillo',    email:'ana.c@example.com',      phone:'+1 305 614 7723', occasion:'Birthday'       }, agent:{ name:'Sofia Bernal',   email:'sofia@boundyachting.com'  }, captain:'Jorge Yossri',       stew:'Claudia Amador',  expenses:[] },
-  'BND-014': { ref:'#BND-014', status:'confirmed', date:'Mar 1, 2026',  dateSort:'2026-03-01', time:'2:00 PM',  vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:4, guests:10, addons:['DJ'],                        revenue:2500,  gratuity:200,  deposit:1000,  depositDate:'2026-02-18', depositMethod:'Cash',          paymentStatus:'paid',     paymentMethod:'Cash',          contractStatus:'Signed',   customer:{ name:'David Okafor',    email:'d.okafor@example.com',   phone:'+1 954 330 8812', occasion:'Team Outing'    }, agent:{ name:'Carlos Medina',  email:'carlos@boundyachting.com' }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[] },
-  'BND-013': { ref:'#BND-013', status:'confirmed', date:'Feb 27, 2026', dateSort:'2026-02-27', time:'9:00 AM',  vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:4, guests:5,  addons:['Alcohol Package'],           revenue:2500,  gratuity:0,    deposit:2500,  depositDate:'2026-02-12', depositMethod:'Credit Card',   paymentStatus:'paid',     paymentMethod:'Credit Card',   contractStatus:'Signed',   customer:{ name:'Ryan Castellano', email:'r.cast@example.com',     phone:'+1 305 990 4477', occasion:'Sunset Cruise'  }, agent:{ name:'Sofia Bernal',   email:'sofia@boundyachting.com'  }, captain:'Jorge Yossri',       stew:'Macla Palomino',  expenses:[] },
-  'BND-012': { ref:'#BND-012', status:'confirmed', date:'Feb 26, 2026', dateSort:'2026-02-26', time:'11:00 AM', vessel:'Sanlorenzo SL96',       vesselShort:'SL96',    duration:6, guests:9,  addons:['Catering','Chef'],           revenue:11000, gratuity:900,  deposit:5000,  depositDate:'2026-02-08', depositMethod:'Wire Transfer', paymentStatus:'paid',     paymentMethod:'Wire Transfer', contractStatus:'Signed',   customer:{ name:'Elena Marchetti', email:'elena.m@example.com',    phone:'+1 305 412 8844', occasion:'Client Dinner'  }, agent:{ name:'Carlos Medina',  email:'carlos@boundyachting.com' }, captain:'Jose Carlo Arroyo', stew:'Claudia Amador',  expenses:[] },
-  'BND-011': { ref:'#BND-011', status:'confirmed', date:'Feb 25, 2026', dateSort:'2026-02-25', time:'2:00 PM',  vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:6, guests:12, addons:['DJ','Catering'],             revenue:3000,  gratuity:350,  deposit:3000,  depositDate:'2026-02-10', depositMethod:'Zelle',         paymentStatus:'paid',     paymentMethod:'Zelle',         contractStatus:'Signed',   customer:{ name:'Sofia Delgado',   email:'sofia.d@example.com',    phone:'+1 305 877 3300', occasion:'Bachelorette'   }, agent:{ name:'Sofia Bernal',   email:'sofia@boundyachting.com'  }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[{desc:'Extra ice', amt:45}] },
-  'BND-010': { ref:'#BND-010', status:'confirmed', date:'Feb 23, 2026', dateSort:'2026-02-23', time:'10:00 AM', vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:8, guests:7,  addons:['Catering','Alcohol Package'], revenue:4500, gratuity:600,  deposit:4500,  depositDate:'2026-02-05', depositMethod:'Wire Transfer', paymentStatus:'paid',     paymentMethod:'Wire Transfer', contractStatus:'Signed',   customer:{ name:'Marcus Rivera',   email:'m.rivera@example.com',   phone:'+1 786 234 9911', occasion:'Corporate'      }, agent:{ name:'Carlos Medina',  email:'carlos@boundyachting.com' }, captain:'Jorge Yossri',       stew:'Claudia Amador',  expenses:[] },
+  'BND-016': { ref:'#BND-016', status:'confirmed', date:'Feb 28, 2026', dateSort:'2026-02-28', time:'11:00 AM', vessel:'Sanlorenzo SL96',       vesselShort:'SL96',    duration:8, guests:14, addons:['DJ','Alcohol Package'],      revenue:13000, gratuity:1200, deposit:13000, depositDate:'2026-02-10', depositMethod:'Wire Transfer', paymentStatus:'paid',     paymentMethod:'Wire Transfer', contractStatus:'Signed',   customer:{ name:'Tom Hargreaves',  email:'tom.h@example.com',      phone:'+1 646 333 9020', occasion:'Corporate'      }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Jose Carlo Arroyo', stew:'Claudia Amador',  expenses:[{desc:'Fuel overage', amt:320},{desc:'Ice & supplies', amt:85}] },
+  'BND-015': { ref:'#BND-015', status:'confirmed', date:'Mar 1, 2026',  dateSort:'2026-03-01', time:'10:00 AM', vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:6, guests:8,  addons:['Catering'],                  revenue:3500,  gratuity:400,  deposit:3500,  depositDate:'2026-02-15', depositMethod:'Credit Card',   paymentStatus:'paid',     paymentMethod:'Credit Card',   contractStatus:'Signed',   customer:{ name:'Ana Castillo',    email:'ana.c@example.com',      phone:'+1 305 614 7723', occasion:'Birthday'       }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com'  }, captain:'Jorge Yossri',       stew:'Claudia Amador',  expenses:[] },
+  'BND-014': { ref:'#BND-014', status:'confirmed', date:'Mar 1, 2026',  dateSort:'2026-03-01', time:'2:00 PM',  vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:4, guests:10, addons:['DJ'],                        revenue:2500,  gratuity:200,  deposit:1000,  depositDate:'2026-02-18', depositMethod:'Cash',          paymentStatus:'paid',     paymentMethod:'Cash',          contractStatus:'Signed',   customer:{ name:'David Okafor',    email:'d.okafor@example.com',   phone:'+1 954 330 8812', occasion:'Team Outing'    }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[] },
+  'BND-013': { ref:'#BND-013', status:'confirmed', date:'Feb 27, 2026', dateSort:'2026-02-27', time:'9:00 AM',  vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:4, guests:5,  addons:['Alcohol Package'],           revenue:2500,  gratuity:0,    deposit:2500,  depositDate:'2026-02-12', depositMethod:'Credit Card',   paymentStatus:'paid',     paymentMethod:'Credit Card',   contractStatus:'Signed',   customer:{ name:'Ryan Castellano', email:'r.cast@example.com',     phone:'+1 305 990 4477', occasion:'Sunset Cruise'  }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com'  }, captain:'Jorge Yossri',       stew:'Macla Palomino',  expenses:[] },
+  'BND-012': { ref:'#BND-012', status:'confirmed', date:'Feb 26, 2026', dateSort:'2026-02-26', time:'11:00 AM', vessel:'Sanlorenzo SL96',       vesselShort:'SL96',    duration:6, guests:9,  addons:['Catering','Chef'],           revenue:11000, gratuity:900,  deposit:5000,  depositDate:'2026-02-08', depositMethod:'Wire Transfer', paymentStatus:'paid',     paymentMethod:'Wire Transfer', contractStatus:'Signed',   customer:{ name:'Elena Marchetti', email:'elena.m@example.com',    phone:'+1 305 412 8844', occasion:'Client Dinner'  }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Jose Carlo Arroyo', stew:'Claudia Amador',  expenses:[] },
+  'BND-011': { ref:'#BND-011', status:'confirmed', date:'Feb 25, 2026', dateSort:'2026-02-25', time:'2:00 PM',  vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:6, guests:12, addons:['DJ','Catering'],             revenue:3000,  gratuity:350,  deposit:3000,  depositDate:'2026-02-10', depositMethod:'Zelle',         paymentStatus:'paid',     paymentMethod:'Zelle',         contractStatus:'Signed',   customer:{ name:'Sofia Delgado',   email:'sofia.d@example.com',    phone:'+1 305 877 3300', occasion:'Bachelorette'   }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com'  }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[{desc:'Extra ice', amt:45}] },
+  'BND-010': { ref:'#BND-010', status:'confirmed', date:'Feb 23, 2026', dateSort:'2026-02-23', time:'10:00 AM', vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:8, guests:7,  addons:['Catering','Alcohol Package'], revenue:4500, gratuity:600,  deposit:4500,  depositDate:'2026-02-05', depositMethod:'Wire Transfer', paymentStatus:'paid',     paymentMethod:'Wire Transfer', contractStatus:'Signed',   customer:{ name:'Marcus Rivera',   email:'m.rivera@example.com',   phone:'+1 786 234 9911', occasion:'Corporate'      }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Jorge Yossri',       stew:'Claudia Amador',  expenses:[] },
 
   // ── EARLIER HISTORY ──
-  'BND-009': { ref:'#BND-009', status:'confirmed', date:'Feb 20, 2026', dateSort:'2026-02-20', time:'10:00 AM', vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:6, guests:11, addons:['Chef'],                      revenue:3000,  gratuity:250,  deposit:3000,  depositDate:'2026-02-04', depositMethod:'Zelle',         paymentStatus:'paid',     paymentMethod:'Zelle',         contractStatus:'Signed',   customer:{ name:'Luca Ferretti',   email:'luca.f@example.com',     phone:'+39 02 8844 1122',occasion:'Team Dinner'    }, agent:{ name:'Carlos Medina',  email:'carlos@boundyachting.com' }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[] },
-  'BND-008': { ref:'#BND-008', status:'confirmed', date:'Feb 18, 2026', dateSort:'2026-02-18', time:'9:00 AM',  vessel:'Sanlorenzo SL96',       vesselShort:'SL96',    duration:8, guests:12, addons:['DJ','Catering'],             revenue:13000, gratuity:1500, deposit:6500,  depositDate:'2026-01-30', depositMethod:'Wire Transfer', paymentStatus:'paid',     paymentMethod:'Wire Transfer', contractStatus:'Signed',   customer:{ name:'Natalie Cross',   email:'n.cross@example.com',    phone:'+1 954 822 3310', occasion:'Birthday'       }, agent:{ name:'Sofia Bernal',   email:'sofia@boundyachting.com'  }, captain:'Jose Carlo Arroyo', stew:'Claudia Amador',  expenses:[{desc:'Port fees', amt:200}] },
-  'BND-007': { ref:'#BND-007', status:'cancelled', date:'Feb 14, 2026', dateSort:'2026-02-14', time:'11:00 AM', vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:4, guests:4,  addons:['Alcohol Package'],           revenue:2500,  gratuity:0,    deposit:1250,  depositDate:'2026-01-28', depositMethod:'Zelle',         paymentStatus:'refunded', paymentMethod:'Zelle',         contractStatus:'Signed',   customer:{ name:'James Whitfield', email:'j.whitfield@example.com', phone:'+1 212 554 8821', occasion:'Valentine\'s'   }, agent:{ name:'Carlos Medina',  email:'carlos@boundyachting.com' }, captain:'Jorge Yossri',       stew:'Macla Palomino',  expenses:[] },
+  'BND-009': { ref:'#BND-009', status:'confirmed', date:'Feb 20, 2026', dateSort:'2026-02-20', time:'10:00 AM', vessel:'Galeon 530 Fly',        vesselShort:'Galeon',  duration:6, guests:11, addons:['Chef'],                      revenue:3000,  gratuity:250,  deposit:3000,  depositDate:'2026-02-04', depositMethod:'Zelle',         paymentStatus:'paid',     paymentMethod:'Zelle',         contractStatus:'Signed',   customer:{ name:'Luca Ferretti',   email:'luca.f@example.com',     phone:'+39 02 8844 1122',occasion:'Team Dinner'    }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Ethan Carter',       stew:'Macla Palomino',  expenses:[] },
+  'BND-008': { ref:'#BND-008', status:'confirmed', date:'Feb 18, 2026', dateSort:'2026-02-18', time:'9:00 AM',  vessel:'Sanlorenzo SL96',       vesselShort:'SL96',    duration:8, guests:12, addons:['DJ','Catering'],             revenue:13000, gratuity:1500, deposit:6500,  depositDate:'2026-01-30', depositMethod:'Wire Transfer', paymentStatus:'paid',     paymentMethod:'Wire Transfer', contractStatus:'Signed',   customer:{ name:'Natalie Cross',   email:'n.cross@example.com',    phone:'+1 954 822 3310', occasion:'Birthday'       }, agent:{ name:'Sofia Bernal',   email:'Hello@boundyachting.com'  }, captain:'Jose Carlo Arroyo', stew:'Claudia Amador',  expenses:[{desc:'Port fees', amt:200}] },
+  'BND-007': { ref:'#BND-007', status:'cancelled', date:'Feb 14, 2026', dateSort:'2026-02-14', time:'11:00 AM', vessel:'The One (Azimut 68)',   vesselShort:'The One', duration:4, guests:4,  addons:['Alcohol Package'],           revenue:2500,  gratuity:0,    deposit:1250,  depositDate:'2026-01-28', depositMethod:'Zelle',         paymentStatus:'refunded', paymentMethod:'Zelle',         contractStatus:'Signed',   customer:{ name:'James Whitfield', email:'j.whitfield@example.com', phone:'+1 212 554 8821', occasion:'Valentine\'s'   }, agent:{ name:'Carlos Medina',  email:'Hello@boundyachting.com' }, captain:'Jorge Yossri',       stew:'Macla Palomino',  expenses:[] },
 };
 
 // ── CREW CONFLICT CHECK ──
@@ -9034,6 +11190,250 @@ const VESSEL_REGISTRY = [
       ownerName: 'External Operator',
     },
   },
+  {
+    fullName:   'Prestige 68 "Yachtooma"',
+    shortKey:   'Yachtooma',
+    fleetId:    'prestige680',
+    tag:        'Flybridge · Prestige · 2017',
+    type:       'flybridge',
+    ft:         70,
+    year:       2017,
+    guests:     13,
+    cabins:     4,
+    hourly:     450,
+    price4hr:   2500,
+    price6hr:   3000,
+    price8hr:   3500,
+    marina:     'Miami Beach Marina, 300 Alton Rd',
+    flagship:   true,
+    img:        'https://i.ibb.co/HTcfDpwV/IMG-2514.jpg',
+    amenities:  ['ac','wifi','sodas','water','ice','bluetooth','floatingmat','flybridge','paddleboard','jetski','seabob'],
+    ownerDeal: {
+      dealType:  'fixed',
+      fixedNet:  { 4: 2000, 6: 2500, 8: 3000 },
+      crewPerHr: 75,
+      iceWater:  25,
+      dockFee:   0,
+      ownerName: 'Yachtooma Owner',
+    },
+  },
+  {
+    fullName:     'Azimut 105',
+    shortKey:     'Azimut 105',
+    fleetId:      'azimut105',
+    tag:          'Superyacht · Azimut · 2015',
+    type:         'motor',
+    ft:           105,
+    year:         2015,
+    guests:       13,
+    cabins:       5,
+    price4hr:     5500,
+    price6hr:     7500,
+    price8hr:     9500,
+    marina:       'Grove Harbor Marina, 2640 S Bayshore Dr, Miami',
+    flagship:     true,
+    img:          'https://i.ibb.co/jvVhskS1/105-Azimut-Drone-6.jpg',
+    amenities:    ['ac','wifi','water','sodas','ice','floatingmat','flybridge'],
+    externalMgmt: true,
+    ownerDeal: {
+      dealType:  'fixed',
+      fixedNet:  { 4: 4500, 6: 6500, 8: 8500 },
+      crewPerHr: 0,
+      iceWater:  0,
+      dockFee:   0,
+      ownerName: 'External Operator',
+    },
+  },
+  {
+    fullName:     "Azimut 88'",
+    shortKey:     'Azimut 88',
+    fleetId:      'azimut88',
+    tag:          'Motor Yacht · Azimut · 2017',
+    type:         'motor',
+    ft:           88,
+    year:         2017,
+    guests:       13,
+    cabins:       4,
+    price4hr:     4500,
+    price6hr:     5500,
+    price8hr:     6000,
+    marina:       'Aston Martin Residences, 300 Biscayne Blvd Way, Miami',
+    flagship:     true,
+    img:          'https://i.ibb.co/1YZyp8h8/IMG-7598.webp',
+    amenities:    ['ac','flybridge','ice','water','sodas','jetski','seabob'],
+    externalMgmt: true,
+    ownerDeal: {
+      dealType:  'fixed',
+      fixedNet:  { 4: 3500, 6: 4400, 8: 5000 },
+      crewPerHr: 0,
+      iceWater:  0,
+      dockFee:   0,
+      ownerName: 'External Operator',
+    },
+  },
+  {
+    fullName:   "Saxdor 42'",
+    shortKey:   'Saxdor 42',
+    fleetId:    'saxdor42',
+    tag:        'Day Boat · Saxdor · 2025',
+    type:       'motor',
+    ft:         42,
+    year:       2025,
+    guests:     13,
+    cabins:     0,
+    hourly:     450,
+    price4hr:   1800,
+    price6hr:   2200,
+    price8hr:   2700,
+    marina:     'Vice City Marina, Miami',
+    flagship:   true,
+    img:        'https://i.ibb.co/35bjQMX0/ebe951cd-53eb-4bb2-a6e4-03d7b927efb5.jpg',
+    amenities:  ['ac','bluetooth','water','sodas','ice','floatingmat'],
+    ownerDeal: {
+      dealType:  'commission',
+      wholesale: { 4: 1350, 6: 1750, 8: 2000 },
+      commission: 0.20,
+      crewPerHr:  65,
+      iceWater:   25,
+      dockFee:    0,
+      ownerName:  'Benatti LLC',
+    },
+  },
+  {
+    fullName:     "Trinity 166'",
+    shortKey:     'Trinity 166',
+    fleetId:      'trinity166',
+    tag:          'Superyacht · Trinity · 2009',
+    type:         'motor',
+    ft:           166,
+    year:         2009,
+    guests:       20,
+    cabins:       7,
+    price4hr:     35000,
+    price6hr:     40000,
+    price8hr:     50000,
+    marina:       'Miami Beach Marina, 300 Alton Rd',
+    flagship:     false,
+    img:          'https://i.ibb.co/TDtB2jwH/165-Trinity-SWEET-CAROLINE-2-Drone-4.jpg',
+    amenities:    ['ac','wifi','bluetooth','water','sodas','ice','floatingmat','flybridge','jacuzzi','jetski','tender'],
+    externalMgmt: true,
+    ownerDeal: {
+      dealType:  'fixed',
+      fixedNet:  { 4: 25000, 6: 30000, 8: 40000 },
+      crewPerHr: 0,
+      iceWater:  0,
+      dockFee:   0,
+      ownerName: 'External Operator',
+    },
+  },
+  {
+    fullName:     "Pershing 116'",
+    shortKey:     'Pershing 116',
+    fleetId:      'pershing116',
+    tag:          'Sport Yacht · Pershing · 2024',
+    type:         'motor',
+    ft:           116,
+    year:         2024,
+    guests:       13,
+    cabins:       5,
+    price4hr:     16500,
+    price6hr:     18000,
+    price8hr:     21000,
+    marina:       'Miami Beach Marina, 300 Alton Rd',
+    flagship:     false,
+    img:          'https://i.ibb.co/YFNsWScJ/PERSHING-16-Jan-2026-DRONE-5-MP4-00-05-18-13-Still021.jpg',
+    amenities:    ['ac','water','sodas','ice','bluetooth','swimplatform','flybridge','wifi','generator'],
+    externalMgmt: true,
+    ownerDeal: {
+      dealType:  'fixed',
+      fixedNet:  { 4: 15000, 6: 17000, 8: 19000 },
+      crewPerHr: 0,
+      iceWater:  0,
+      dockFee:   0,
+      ownerName: 'External Operator',
+    },
+  },
+  {
+    fullName:     "Trinity 166'",
+    shortKey:     'Trinity 166',
+    fleetId:      'trinity166',
+    tag:          'Superyacht · Trinity · 2009',
+    type:         'motor',
+    ft:           166,
+    year:         2009,
+    guests:       20,
+    cabins:       7,
+    price4hr:     35000,
+    price6hr:     40000,
+    price8hr:     50000,
+    marina:       'Miami Beach Marina, 300 Alton Rd',
+    flagship:     false,
+    img:          'https://i.ibb.co/TDtB2jwH/165-Trinity-SWEET-CAROLINE-2-Drone-4.jpg',
+    amenities:    ['ac','wifi','bluetooth','water','sodas','ice','floatingmat','flybridge','jacuzzi','jetski','tender'],
+    externalMgmt: true,
+    ownerDeal: {
+      dealType:  'fixed',
+      fixedNet:  { 4: 25000, 6: 30000, 8: 40000 },
+      crewPerHr: 0,
+      iceWater:  0,
+      dockFee:   0,
+      ownerName: 'External Operator',
+    },
+  },
+  {
+    fullName:     "Azimut 116'",
+    shortKey:     'Azimut 116',
+    fleetId:      'azimut116',
+    tag:          'Superyacht · Azimut · 2010',
+    type:         'motor',
+    ft:           116,
+    year:         2010,
+    guests:       13,
+    cabins:       5,
+    price4hr:     10500,
+    price6hr:     12000,
+    price8hr:     15000,
+    marina:       'Miami Beach Marina, 300 Alton Rd',
+    flagship:     false,
+    img:          'https://i.ibb.co/ZpP5y4R2/116-Azimut-Rylax-Drone-2.jpg',
+    amenities:    ['ac','water','sodas','ice','floatingmat','flybridge','jacuzzi','bluetooth'],
+    externalMgmt: true,
+    ownerDeal: {
+      dealType:  'fixed',
+      fixedNet:  { 4: 9500, 6: 11000, 8: 14000 },
+      crewPerHr: 0,
+      iceWater:  0,
+      dockFee:   0,
+      ownerName: 'External Operator',
+    },
+  },
+  {
+    fullName:     "Galeon 68'",
+    shortKey:     'Galeon 68',
+    fleetId:      'galeon680',
+    tag:          'Flybridge · Galeon · 2024',
+    type:         'flybridge',
+    ft:           68,
+    year:         2024,
+    guests:       13,
+    cabins:       4,
+    price4hr:     5500,
+    price6hr:     6800,
+    price8hr:     8000,
+    marina:       'Miami Beach Marina, 300 Alton Rd',
+    flagship:     true,
+    img:          'https://i.ibb.co/rRL2ydS2/DJI-0003.jpg',
+    amenities:    ['ac','wifi','water','sodas','ice','flybridge','swimplatform'],
+    externalMgmt: true,
+    ownerDeal: {
+      dealType:  'fixed',
+      fixedNet:  { 4: 4500, 6: 5750, 8: 7000 },
+      crewPerHr: 0,
+      iceWater:  0,
+      dockFee:   0,
+      ownerName: 'External Operator',
+    },
+  },
 ];
 
 // Derived lookups — always built from VESSEL_REGISTRY
@@ -10632,7 +13032,7 @@ function openInvoice(refId) {
         <div class="inv-brand-sub">Private Charter &amp; Yacht Management</div>
         <div class="inv-brand-contact">
           Miami Beach, Florida<br>
-          info@boundyachting.com<br>
+          Hello@boundyachting.com<br>
           +1 (305) 000-0000
         </div>
       </div>
@@ -10785,7 +13185,7 @@ For questions, contact your charter coordinator or reply to this email.
 Warm regards,
 Bound Yachting Charter Team
 Miami Beach, Florida
-info@boundyachting.com
+Hello@boundyachting.com
 +1 (305) 000-0000`
   );
 
