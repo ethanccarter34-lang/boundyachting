@@ -4048,12 +4048,13 @@
     })
     .catch(err => {
       // Email failed — still show confirmation (booking captured in admin) but note email issue
-      console.error('EmailJS error:', err);
+      console.error('EmailJS error:', JSON.stringify(err));
+      const errDetail = err?.text || err?.message || JSON.stringify(err);
       if (btn) { btn.textContent = originalText; btn.disabled = false; btn.style.opacity = ''; }
       const errMsg = document.getElementById(`${vesselId}-form-error`) || document.createElement('div');
       errMsg.id = `${vesselId}-form-error`;
       errMsg.style.cssText = 'font-size:11px;color:#e05c5c;margin-bottom:12px;padding:10px 14px;background:rgba(224,92,92,0.08);border:1px solid rgba(224,92,92,0.25);';
-      errMsg.textContent = 'Unable to send confirmation email. Please contact us directly at Hello@boundyachting.com or WhatsApp +1 305-994-3999.';
+      errMsg.textContent = `Email error: ${errDetail}. Contact us at Hello@boundyachting.com or WhatsApp +1 305-994-3999.`;
       if (btn) btn.parentNode.insertBefore(errMsg, btn);
     });
   }
