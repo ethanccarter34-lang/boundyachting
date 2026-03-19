@@ -733,6 +733,7 @@
   @media (max-width: 900px) {
     header { padding: 0 20px; justify-content: space-between; }
     header nav { display: none; }
+    header nav.open { display: flex; }
     .admin-trigger { display: none !important; }
     .logo { position: absolute; left: 50%; transform: translateX(-50%); }
     .header-cta { display: none; }
@@ -1936,7 +1937,6 @@
     <a href="#" class="tab-btn-nav" data-tab="sell">Sell</a>
     <a href="#" class="tab-btn-nav" data-tab="manage">Manage</a>
   </nav>
-  <button class="admin-trigger" id="admin-trigger" onclick="openAdminLogin()" title="Admin">⚙</button>
   <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
@@ -1990,38 +1990,7 @@
         <h3 class="section-title">Featured <span>Charter Yachts</span></h3>
         <a href="#" class="section-link" onclick="openFleet(); return false;">View all yachts</a>
       </div>
-      <div class="yacht-grid">
-        <div class="yacht-card" onclick="openVessel('azimut')">
-          <img src="https://i.ibb.co/5XhGFNXP/DJI-0138.jpg" alt="The One - Azimut 68"/>
-          <div class="yacht-card-overlay">
-            <div class="yacht-card-tag">Motor Yacht · Azimut · 2017</div>
-            <div class="yacht-card-name">The One</div>
-            <div class="yacht-card-meta"><span>68ft</span><span>8 Guests</span><span>4 Cabins</span></div>
-            <div class="yacht-card-price">From $2,500 / 4hrs</div>
-          </div>
-          <div class="yacht-card-btn">View Yacht</div>
-        </div>
-        <div class="yacht-card" onclick="openVessel('galeon')">
-          <img src="https://i.ibb.co/BHH6Q5WG/Screenshot-2024-11-22-at-7-49-36-AM.png" alt="Galeon 530 Fly"/>
-          <div class="yacht-card-overlay">
-            <div class="yacht-card-tag">Flybridge · Galeon · 2022</div>
-            <div class="yacht-card-name">Galeon 530 Fly</div>
-            <div class="yacht-card-meta"><span>53ft</span><span>12 Guests</span><span>3 Cabins</span></div>
-            <div class="yacht-card-price">From $2,500 / 4hrs</div>
-          </div>
-          <div class="yacht-card-btn">View Yacht</div>
-        </div>
-        <div class="yacht-card" style="cursor:pointer;">
-          <img src="https://i.ibb.co/V0TLLjpp/Screen-Shot-2026-02-09-at-2-06-16-PM.png" alt="Sanlorenzo SL96"/>
-          <div class="yacht-card-overlay">
-            <div class="yacht-card-tag">Motor Yacht</div>
-            <div class="yacht-card-name">Sanlorenzo SL96</div>
-            <div class="yacht-card-meta"><span>96' &nbsp;·&nbsp; 2023</span><span>13 guests</span></div>
-            <div class="yacht-card-price">From $9,500 / 4hrs</div>
-          </div>
-          <div class="yacht-card-btn">View Yacht</div>
-        </div>
-      </div>
+      <div class="yacht-grid" id="featured-yacht-grid"></div>
     </div>
 
   </div>
@@ -2035,7 +2004,7 @@
         <div class="about-divider"></div>
         <p class="about-body">Bound Yachting is Miami's full-service yacht charter and fleet management company. We operate a handpicked fleet of vessels ranging from sleek day boats to world-class superyachts — each maintained to the highest standards and crewed by professionals who understand that every charter is a once-in-a-lifetime experience for the people on board.</p>
         <p class="about-body">Beyond charters, we manage the complete relationship between vessel owners and the water — handling everything from crew placement and scheduling to ownership advisory and broker introductions. Whether you're stepping aboard for a four-hour sunset cruise or exploring ownership for the first time, Bound Yachting is the team behind every detail.</p>
-        <a href="mailto:Hello@boundyachting.com" class="btn-outline" style="display:inline-block;margin-top:8px;">Get in Touch</a>
+        <a href="/cdn-cgi/l/email-protection#de96bbb2b2b19ebcb1abb0baa7bfbdb6aab7b0b9f0bdb1b3" class="btn-outline" style="display:inline-block;margin-top:8px;">Get in Touch</a>
       </div>
       <div class="about-right">
         <div class="about-stat">
@@ -2067,7 +2036,7 @@
         <div class="panel-tag">Yacht Ownership</div>
         <h2 class="panel-title">Ready to Own<br>Your Yacht?</h2>
         <p class="panel-desc">Owning a yacht shouldn't be complicated. Bound Yachting guides you through every step — from finding the right vessel to getting you on the water.</p>
-        <a href="mailto:Hello@boundyachting.com" class="btn-primary">Start the Conversation</a>
+        <a href="/cdn-cgi/l/email-protection#2068454c4c4f60424f554e445941434854494e470e434f4d" class="btn-primary">Start the Conversation</a>
       </div>
     </div>
 
@@ -2244,13 +2213,13 @@
         <div class="about-divider"></div>
         <p class="about-body">Our team is available to help you find the perfect vessel, answer any questions about our fleet, or discuss charter packages tailored to your group. Reach out through any of the channels below and we'll get back to you promptly.</p>
         <div class="contact-items">
-          <a href="mailto:Hello@boundyachting.com" class="contact-item">
+          <a href="/cdn-cgi/l/email-protection#c68ea3aaaaa986a4a9b3a8a2bfa7a5aeb2afa8a1e8a5a9ab" class="contact-item">
             <div class="contact-item-icon">
               <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             </div>
             <div>
               <div class="contact-item-label">Email</div>
-              <div class="contact-item-value">Hello@boundyachting.com</div>
+              <div class="contact-item-value"><span class="__cf_email__" data-cfemail="bcf4d9d0d0d3fcded3c9d2d8c5dddfd4c8d5d2db92dfd3d1">[email&#160;protected]</span></div>
             </div>
           </a>
           <a href="tel:+13059943999" class="contact-item">
@@ -2288,7 +2257,7 @@
           <div class="about-eyebrow" style="margin-bottom:16px;">Ready to Book?</div>
           <h3 style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:#fff;margin-bottom:16px;line-height:1.2;">Let us build your<br>perfect charter</h3>
           <p style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.8;margin-bottom:32px;">Tell us your date, group size, and occasion and we'll match you with the right vessel from our fleet of 16+ yachts. No obligation, just expert advice.</p>
-          <a href="mailto:Hello@boundyachting.com?subject=Charter%20Enquiry" class="btn-primary" style="display:block;text-align:center;margin-bottom:12px;">Email Us Now</a>
+          <a href="/cdn-cgi/l/email-protection#79311c151516391b160c171d00181a110d10171e571a1614460a0c1b131c1a0d443a11180b0d1c0b5c4b493c17080c100b00" class="btn-primary" style="display:block;text-align:center;margin-bottom:12px;">Email Us Now</a>
           <a href="https://wa.me/message/DQPB7HM5MWR6C1" target="_blank" class="btn-whatsapp">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             Chat on WhatsApp
@@ -2305,42 +2274,40 @@
   <div class="footer-grid">
     <div>
       <div class="footer-logo">Bound<span>.</span></div>
-      <p class="footer-tagline">The world's leading superyacht brokerage, charter, and management company.</p>
+      <p class="footer-tagline">Miami's premier yacht charter and fleet management team. Every detail handled, every time.</p>
     </div>
     <div>
       <div class="footer-col-title">Services</div>
       <ul class="footer-links">
-        <li><a href="#">Charter</a></li>
-        <li><a href="#">Buy a Yacht</a></li>
-        <li><a href="#">Sell a Yacht</a></li>
-        <li><a href="#">Yacht Management</a></li>
-        <li><a href="#">New Construction</a></li>
+        <li><a href="#" onclick="openTab('charter'); document.getElementById('tabs').scrollIntoView({behavior:'smooth'}); return false;">Charter</a></li>
+        <li><a href="#" onclick="openTab('buy'); document.getElementById('tabs').scrollIntoView({behavior:'smooth'}); return false;">Buy a Yacht</a></li>
+        <li><a href="#" onclick="openTab('sell'); document.getElementById('tabs').scrollIntoView({behavior:'smooth'}); return false;">Sell a Yacht</a></li>
+        <li><a href="#" onclick="openTab('manage'); document.getElementById('tabs').scrollIntoView({behavior:'smooth'}); return false;">Yacht Management</a></li>
       </ul>
     </div>
     <div>
       <div class="footer-col-title">Company</div>
       <ul class="footer-links">
-        <li><a href="#">About Burgess</a></li>
-        <li><a href="#">Our Team</a></li>
-        <li><a href="#">Offices</a></li>
-        <li><a href="#">News & Insights</a></li>
-        <li><a href="#">Careers</a></li>
+        <li><a href="#" onclick="openTab('contact'); document.getElementById('tabs').scrollIntoView({behavior:'smooth'}); return false;">About Us</a></li>
+        <li><a href="#" onclick="openTab('contact'); document.getElementById('tabs').scrollIntoView({behavior:'smooth'}); return false;">Contact</a></li>
+        <li><a href="https://wa.me/message/DQPB7HM5MWR6C1" target="_blank">WhatsApp</a></li>
+        <li><a href="mailto:Hello@boundyachting.com">Email Us</a></li>
+        <li><a href="#" onclick="openAdminLogin(); return false;">Login</a></li>
       </ul>
     </div>
     <div>
       <div class="footer-col-title">Contact</div>
       <ul class="footer-links">
-        <li><a href="#">London</a></li>
-        <li><a href="#">Monaco</a></li>
-        <li><a href="#">Miami</a></li>
-        <li><a href="#">Hong Kong</a></li>
-        <li><a href="#">All Offices</a></li>
+        <li><a href="tel:+13059943999">+1 305-994-3999</a></li>
+        <li><a href="tel:+18329957199">+1 832-995-7199</a></li>
+        <li><a href="mailto:Hello@boundyachting.com">Hello@boundyachting.com</a></li>
+        <li><a href="https://wa.me/message/DQPB7HM5MWR6C1" target="_blank">WhatsApp Chat</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 Bound Yachting. All rights reserved.</span>
-    <span>Privacy Policy · Cookie Policy · Terms of Use</span>
+    <span>© 2026 Bound Yachting. All rights reserved.</span>
+    <span>Miami, Florida</span>
   </div>
 </footer>
 
@@ -2752,7 +2719,7 @@
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── TAB SWITCHING ──
   const tabBtns = document.querySelectorAll('.tab-btn');
   const tabPanels = document.querySelectorAll('.tab-panel');
@@ -6896,7 +6863,7 @@ function renderFleet() {
         <div class="admin-nav-section-label">Operations</div>
         <div class="admin-nav-item" onclick="switchView('bookings',this)">
           <span class="admin-nav-icon">📋</span> Bookings
-          <span class="admin-nav-badge">5</span>
+          <span class="admin-nav-badge" id="bookings-badge" style="display:none;">0</span>
         </div>
         <div class="admin-nav-item" onclick="switchView('calendar',this)">
           <span class="admin-nav-icon">📅</span> Vessel Calendar
@@ -6950,8 +6917,8 @@ function renderFleet() {
       <div class="admin-view active" id="view-dashboard">
         <div class="admin-page-header">
           <div>
-            <div class="admin-page-title">Good morning, <span>Captain</span></div>
-            <div class="admin-page-sub">Here's what's happening with your fleet today — Thursday, March 5 2026</div>
+            <div class="admin-page-title" id="dashboard-greeting">Good morning, <span>Bound</span></div>
+            <div class="admin-page-sub" id="dashboard-date">Loading...</div>
           </div>
         </div>
 
@@ -7486,13 +7453,13 @@ function renderFleet() {
           <table class="admin-table">
             <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Bookings</th><th>Total Spent</th><th>Preferred Vessel</th><th>Last Charter</th><th>Actions</th></tr></thead>
             <tbody>
-              <tr><td>Elena Marchetti</td><td>elena.m@example.com</td><td>+1 305 412 8844</td><td>4</td><td>$47,200</td><td><span class="vessel-pill">SL96</span></td><td>Mar 28</td><td><button class="tbl-btn" onclick="openCustomerPanel('Elena Marchetti')">View</button></td></tr>
-              <tr><td>Marcus Rivera</td><td>m.rivera@example.com</td><td>+1 786 234 9911</td><td>2</td><td>$29,100</td><td><span class="vessel-pill">SL96</span></td><td>Mar 14</td><td><button class="tbl-btn" onclick="openCustomerPanel('Marcus Rivera')">View</button></td></tr>
-              <tr><td>Sofia Delgado</td><td>sofia.d@example.com</td><td>+1 305 877 3300</td><td>3</td><td>$12,075</td><td><span class="vessel-pill">The One</span></td><td>Mar 18</td><td><button class="tbl-btn" onclick="openCustomerPanel('Sofia Delgado')">View</button></td></tr>
-              <tr><td>Luca Ferretti</td><td>luca.f@example.com</td><td>+39 02 8844 1122</td><td>2</td><td>$8,625</td><td><span class="vessel-pill">Galeon</span></td><td>Mar 11</td><td><button class="tbl-btn" onclick="openCustomerPanel('Luca Ferretti')">View</button></td></tr>
-              <tr><td>Priya Nair</td><td>priya.n@example.com</td><td>+1 954 661 7750</td><td>1</td><td>$2,875</td><td><span class="vessel-pill">The One</span></td><td>Mar 17</td><td><button class="tbl-btn" onclick="openCustomerPanel('Priya Nair')">View</button></td></tr>
-              <tr><td>James Whitfield</td><td>j.whitfield@example.com</td><td>+1 212 554 8821</td><td>1</td><td>$3,450</td><td><span class="vessel-pill">Galeon</span></td><td>Mar 22</td><td><button class="tbl-btn" onclick="openCustomerPanel('James Whitfield')">View</button></td></tr>
-              <tr><td>Ryan Castellano</td><td>r.cast@example.com</td><td>+1 305 990 4477</td><td>1</td><td>$2,875</td><td><span class="vessel-pill">The One</span></td><td>Apr 2</td><td><button class="tbl-btn" onclick="openCustomerPanel('Ryan Castellano')">View</button></td></tr>
+              <tr><td>Elena Marchetti</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="33565f565d521d5e73564b525e435f561d505c5e">[email&#160;protected]</a></td><td>+1 305 412 8844</td><td>4</td><td>$47,200</td><td><span class="vessel-pill">SL96</span></td><td>Mar 28</td><td><button class="tbl-btn" onclick="openCustomerPanel('Elena Marchetti')">View</button></td></tr>
+              <tr><td>Marcus Rivera</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5a377428332c3f283b1a3f223b372a363f74393537">[email&#160;protected]</a></td><td>+1 786 234 9911</td><td>2</td><td>$29,100</td><td><span class="vessel-pill">SL96</span></td><td>Mar 14</td><td><button class="tbl-btn" onclick="openCustomerPanel('Marcus Rivera')">View</button></td></tr>
+              <tr><td>Sofia Delgado</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9deef2fbf4fcb3f9ddf8e5fcf0edf1f8b3fef2f0">[email&#160;protected]</a></td><td>+1 305 877 3300</td><td>3</td><td>$12,075</td><td><span class="vessel-pill">The One</span></td><td>Mar 18</td><td><button class="tbl-btn" onclick="openCustomerPanel('Sofia Delgado')">View</button></td></tr>
+              <tr><td>Luca Ferretti</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d5b9a0b6b4fbb395b0adb4b8a5b9b0fbb6bab8">[email&#160;protected]</a></td><td>+39 02 8844 1122</td><td>2</td><td>$8,625</td><td><span class="vessel-pill">Galeon</span></td><td>Mar 11</td><td><button class="tbl-btn" onclick="openCustomerPanel('Luca Ferretti')">View</button></td></tr>
+              <tr><td>Priya Nair</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="acdcdec5d5cd82c2ecc9d4cdc1dcc0c982cfc3c1">[email&#160;protected]</a></td><td>+1 954 661 7750</td><td>1</td><td>$2,875</td><td><span class="vessel-pill">The One</span></td><td>Mar 17</td><td><button class="tbl-btn" onclick="openCustomerPanel('Priya Nair')">View</button></td></tr>
+              <tr><td>James Whitfield</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b8d296cfd0d1ccded1ddd4dcf8ddc0d9d5c8d4dd96dbd7d5">[email&#160;protected]</a></td><td>+1 212 554 8821</td><td>1</td><td>$3,450</td><td><span class="vessel-pill">Galeon</span></td><td>Mar 22</td><td><button class="tbl-btn" onclick="openCustomerPanel('James Whitfield')">View</button></td></tr>
+              <tr><td>Ryan Castellano</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dfadf1bcbeacab9fbaa7beb2afb3baf1bcb0b2">[email&#160;protected]</a></td><td>+1 305 990 4477</td><td>1</td><td>$2,875</td><td><span class="vessel-pill">The One</span></td><td>Apr 2</td><td><button class="tbl-btn" onclick="openCustomerPanel('Ryan Castellano')">View</button></td></tr>
             </tbody>
           </table>
         </div>
@@ -7590,7 +7557,7 @@ function renderFleet() {
           <div class="admin-info-card">
             <div class="admin-info-card-title">Sender Configuration</div>
             <div class="admin-info-row"><span class="admin-info-key">From Name</span><span class="admin-info-val">Bound Yachting</span></div>
-            <div class="admin-info-row"><span class="admin-info-key">From Email</span><span class="admin-info-val">Hello@boundyachting.com</span></div>
+            <div class="admin-info-row"><span class="admin-info-key">From Email</span><span class="admin-info-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="652d0009090a25070a100b011c04060d110c0b024b060a08">[email&#160;protected]</a></span></div>
             <div class="admin-info-row"><span class="admin-info-key">SMTP Status</span><span class="admin-info-val" style="color:rgba(255,255,255,0.25);">○ Not Connected</span></div>
           </div>
         </div>
@@ -8632,7 +8599,7 @@ function renderFleet() {
 </div><!-- end deposit modal -->
 </div><!-- end admin-panel -->
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ══════════════════════════════════════
 //  ADMIN — ALL JAVASCRIPT
 // ══════════════════════════════════════
@@ -10066,6 +10033,7 @@ function switchView(viewName, el) {
   if (viewName === 'payments')    renderLedger();
   if (viewName === 'users')       renderUsersCrewCards();
   if (viewName === 'bookings')    renderBookingsTable();
+  updateBookingsBadge();
   if (viewName === 'crew')        { renderCrewGrid(); renderCrewAssignments(); renderCrewPayouts(); }
   if (viewName === 'vessels')     { renderAdminVessels(); }
   if (viewName === 'ownerpayout') { renderOwnerPayout(); }
@@ -10473,6 +10441,7 @@ function submitConfirmBooking() {
   const ref = depositModalRef;
   closeDepositModal();
   renderBookingsTable();
+  updateBookingsBadge();
   if (document.getElementById('bdp-panel').classList.contains('active')) openBookingDetail(ref);
 
   // Auto-open invoice and trigger email
@@ -10498,6 +10467,7 @@ function markPaidFull(refId) {
   b.deposit       = bInvoiceTotal(b);
   b.paymentStatus = 'paid';
   renderBookingsTable();
+  updateBookingsBadge();
   if (activeBdpRef === refId && document.getElementById('bdp-panel').classList.contains('active')) renderBdp();
 }
 
@@ -10508,6 +10478,7 @@ function declineBooking(refId) {
   if (!b) return;
   b.status = 'cancelled';
   renderBookingsTable();
+  updateBookingsBadge();
   if (document.getElementById('bdp-panel').classList.contains('active')) openBookingDetail(refId);
 }
 
@@ -10905,9 +10876,56 @@ document.addEventListener('DOMContentLoaded', () => {
   renderVesselAmenities();   // populate amenities grids on all vessel pages
   renderCrewGrid();
   renderBookingsTable();
+  updateBookingsBadge();
   renderCrewAssignments();
   renderCrewPayouts();
+  renderFeaturedYachts();
+  updateDashboardGreeting();
+  updateBookingsBadge();
 });
+
+function renderFeaturedYachts() {
+  const grid = document.getElementById('featured-yacht-grid');
+  if (!grid) return;
+  // First 3 flagship vessels in current registry order
+  const featured = VESSEL_REGISTRY.filter(v => v.flagship).slice(0, 3);
+  const vessels  = featured.length >= 3 ? featured : VESSEL_REGISTRY.slice(0, 3);
+  grid.innerHTML = vessels.map(v => `
+    <div class="yacht-card" onclick="openVessel('${v.fleetId}')">
+      <img src="${v.img}" alt="${v.fullName}"/>
+      <div class="yacht-card-overlay">
+        <div class="yacht-card-tag">${v.tag}</div>
+        <div class="yacht-card-name">${v.fullName}</div>
+        <div class="yacht-card-meta">
+          <span>${v.ft}ft</span>
+          <span>${v.guests} Guests</span>
+          ${v.cabins ? `<span>${v.cabins} Cabins</span>` : ''}
+        </div>
+        <div class="yacht-card-price">From $${v.price4hr.toLocaleString()} / 4hrs</div>
+      </div>
+      <div class="yacht-card-btn">View Yacht</div>
+    </div>
+  `).join('');
+}
+
+function updateDashboardGreeting() {
+  const now      = new Date();
+  const hour     = now.getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const dateStr  = now.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  const greetEl  = document.getElementById('dashboard-greeting');
+  const subEl    = document.getElementById('dashboard-date');
+  if (greetEl) greetEl.innerHTML = `${greeting}, <span>Bound</span>`;
+  if (subEl)   subEl.textContent = `Here's what's happening with your fleet today — ${dateStr}`;
+}
+
+function updateBookingsBadge() {
+  const badge   = document.getElementById('bookings-badge');
+  if (!badge) return;
+  const pending = Object.values(bookings).filter(b => b.status === 'pending').length;
+  badge.textContent   = pending;
+  badge.style.display = pending > 0 ? '' : 'none';
+}
 
 // ══════════════════════════════════════
 //  CREW ASSIGNMENTS TABLE
@@ -12375,6 +12393,7 @@ function submitNewBooking() {
   applyOwnedVesselExpenses(bookings[ref]);
   closeNewBookingModal();
   renderBookingsTable();
+  updateBookingsBadge();
 
   // Auto-open invoice and trigger email
   setTimeout(() => {
@@ -14005,43 +14024,4 @@ function renderCalGrid() {
     if (isToday && status !== 'full') cls += ' today';
 
     const clickable = status !== 'full' && !isSelected;
-    html += `<div class="${cls}" ${clickable ? `onclick="calSelectDate('${dateStr}')"` : ''}>${d}${dot}</div>`;
-  }
-
-  grid.innerHTML = html;
-}
-
-function calSelectDate(dateStr) {
-  if (!calActiveVessel) return;
-
-  // Set hidden input value (already local YYYY-MM-DD, no timezone issue)
-  document.getElementById(`${calActiveVessel}-date`).value = dateStr;
-
-  // Format display date in local time
-  const [y, m, d] = dateStr.split('-').map(Number);
-  const dateObj = new Date(y, m - 1, d);
-  const formatted = dateObj.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
-
-  const trigger = document.getElementById(`${calActiveVessel}-cal-trigger`);
-  document.getElementById(`${calActiveVessel}-date-display`).textContent = formatted;
-  if (trigger) { trigger.classList.add('has-value'); trigger.classList.remove('error'); }
-
-  // Update time slots — grey out blocked hours
-  updateTimeSlotsForDate(calActiveVessel, dateStr);
-
-  // Show note
-  const dayEvs  = eventsOnDate(calEvents, dateStr);
-  const blocked = getBlockedHours(calEvents, dateStr);
-  if (dayEvs.length > 0 && blocked.size > 0) {
-    showDateNote(calActiveVessel, `✓ Partially available — ${blocked.size} time slot${blocked.size > 1 ? 's' : ''} unavailable. Select an available departure time below.`, 'success');
-  } else {
-    showDateNote(calActiveVessel, '✓ This date is fully available.', 'success');
-  }
-
-  renderCalGrid();
-  setTimeout(closeCalPicker, 280);
-}
-</script>
-
-</body>
-</html>
+    h
