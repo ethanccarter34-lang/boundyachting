@@ -527,6 +527,99 @@
     cursor: pointer; font-size: 18px; padding: 0 4px;
   }
   .cal-close:hover { color: #fff; }
+
+  /* ── SEARCH BAR ── */
+  .search-section {
+    background: rgba(10,22,40,0.98);
+    border-bottom: 1px solid rgba(184,155,94,0.15);
+    padding: 32px 48px; position: relative; z-index: 10;
+  }
+  .search-inner { max-width: 1200px; margin: 0 auto; }
+  .search-label {
+    font-family: 'Cormorant Garamond', serif; font-size: 13px;
+    font-weight: 300; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px; text-align: center;
+  }
+  .search-bar {
+    display: flex; align-items: stretch;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(184,155,94,0.25); overflow: visible;
+  }
+  .search-field {
+    flex: 1; padding: 16px 20px;
+    transition: background 0.2s; min-width: 0;
+  }
+  .search-field:hover { background: rgba(184,155,94,0.05); }
+  .search-field-label {
+    font-size: 8px; font-weight: 700; letter-spacing: 2px;
+    color: var(--gold); margin-bottom: 6px; text-transform: uppercase;
+  }
+  .search-field-val {
+    font-size: 13px; color: rgba(255,255,255,0.5);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    cursor: pointer; padding: 2px 0;
+  }
+  .search-field-val.has-value { color: #fff; }
+  .search-select {
+    background: none; border: none; outline: none;
+    color: rgba(255,255,255,0.5); font-size: 13px;
+    width: 100%; cursor: pointer; padding: 2px 0; -webkit-appearance: none;
+  }
+  .search-select option { background: #0d1a2e; color: #fff; }
+  .search-select.has-value { color: #fff; }
+  .search-divider { width: 1px; background: rgba(184,155,94,0.15); margin: 12px 0; flex-shrink: 0; }
+  .search-btn {
+    background: var(--gold); border: none; color: #0a1628;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    padding: 0 32px; cursor: pointer; display: flex; align-items: center; gap: 8px;
+    transition: background 0.2s; flex-shrink: 0; white-space: nowrap;
+  }
+  .search-btn:hover { background: #d4b07a; }
+  .search-time-dropdown {
+    display: none; position: absolute; top: calc(100% + 8px); left: -12px;
+    background: #0d1a2e; border: 1px solid rgba(184,155,94,0.25);
+    padding: 16px; z-index: 3000; min-width: 280px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  .search-time-dropdown.open { display: block; }
+  .search-time-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+  }
+  .stb {
+    padding: 8px 4px; font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
+    border: 1px solid rgba(184,155,94,0.2); color: rgba(255,255,255,0.5);
+    cursor: pointer; transition: all 0.15s; text-align: center;
+    background: rgba(255,255,255,0.03);
+  }
+  .stb:hover { border-color: var(--gold); color: var(--gold); background: rgba(184,155,94,0.1); }
+  .stb.selected { background: var(--gold); color: #0a1628; border-color: var(--gold); font-weight: 700; }
+  .search-dur-blocks { display: flex; gap: 6px; margin-top: 2px; }
+  .dur-btn {
+    flex: 1; padding: 7px 4px; font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
+    border: 1px solid rgba(184,155,94,0.2); color: rgba(255,255,255,0.5);
+    cursor: pointer; transition: all 0.15s; text-align: center;
+    background: rgba(255,255,255,0.03);
+  }
+  .dur-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(184,155,94,0.1); }
+  .dur-btn.selected { background: var(--gold); color: #0a1628; border-color: var(--gold); font-weight: 700; }
+  .search-results-inner { max-width: 1200px; margin: 0 auto; }
+  .search-results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+  .search-results-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: #fff; }
+  .search-results-title span { color: var(--gold); font-style: italic; }
+  .search-results-close {
+    background: none; border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.4); font-size: 10px; letter-spacing: 1.5px;
+    text-transform: uppercase; padding: 8px 16px; cursor: pointer; transition: all 0.2s;
+  }
+  .search-results-close:hover { border-color: #e05c5c; color: #e05c5c; }
+  @media (max-width: 900px) {
+    .search-section { padding: 24px 20px; }
+    .search-bar { flex-direction: column; }
+    .search-divider { width: 100%; height: 1px; margin: 0; }
+    .search-btn { padding: 16px; justify-content: center; }
+    .search-results-section { padding: 32px 20px; }
+  }
+
   .about-section {
     padding: 100px 64px;
     background: linear-gradient(180deg, rgba(184,155,94,0.03) 0%, transparent 100%);
@@ -1956,7 +2049,115 @@
   </div>
 </section>
 
-<!-- TAB SECTION -->
+<!-- ══ SEARCH BAR ══ -->
+<section class="search-section">
+  <div class="search-inner">
+    <div class="search-label">Book Your Next Experience</div>
+    <div class="search-bar">
+
+      <!-- Destination -->
+      <div class="search-field" id="sf-destination">
+        <div class="search-field-label">DESTINATION</div>
+        <select class="search-select" id="search-destination">
+          <option value="">Where are you going?</option>
+          <option value="Miami">Miami</option>
+          <option value="Fort Lauderdale">Fort Lauderdale</option>
+          <option value="Palm Beach">Palm Beach</option>
+          <option value="Bahamas">Bahamas</option>
+        </select>
+      </div>
+
+      <div class="search-divider"></div>
+
+      <!-- Date -->
+      <div class="search-field" id="sf-date" style="cursor:pointer;" onclick="openSearchCal(event)">
+        <div class="search-field-label">DATE</div>
+        <div class="search-field-val" id="search-date-display">Select a date</div>
+        <input type="hidden" id="search-date" />
+      </div>
+
+      <div class="search-divider"></div>
+
+      <!-- Time -->
+      <div class="search-field" id="sf-time">
+        <div class="search-field-label">DEPARTURE TIME</div>
+        <select class="search-select" id="search-time">
+          <option value="">Select time</option>
+          <option value="8">8:00 AM</option>
+          <option value="9">9:00 AM</option>
+          <option value="10">10:00 AM</option>
+          <option value="11">11:00 AM</option>
+          <option value="12">12:00 PM</option>
+          <option value="13">1:00 PM</option>
+          <option value="14">2:00 PM</option>
+          <option value="15">3:00 PM</option>
+          <option value="16">4:00 PM</option>
+          <option value="17">5:00 PM</option>
+          <option value="18">6:00 PM</option>
+          <option value="19">7:00 PM</option>
+          <option value="20">8:00 PM</option>
+        </select>
+      </div>
+
+      <div class="search-divider"></div>
+
+      <!-- Duration -->
+      <div class="search-field" id="sf-duration">
+        <div class="search-field-label">DURATION</div>
+        <select class="search-select" id="search-duration">
+          <option value="">How long?</option>
+          <option value="4">4 Hours</option>
+          <option value="6">6 Hours</option>
+          <option value="8">8 Hours</option>
+        </select>
+      </div>
+
+      <!-- Search Button -->
+      <button class="search-btn" onclick="runSearch()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        Search
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SEARCH RESULTS ══ -->
+<section class="search-results-section" id="search-results-section" style="display:none;">
+  <div class="search-results-inner">
+    <div class="search-results-header">
+      <div class="search-results-title" id="search-results-title">Available Yachts</div>
+      <button class="search-results-close" onclick="closeSearchResults()">✕ Clear Search</button>
+    </div>
+    <div class="yacht-grid" id="search-results-grid"></div>
+    <div id="search-no-results" style="display:none;text-align:center;padding:48px 0;">
+      <div style="font-size:32px;opacity:0.2;margin-bottom:16px;">⚓</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:rgba(255,255,255,0.4);">No vessels available for this selection</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.25);margin-top:8px;">Try a different date, time, or duration</div>
+    </div>
+  </div>
+</section>
+
+<!-- Search Calendar Overlay — standalone, no shared CSS with vessel picker -->
+<div id="search-cal-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;" onclick="if(event.target===this)closeSearchCal()">
+  <div style="background:#0d1a2e;border:1px solid rgba(184,155,94,0.3);padding:24px;width:320px;box-shadow:0 32px 80px rgba(0,0,0,0.6);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <button onclick="searchCalChangeMonth(-1)" style="background:none;border:1px solid rgba(184,155,94,0.2);color:rgba(255,255,255,0.5);width:30px;height:30px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;">&#8249;</button>
+      <div id="search-cal-month-label" style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#fff;font-weight:300;letter-spacing:1px;"></div>
+      <button onclick="searchCalChangeMonth(1)" style="background:none;border:1px solid rgba(184,155,94,0.2);color:rgba(255,255,255,0.5);width:30px;height:30px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;">&#8250;</button>
+      <button onclick="closeSearchCal()" style="background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:18px;padding:0 4px;">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px;">
+      <div style="text-align:center;font-size:9px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.3);padding:4px 0;">Su</div>
+      <div style="text-align:center;font-size:9px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.3);padding:4px 0;">Mo</div>
+      <div style="text-align:center;font-size:9px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.3);padding:4px 0;">Tu</div>
+      <div style="text-align:center;font-size:9px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.3);padding:4px 0;">We</div>
+      <div style="text-align:center;font-size:9px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.3);padding:4px 0;">Th</div>
+      <div style="text-align:center;font-size:9px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.3);padding:4px 0;">Fr</div>
+      <div style="text-align:center;font-size:9px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.3);padding:4px 0;">Sa</div>
+    </div>
+    <div id="search-cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;"></div>
+  </div>
+</div>
 <section class="tab-section" id="tabs">
   <div class="tab-nav">
     <button class="tab-btn active" data-tab="charter">
@@ -2004,7 +2205,7 @@
         <div class="about-divider"></div>
         <p class="about-body">Bound Yachting is Miami's full-service yacht charter and fleet management company. We operate a handpicked fleet of vessels ranging from sleek day boats to world-class superyachts — each maintained to the highest standards and crewed by professionals who understand that every charter is a once-in-a-lifetime experience for the people on board.</p>
         <p class="about-body">Beyond charters, we manage the complete relationship between vessel owners and the water — handling everything from crew placement and scheduling to ownership advisory and broker introductions. Whether you're stepping aboard for a four-hour sunset cruise or exploring ownership for the first time, Bound Yachting is the team behind every detail.</p>
-        <a href="/cdn-cgi/l/email-protection#de96bbb2b2b19ebcb1abb0baa7bfbdb6aab7b0b9f0bdb1b3" class="btn-outline" style="display:inline-block;margin-top:8px;">Get in Touch</a>
+        <a href="https://wa.me/message/DQPB7HM5MWR6C1" target="_blank" class="btn-outline" style="display:inline-block;margin-top:8px;">Get in Touch</a>
       </div>
       <div class="about-right">
         <div class="about-stat">
@@ -11670,6 +11871,7 @@ const VESSEL_REGISTRY = [
     price6hr:   3500,
     price8hr:   4500,
     marina:     'Island Gardens Marina, Watson Island, Miami',
+    location:   'Miami',
     tag:        'Motor Yacht · Azimut · 2017',
     type:       'motor',
     ft:         68,
@@ -11688,6 +11890,7 @@ const VESSEL_REGISTRY = [
     price6hr:   3000,
     price8hr:   4000,
     marina:     'Bayside Marina, Downtown Miami',
+    location:   'Miami',
     tag:        'Flybridge · Galeon · 2022',
     type:       'flybridge',
     ft:         53,
@@ -11715,6 +11918,7 @@ const VESSEL_REGISTRY = [
     price6hr:   1200,
     price8hr:   1400,
     marina:     'Venetian Marina, Miami Beach',
+    location:   'Miami',
     tag:        'Motor Yacht · Beneteau · 2025',
     type:       'motor',
     ft:         30,
@@ -11742,6 +11946,7 @@ const VESSEL_REGISTRY = [
     price6hr:   13000,
     price8hr:   16000,
     marina:     'One Harbourgate Marina, North Bay Village',
+    location:   'Miami',
     tag:        'Motor Yacht · Sanlorenzo · 2023',
     type:       'motor',
     ft:         96,
@@ -11760,6 +11965,7 @@ const VESSEL_REGISTRY = [
     price6hr:   2600,
     price8hr:   3000,
     marina:     'Miami Beach Marina, Miami Beach',
+    location:   'Miami',
     tag:        'Walkaround · Pardo · 2025',
     type:       'motor',
     ft:         53,
@@ -11787,6 +11993,7 @@ const VESSEL_REGISTRY = [
     price6hr:   2000,
     price8hr:   2500,
     marina:     'Miami Beach Marina, Miami Beach',
+    location:   'Miami',
     tag:        'Sports Cruiser · Sunseeker · 2016',
     type:       'motor',
     ft:         64,
@@ -11814,6 +12021,7 @@ const VESSEL_REGISTRY = [
     price6hr:   1300,
     price8hr:   1600,
     marina:     'Regal Marina, Miami',
+    location:   'Miami',
     tag:        'Open Sport · Fjord · 2019',
     type:       'motor',
     ft:         40,
@@ -11839,6 +12047,7 @@ const VESSEL_REGISTRY = [
     price6hr:   5600,
     price8hr:   6600,
     marina:     'Miami Beach Marina, 300 Alton Rd',
+    location:   'Miami',
     flagship:   false,
     img:        'https://i.ibb.co/QjfjdxVL/DJI-0240.jpg',
     amenities:  ['ac','swimplatform','ice','water','sodas','bluetooth','floatingmat'],
@@ -11867,6 +12076,7 @@ const VESSEL_REGISTRY = [
     price6hr:   3000,
     price8hr:   3500,
     marina:     'Miami Beach Marina, 300 Alton Rd',
+    location:   'Miami',
     flagship:   true,
     img:        'https://i.ibb.co/HTcfDpwV/IMG-2514.jpg',
     amenities:  ['ac','wifi','sodas','water','ice','bluetooth','floatingmat','flybridge','paddleboard','jetski','seabob'],
@@ -11893,6 +12103,7 @@ const VESSEL_REGISTRY = [
     price6hr:     7500,
     price8hr:     9500,
     marina:       'Grove Harbor Marina, 2640 S Bayshore Dr, Miami',
+    location:   'Miami',
     flagship:     true,
     img:          'https://i.ibb.co/jvVhskS1/105-Azimut-Drone-6.jpg',
     amenities:    ['ac','wifi','water','sodas','ice','floatingmat','flybridge'],
@@ -11920,6 +12131,7 @@ const VESSEL_REGISTRY = [
     price6hr:     5500,
     price8hr:     6000,
     marina:       'Aston Martin Residences, 300 Biscayne Blvd Way, Miami',
+    location:   'Miami',
     flagship:     true,
     img:          'https://i.ibb.co/1YZyp8h8/IMG-7598.webp',
     amenities:    ['ac','flybridge','ice','water','sodas','jetski','seabob'],
@@ -11948,6 +12160,7 @@ const VESSEL_REGISTRY = [
     price6hr:   2200,
     price8hr:   2700,
     marina:     'Vice City Marina, Miami',
+    location:   'Miami',
     flagship:   true,
     img:        'https://i.ibb.co/35bjQMX0/ebe951cd-53eb-4bb2-a6e4-03d7b927efb5.jpg',
     amenities:  ['ac','bluetooth','water','sodas','ice','floatingmat'],
@@ -11975,6 +12188,7 @@ const VESSEL_REGISTRY = [
     price6hr:     40000,
     price8hr:     50000,
     marina:       'Miami Beach Marina, 300 Alton Rd',
+    location:   'Miami',
     flagship:     false,
     img:          'https://i.ibb.co/TDtB2jwH/165-Trinity-SWEET-CAROLINE-2-Drone-4.jpg',
     amenities:    ['ac','wifi','bluetooth','water','sodas','ice','floatingmat','flybridge','jacuzzi','jetski','tender'],
@@ -12002,6 +12216,7 @@ const VESSEL_REGISTRY = [
     price6hr:     18000,
     price8hr:     21000,
     marina:       'Miami Beach Marina, 300 Alton Rd',
+    location:   'Miami',
     flagship:     false,
     img:          'https://i.ibb.co/YFNsWScJ/PERSHING-16-Jan-2026-DRONE-5-MP4-00-05-18-13-Still021.jpg',
     amenities:    ['ac','water','sodas','ice','bluetooth','swimplatform','flybridge','wifi','generator'],
@@ -12029,6 +12244,7 @@ const VESSEL_REGISTRY = [
     price6hr:     40000,
     price8hr:     50000,
     marina:       'Miami Beach Marina, 300 Alton Rd',
+    location:   'Miami',
     flagship:     false,
     img:          'https://i.ibb.co/TDtB2jwH/165-Trinity-SWEET-CAROLINE-2-Drone-4.jpg',
     amenities:    ['ac','wifi','bluetooth','water','sodas','ice','floatingmat','flybridge','jacuzzi','jetski','tender'],
@@ -12056,6 +12272,7 @@ const VESSEL_REGISTRY = [
     price6hr:     12000,
     price8hr:     15000,
     marina:       'Miami Beach Marina, 300 Alton Rd',
+    location:   'Miami',
     flagship:     false,
     img:          'https://i.ibb.co/ZpP5y4R2/116-Azimut-Rylax-Drone-2.jpg',
     amenities:    ['ac','water','sodas','ice','floatingmat','flybridge','jacuzzi','bluetooth'],
@@ -12083,6 +12300,7 @@ const VESSEL_REGISTRY = [
     price6hr:     6800,
     price8hr:     8000,
     marina:       'Miami Beach Marina, 300 Alton Rd',
+    location:   'Miami',
     flagship:     true,
     img:          'https://i.ibb.co/rRL2ydS2/DJI-0003.jpg',
     amenities:    ['ac','wifi','water','sodas','ice','flybridge','swimplatform'],
@@ -13855,7 +14073,213 @@ Hello@boundyachting.com
   window.location.href = `mailto:${b.customer.email}?subject=${subject}&body=${body}`;
 }
 
-// Close on backdrop click
+// ── SEARCH CALENDAR ──
+let searchCalYear  = new Date().getFullYear();
+let searchCalMonth = new Date().getMonth();
+
+function openSearchCal(e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  searchCalYear  = new Date().getFullYear();
+  searchCalMonth = new Date().getMonth();
+  const overlay = document.getElementById('search-cal-overlay');
+  overlay.style.display = 'flex';
+  renderSearchCal();
+}
+
+function closeSearchCal() {
+  document.getElementById('search-cal-overlay').style.display = 'none';
+}
+function searchCalChangeMonth(dir) {
+  searchCalMonth += dir;
+  if (searchCalMonth > 11) { searchCalMonth = 0; searchCalYear++; }
+  if (searchCalMonth < 0)  { searchCalMonth = 11; searchCalYear--; }
+  renderSearchCal();
+}
+function renderSearchCal() {
+  const label = new Date(searchCalYear, searchCalMonth, 1)
+    .toLocaleString('en-US', { month:'long', year:'numeric' });
+  document.getElementById('search-cal-month-label').textContent = label;
+
+  const today      = new Date(); today.setHours(0,0,0,0);
+  const firstDay   = new Date(searchCalYear, searchCalMonth, 1).getDay();
+  const daysInMonth = new Date(searchCalYear, searchCalMonth + 1, 0).getDate();
+  const selected   = document.getElementById('search-date').value;
+
+  const baseStyle = 'aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:12px;border-radius:2px;cursor:pointer;';
+
+  let html = '';
+  for (let i = 0; i < firstDay; i++) html += `<div style="${baseStyle}cursor:default;"></div>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const mm = String(searchCalMonth + 1).padStart(2,'0');
+    const dd = String(d).padStart(2,'0');
+    const dateStr = `${searchCalYear}-${mm}-${dd}`;
+    const dateObj = new Date(searchCalYear, searchCalMonth, d);
+    const isPast  = dateObj < today;
+    const isSel   = selected === dateStr;
+
+    let style = baseStyle;
+    let click = '';
+    if (isPast) {
+      style += 'color:rgba(255,255,255,0.15);cursor:not-allowed;';
+    } else if (isSel) {
+      style += 'background:#C9A96E;color:#0a1628;font-weight:700;';
+    } else {
+      style += 'color:#fff;background:rgba(76,175,125,0.12);border:1px solid rgba(76,175,125,0.25);';
+      click = `onclick="searchPickDate('${dateStr}')"`;
+    }
+    html += `<div style="${style}" ${click}>${d}</div>`;
+  }
+  document.getElementById('search-cal-grid').innerHTML = html;
+}
+function searchPickDate(dateStr) {
+  document.getElementById('search-date').value = dateStr;
+  const [y,m,d] = dateStr.split('-').map(Number);
+  const formatted = new Date(y, m-1, d).toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
+  const disp = document.getElementById('search-date-display');
+  disp.textContent = formatted;
+  disp.classList.add('has-value');
+  renderSearchCal();
+  setTimeout(closeSearchCal, 280);
+}
+
+function pickSearchDuration(el) {
+  document.querySelectorAll('.dur-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('search-duration').value = el.dataset.hrs;
+}
+
+function toggleTimeDropdown(e) {
+  e.stopPropagation();
+  const dd = document.getElementById('search-time-dropdown');
+  dd.classList.toggle('open');
+}
+
+function selectSearchTime(el) {
+  document.querySelectorAll('.stb').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('search-time').value = el.dataset.hour;
+  const labels = {8:'8 AM',9:'9 AM',10:'10 AM',11:'11 AM',12:'12 PM',13:'1 PM',14:'2 PM',15:'3 PM',16:'4 PM',17:'5 PM',18:'6 PM',19:'7 PM',20:'8 PM'};
+  const disp = document.getElementById('search-time-display');
+  disp.textContent = labels[el.dataset.hour] || el.textContent;
+  disp.style.color = '#fff';
+  document.getElementById('search-time-dropdown').classList.remove('open');
+}
+
+function selectSearchDuration(el) {
+  document.querySelectorAll('.dur-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('search-duration').value = el.dataset.hrs;
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#sf-time')) {
+    document.getElementById('search-time-dropdown')?.classList.remove('open');
+  }
+});
+
+// ── SEARCH LOGIC ──
+async function runSearch() {
+  const destination = document.getElementById('search-destination').value;
+  const dateStr     = document.getElementById('search-date').value;
+  const timeH       = parseInt(document.getElementById('search-time').value);
+  const duration    = parseInt(document.getElementById('search-duration').value);
+
+  // Highlight missing fields
+  const df = document.getElementById('search-date-display');
+  df.style.color = '';
+  document.getElementById('sf-time').style.background = '';
+  document.getElementById('sf-duration').style.background = '';
+
+  if (!dateStr) { df.style.color = '#e05c5c'; return; }
+  if (!timeH)   { document.getElementById('sf-time').style.background = 'rgba(224,92,92,0.05)'; return; }
+  if (!duration) { document.getElementById('sf-duration').style.background = 'rgba(224,92,92,0.05)'; return; }
+
+  // Show results section with loading state
+  const resultsSection = document.getElementById('search-results-section');
+  const resultsGrid    = document.getElementById('search-results-grid');
+  const noResults      = document.getElementById('search-no-results');
+  const titleEl        = document.getElementById('search-results-title');
+
+  resultsSection.style.display = 'block';
+  resultsGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 0;font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:2px;">CHECKING AVAILABILITY...</div>';
+  noResults.style.display = 'none';
+  resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const destLabel = destination || 'All Locations';
+
+  // Fetch availability for all vessels that have calendars
+  const availabilityMap = {};
+  await Promise.all(
+    VESSEL_REGISTRY.map(async v => {
+      if (!VESSEL_CALENDARS[v.fleetId]) { availabilityMap[v.fleetId] = true; return; }
+      const events  = await fetchEvents(v.fleetId);
+      const blocked = getBlockedHours(events, dateStr);
+      let available = true;
+      for (let h = timeH; h < timeH + duration; h++) {
+        if (blocked.has(h)) { available = false; break; }
+      }
+      const dayEvs = eventsOnDate(events, dateStr);
+      for (const ev of dayEvs) {
+        if (ev.startLocalH > timeH && (ev.startLocalH - timeH) < 4) { available = false; break; }
+      }
+      availabilityMap[v.fleetId] = available;
+    })
+  );
+
+  // Filter vessels by availability, duration, and location
+  const available = VESSEL_REGISTRY.filter(v => {
+    if (!availabilityMap[v.fleetId]) return false;
+    if (duration === 4 && !v.price4hr) return false;
+    if (duration === 6 && !v.price6hr) return false;
+    if (duration === 8 && !v.price8hr) return false;
+    // Location filter — if destination selected, match vessel location
+    if (destination && v.location && v.location !== destination) return false;
+    return true;
+  });
+
+  titleEl.innerHTML = `<span>${available.length}</span> Available Yacht${available.length !== 1 ? 's' : ''} · ${destLabel}`;
+
+  if (available.length === 0) {
+    resultsGrid.innerHTML = '';
+    noResults.style.display = 'block';
+    return;
+  }
+
+  noResults.style.display = 'none';
+  const priceKey = duration === 4 ? 'price4hr' : duration === 6 ? 'price6hr' : 'price8hr';
+  resultsGrid.innerHTML = available.map(v => `
+    <div class="yacht-card" onclick="openVessel('${v.fleetId}')">
+      <img src="${v.img}" alt="${v.fullName}"/>
+      <div class="yacht-card-overlay">
+        <div class="yacht-card-tag">${v.tag}</div>
+        <div class="yacht-card-name">${v.fullName}</div>
+        <div class="yacht-card-meta">
+          <span>${v.ft}ft</span>
+          <span>${v.guests} Guests</span>
+          ${v.cabins ? `<span>${v.cabins} Cabins</span>` : ''}
+        </div>
+        <div class="yacht-card-price" style="color:#4caf7d;">✓ Available · $${v[priceKey].toLocaleString()} / ${duration}hrs</div>
+      </div>
+      <div class="yacht-card-btn">View Yacht</div>
+    </div>
+  `).join('');
+}
+
+function closeSearchResults() {
+  document.getElementById('search-results-section').style.display = 'none';
+  ['search-destination','search-duration'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.value = ''; el.classList.remove('has-value'); }
+  });
+  document.getElementById('search-date').value = '';
+  document.getElementById('search-time').value = '';
+  document.querySelectorAll('.stb').forEach(b => b.classList.remove('selected'));
+  const disp = document.getElementById('search-date-display');
+  disp.textContent = 'Select a date';
+  disp.classList.remove('has-value');
+}
+
 document.getElementById('inv-overlay').addEventListener('click', function(e) {
   if (e.target === this) closeInvoice();
 });
